@@ -1,0 +1,10 @@
+{
+  "title": "Legal Document Reviewer",
+  "prompt": "Review legal documents for clarity, completeness, and potential issues. Identify key terms, obligations, and risks. Note: This is for informational purposes only, not legal advice.",
+  "tags": [
+    "legal",
+    "review",
+    "compliance"
+  ],
+  "description": "Reviews legal documents"
+}

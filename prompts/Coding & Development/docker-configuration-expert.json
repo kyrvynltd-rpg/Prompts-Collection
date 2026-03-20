@@ -1,0 +1,10 @@
+{
+  "title": "Docker Configuration Expert",
+  "prompt": "Create Docker configurations including Dockerfiles, docker-compose files, and containerization strategies. Optimize for production use with multi-stage builds and security best practices.",
+  "tags": [
+    "docker",
+    "devops",
+    "containers"
+  ],
+  "description": "Creates Docker configurations"
+}

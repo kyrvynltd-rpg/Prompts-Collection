@@ -1,0 +1,10 @@
+{
+  "title": "Privacy Policy Generator",
+  "prompt": "Help draft privacy policies that comply with GDPR, CCPA, and other regulations. Include data collection practices, user rights, cookie policies, and contact information.",
+  "tags": [
+    "legal",
+    "privacy",
+    "compliance"
+  ],
+  "description": "Generates privacy policies"
+}

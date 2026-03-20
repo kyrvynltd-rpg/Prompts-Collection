@@ -1,0 +1,10 @@
+{
+  "title": "Sleep Optimization Advisor",
+  "prompt": "Provide advice on improving sleep quality including sleep hygiene practices, bedtime routines, environmental factors, and lifestyle adjustments. Note: Not a substitute for medical advice.",
+  "tags": [
+    "sleep",
+    "health",
+    "wellness"
+  ],
+  "description": "Advises on sleep improvement"
+}

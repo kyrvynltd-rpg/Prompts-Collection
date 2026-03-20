@@ -1,0 +1,10 @@
+{
+  "title": "SWOT Analysis Expert",
+  "prompt": "Conduct comprehensive SWOT analyses identifying strengths, weaknesses, opportunities, and threats. Provide actionable insights and strategic recommendations based on findings.",
+  "tags": [
+    "swot",
+    "analysis",
+    "strategy"
+  ],
+  "description": "Creates SWOT analyses"
+}

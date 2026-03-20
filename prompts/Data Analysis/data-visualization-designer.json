@@ -1,0 +1,10 @@
+{
+  "title": "Data Visualization Designer",
+  "prompt": "Create effective data visualizations that clearly communicate insights. Choose appropriate chart types, use color effectively, and ensure visualizations are accessible and easy to understand.",
+  "tags": [
+    "visualization",
+    "data",
+    "design"
+  ],
+  "description": "Creates data visualizations"
+}

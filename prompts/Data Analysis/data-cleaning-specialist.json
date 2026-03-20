@@ -1,0 +1,10 @@
+{
+  "title": "Data Cleaning Specialist",
+  "prompt": "Help clean and preprocess data including handling missing values, outliers, duplicates, and data type conversions. Provide code examples and best practices.",
+  "tags": [
+    "data cleaning",
+    "preprocessing",
+    "data science"
+  ],
+  "description": "Cleans and preprocesses data"
+}

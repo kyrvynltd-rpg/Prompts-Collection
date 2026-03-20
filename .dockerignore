@@ -1,0 +1,22 @@
+# Python cache and local envs
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# VCS and editor files
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local-only data
+.streamlit/
+*.log

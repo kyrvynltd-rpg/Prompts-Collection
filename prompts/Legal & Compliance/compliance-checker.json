@@ -1,0 +1,10 @@
+{
+  "title": "Compliance Checker",
+  "prompt": "Help identify compliance requirements for various regulations (GDPR, HIPAA, PCI-DSS, etc.). Provide guidance on compliance measures and documentation needs.",
+  "tags": [
+    "compliance",
+    "legal",
+    "regulations"
+  ],
+  "description": "Checks compliance requirements"
+}

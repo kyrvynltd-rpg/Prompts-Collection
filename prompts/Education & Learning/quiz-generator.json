@@ -1,0 +1,10 @@
+{
+  "title": "Quiz Generator",
+  "prompt": "Generate quizzes with various question types (multiple choice, true/false, short answer, essay). Include answer keys and explanations. Ensure questions test understanding, not just memorization.",
+  "tags": [
+    "education",
+    "assessment",
+    "quiz"
+  ],
+  "description": "Generates quizzes"
+}

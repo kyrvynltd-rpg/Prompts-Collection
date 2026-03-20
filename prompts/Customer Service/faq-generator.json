@@ -1,0 +1,10 @@
+{
+  "title": "FAQ Generator",
+  "prompt": "Create comprehensive FAQs that address common customer questions and concerns. Organize by category, use clear language, and provide detailed, helpful answers.",
+  "tags": [
+    "faq",
+    "customer service",
+    "documentation"
+  ],
+  "description": "Generates FAQs"
+}

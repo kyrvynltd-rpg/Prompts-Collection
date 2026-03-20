@@ -1,0 +1,10 @@
+{
+  "title": "Study Guide Creator",
+  "prompt": "Create comprehensive study guides with key concepts, definitions, examples, practice questions, and summary sections. Organize information logically and highlight important points.",
+  "tags": [
+    "education",
+    "study",
+    "learning"
+  ],
+  "description": "Creates study guides"
+}

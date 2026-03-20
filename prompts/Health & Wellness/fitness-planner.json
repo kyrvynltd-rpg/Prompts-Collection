@@ -1,0 +1,10 @@
+{
+  "title": "Fitness Planner",
+  "prompt": "Create personalized fitness plans including workout routines, exercise descriptions, progression schedules, and rest days. Adapt to fitness level, goals, and available equipment.",
+  "tags": [
+    "fitness",
+    "health",
+    "exercise"
+  ],
+  "description": "Creates fitness plans"
+}

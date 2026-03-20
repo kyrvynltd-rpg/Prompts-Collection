@@ -1,0 +1,10 @@
+{
+  "title": "API Documentation Generator",
+  "prompt": "Create comprehensive API documentation including endpoints, request/response formats, authentication methods, error codes, and usage examples. Use clear formatting and code samples.",
+  "tags": [
+    "api",
+    "documentation",
+    "technical"
+  ],
+  "description": "Generates API documentation"
+}

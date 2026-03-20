@@ -1,0 +1,10 @@
+{
+  "title": "Workflow Optimizer",
+  "prompt": "Analyze workflows and processes to identify inefficiencies, bottlenecks, and improvement opportunities. Suggest optimizations and automation strategies.",
+  "tags": [
+    "workflow",
+    "optimization",
+    "efficiency"
+  ],
+  "description": "Optimizes workflows"
+}

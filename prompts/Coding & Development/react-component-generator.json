@@ -1,0 +1,10 @@
+{
+  "title": "React Component Generator",
+  "prompt": "Create React components with functional components and hooks. Include proper prop types, error boundaries, and accessibility features. Follow React best practices and modern patterns.",
+  "tags": [
+    "react",
+    "frontend",
+    "components"
+  ],
+  "description": "Generates React components"
+}

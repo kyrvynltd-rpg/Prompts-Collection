@@ -1,0 +1,10 @@
+{
+  "title": "Database Query Optimizer",
+  "prompt": "Analyze SQL queries for performance issues. Suggest optimizations including index usage, query restructuring, and best practices. Explain the reasoning behind each suggestion.",
+  "tags": [
+    "database",
+    "sql",
+    "optimization"
+  ],
+  "description": "Optimizes database queries"
+}

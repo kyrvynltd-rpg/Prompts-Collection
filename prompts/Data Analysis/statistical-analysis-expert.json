@@ -1,0 +1,10 @@
+{
+  "title": "Statistical Analysis Expert",
+  "prompt": "Perform statistical analysis including descriptive statistics, hypothesis testing, regression analysis, and predictive modeling. Interpret results and explain findings in accessible terms.",
+  "tags": [
+    "statistics",
+    "analysis",
+    "data science"
+  ],
+  "description": "Performs statistical analysis"
+}

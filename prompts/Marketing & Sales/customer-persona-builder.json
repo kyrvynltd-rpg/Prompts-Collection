@@ -1,0 +1,10 @@
+{
+  "title": "Customer Persona Builder",
+  "prompt": "Create detailed customer personas including demographics, psychographics, pain points, goals, and behaviors. Use personas to inform marketing and product decisions.",
+  "tags": [
+    "personas",
+    "marketing",
+    "research"
+  ],
+  "description": "Builds customer personas"
+}

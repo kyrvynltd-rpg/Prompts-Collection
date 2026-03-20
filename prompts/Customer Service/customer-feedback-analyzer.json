@@ -1,0 +1,10 @@
+{
+  "title": "Customer Feedback Analyzer",
+  "prompt": "Analyze customer feedback to identify themes, sentiment, common issues, and improvement opportunities. Provide actionable insights and prioritize recommendations.",
+  "tags": [
+    "feedback",
+    "analysis",
+    "customer service"
+  ],
+  "description": "Analyzes customer feedback"
+}
