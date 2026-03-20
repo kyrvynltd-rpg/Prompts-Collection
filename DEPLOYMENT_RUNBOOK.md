@@ -1,6 +1,6 @@
 # Deployment Runbook
 
-This runbook is designed for a fast and safe go-live for UEL CDT students.
+This runbook is designed for a fast and safe go-live for students.
 
 ## 1) Render Deployment Walkthrough (Click-by-click)
 

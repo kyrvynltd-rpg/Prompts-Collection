@@ -63,7 +63,7 @@ Our curated collection includes 100+ prompts across 12 categories:
 4. **Open your browser**:
    The app will automatically open in your default browser at `http://localhost:8501`
 
-## 🌐 Deployment (For UEL CDT Student Use)
+## 🌐 Deployment (For Student Use)
 
 This app is ready to deploy as a standard Streamlit web service.
 

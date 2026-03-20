@@ -7,11 +7,15 @@ import streamlit as st
 from prompt_loader import get_all_prompts, get_category_folders
 import re
 from collections import Counter
+from pathlib import Path
 
 # Page configuration
+BASE_DIR = Path(__file__).resolve().parent.parent
+LOGO_PATH = BASE_DIR / "assets" / "logo.svg"
+
 st.set_page_config(
-    page_title="Prompt Improvement Tool",
-    page_icon="💡",
+    page_title="Prompt Learning Platform",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else "💡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -638,7 +642,10 @@ with st.sidebar:
     """)
 
 # Main content area
-st.markdown('<div class="main-header">💡 Prompt Improvement Tool</div>', unsafe_allow_html=True)
+if LOGO_PATH.exists():
+    st.image(str(LOGO_PATH), width=92)
+
+st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
 
 # Main input area
