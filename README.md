@@ -42,22 +42,26 @@ Our curated collection includes 114 high-quality prompts across 12 categories:
 ### Installation
 
 1. **Clone or download this repository**
+
    ```bash
    git clone <repository-url>
    cd Prompts-Collection
    ```
 
 2. **Install dependencies**:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 3. **Run the application**:
+
    ```bash
    python main.py
    ```
-   
+
    Or directly with Streamlit:
+
    ```bash
    streamlit run src/app.py
    ```
@@ -112,7 +116,7 @@ Then deploy the same image to Azure Container Apps, AWS ECS, GCP Cloud Run, or a
 
 1. Smoke-test deployment URL from a student network and mobile network
 2. Verify all prompt categories load correctly
-3. Confirm app startup time is acceptable under cold start
+3. Confirm app start-up time is acceptable under cold start
 4. Set a simple uptime monitor (for example, UptimeRobot)
 5. Keep one backup deployment target ready (Render + Docker fallback)
 
@@ -121,8 +125,9 @@ Then deploy the same image to Azure Container Apps, AWS ECS, GCP Cloud Run, or a
 ### Improving Your Prompts
 
 1. **Enter Your Prompt**: Type or paste your prompt in the main text area
-2. **Analyze**: Click "🔍 Analyze & Improve Prompt" or press Enter
-3. **Review Recommendations**: 
+2. **Analyse**: Click "🔍 Analyse & Improve Prompt" or press Enter
+3. **Review Recommendations**:
+
    - See your best practices score
    - Review prioritized recommendations (High/Medium/Low priority)
    - Check detailed breakdown of what's missing
@@ -132,6 +137,7 @@ Then deploy the same image to Azure Container Apps, AWS ECS, GCP Cloud Run, or a
 ### Understanding Recommendations
 
 Recommendations are prioritized:
+
 - **🔴 High Priority**: Critical improvements (e.g., missing role definition, no action verbs)
 - **🟡 Medium Priority**: Important enhancements (e.g., output format, quality markers)
 - **🟢 Low Priority**: Nice-to-have improvements (e.g., examples, sentence structure)
@@ -139,12 +145,12 @@ Recommendations are prioritized:
 ### Sidebar Features
 
 - **Search & Filter**: Browse the prompt collection by category and tags
-- **Favorites**: Save prompts you like (session-based)
+- **Favourites**: Save prompts you like (session-based)
 - **About**: Quick information about the tool
 
 ## 📁 Project Structure
 
-```
+```text
 Prompts-Collection/
 │
 ├── main.py                 # Entry point - runs the Streamlit app
@@ -203,13 +209,13 @@ Each prompt in the collection is stored as a JSON file using Schema v2.0:
 
 The tool uses logical Python analysis to:
 
-1. **Extract Patterns**: Analyzes all prompts in the collection to identify common patterns
+1. **Extract Patterns**: Analyses all prompts in the collection to identify common patterns
 2. **Find Similar Prompts**: Uses keyword matching and similarity scoring to find relevant examples
-3. **Analyze Structure**: Checks for role definitions, action verbs, quality markers, constraints, etc.
+3. **Analyse Structure**: Checks for role definitions, action verbs, quality markers, constraints, etc.
 4. **Generate Recommendations**: Provides specific, actionable suggestions based on best practices
 5. **Improve Prompts**: Automatically generates improved versions with missing elements added
 
-### Best Practices Analyzed
+### Best Practices Analysed
 
 - ✅ **Role Definition**: Does the prompt define the AI's role?
 - ✅ **Specific Instructions**: Are there clear action verbs?
@@ -221,14 +227,14 @@ The tool uses logical Python analysis to:
 
 ### Adding New Prompts to the Collection
 
-**Method 1: Add JSON file directly**
+#### Method 1: Add JSON File Directly
 
 1. Navigate to the appropriate category folder in `prompts/`
 2. Create a new JSON file (use lowercase, hyphens for spaces in filename)
 3. Use the format shown above
 4. Restart the app - new prompts will be automatically included in analysis
 
-**Method 2: Use Python script**
+#### Method 2: Use Python Script
 
 ```python
 from src.prompt_loader import save_prompt
@@ -262,16 +268,19 @@ This tool is perfect for:
 ## 🎨 Key Features Explained
 
 ### Smart Analysis
+
 - Uses Jaccard similarity and keyword matching to find relevant examples
-- Analyzes prompt structure (sentence count, word count, formatting)
+- Analyses prompt structure (sentence count, word count, formatting)
 - Category-aware recommendations
 
 ### Pattern Recognition
+
 - Extracts common patterns from 114 carefully curated example prompts
 - Identifies best practices by category
 - Learns from similar prompts in the collection
 
 ### Intelligent Suggestions
+
 - Context-aware role inference
 - Category-specific constraint suggestions
 - Quality marker recommendations based on prompt type
@@ -281,7 +290,7 @@ This tool is perfect for:
 - Analysis is performed using logical Python algorithms (no external AI APIs)
 - Recommendations are based on patterns found in our collection of 114 high-quality prompts
 - Similar prompts are found using keyword matching and similarity scoring
-- Favorites are stored in session state and reset when you refresh the page
+- Favourites are stored in session state and reset when you refresh the page
 - All prompts are stored as JSON files in the `prompts/` directory
 
 ## 🔄 Updating the Collection
@@ -296,6 +305,7 @@ To update the prompts collection:
 ## 🤝 Contributing
 
 Feel free to:
+
 - Add more prompts to existing categories
 - Create new categories
 - Improve the analysis logic
@@ -305,6 +315,7 @@ Feel free to:
 ## 📊 Statistics
 
 The platform currently includes:
+
 - **114 high-quality prompts** across 12 categories
 - **Quality-enhanced collection** with improved specificity, disclaimers, and best practices
 - **Specialized coverage** (Java, TypeScript, CI/CD, Email Marketing, UX Research, Qualitative Analysis)
@@ -317,6 +328,7 @@ This project is open source and available for personal and commercial use.
 ## 🙏 Acknowledgments
 
 Built with:
+
 - [Streamlit](https://streamlit.io/) - The framework for building the web app
 - Python - The programming language
 - JSON - For structured prompt storage
