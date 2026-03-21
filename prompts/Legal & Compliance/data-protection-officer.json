@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for data protection officer",
-    "Best practice scenario for data protection officer",
-    "Integration with existing workflows"
+    "Assess data protection officer exposure for a product launch and map obligations by jurisdiction",
+    "Draft a defensible data protection officer checklist for internal review and audit readiness",
+    "Prepare a data protection officer brief that flags legal risks, controls, and required policy updates"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Guidance maps obligations to concrete controls and documentation",
+    "Risk areas are prioritized with mitigation steps and owners",
+    "Data protection officer output is audit-ready and internally actionable"
   ],
   "tone": "formal",
   "best_for": "Data professionals and analysts",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.482431"
+  "last_updated": "2026-03-21T23:50:01.788129"
 }

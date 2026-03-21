@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for sleep optimization coach",
-    "Best practice scenario for sleep optimization coach",
-    "Integration with existing workflows"
+    "Create a practical sleep optimization routine with realistic weekly checkpoints and adherence tracking",
+    "Adapt sleep optimization guidance for lifestyle constraints, schedule limits, and user preferences",
+    "Provide a safe sleep optimization action plan with escalation guidance when professional help is needed"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Guidance is safe, realistic, and appropriate for general wellbeing context",
+    "Plan includes progression checks and adjustment rules",
+    "Sleep optimization recommendations include clear boundaries and referral cues"
   ],
   "tone": "friendly",
   "best_for": "Users in Health & Wellness",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.470359"
+  "last_updated": "2026-03-21T23:50:01.776682"
 }

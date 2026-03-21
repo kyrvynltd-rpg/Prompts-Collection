@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for research assistant",
-    "Best practice scenario for research assistant",
-    "Integration with existing workflows"
+    "Support a user request for research with concise reasoning, assumptions, and next actions",
+    "Compare options for research and provide a clear recommendation with trade-offs",
+    "Create a reusable research response template for recurring team requests"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Response is accurate, direct, and transparent about assumptions",
+    "Recommendations include clear next steps and decision criteria",
+    "Research guidance is reusable for similar future requests"
   ],
   "tone": "neutral",
   "best_for": "Users in AI Assistant",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.293785"
+  "last_updated": "2026-03-21T23:50:01.587391"
 }

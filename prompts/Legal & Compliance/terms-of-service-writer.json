@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for terms of service writer",
-    "Best practice scenario for terms of service writer",
-    "Integration with existing workflows"
+    "Assess terms of service exposure for a product launch and map obligations by jurisdiction",
+    "Draft a defensible terms of service checklist for internal review and audit readiness",
+    "Prepare a terms of service brief that flags legal risks, controls, and required policy updates"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Guidance maps obligations to concrete controls and documentation",
+    "Risk areas are prioritized with mitigation steps and owners",
+    "Terms of service output is audit-ready and internally actionable"
   ],
   "tone": "formal",
   "best_for": "Content creators and writers",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.496045"
+  "last_updated": "2026-03-21T23:50:01.799874"
 }

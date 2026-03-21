@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for training program designer",
-    "Best practice scenario for training program designer",
-    "Integration with existing workflows"
+    "Design a structured training program experience with objectives, activities, and assessment criteria",
+    "Adapt training program content for mixed proficiency learners while preserving measurable outcomes",
+    "Create a training program plan that supports retention through spaced practice and feedback loops"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Learning objectives are observable and aligned with assessment tasks",
+    "Instruction plan includes pacing, differentiation, and feedback checkpoints",
+    "Learners can demonstrate mastery of training program outcomes in practice"
   ],
   "tone": "friendly",
   "best_for": "Users in Education & Learning",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.455116"
+  "last_updated": "2026-03-21T23:50:01.757685"
 }

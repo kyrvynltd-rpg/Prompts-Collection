@@ -300,6 +300,159 @@ def get_category_name(file_path: str) -> str:
         return parts[-2]  # Category is parent directory
     return "General"
 
+def _domain_phrase(name_lower: str, category: str) -> str:
+    """Return a natural language domain phrase for examples and criteria."""
+    words = [w for w in name_lower.split() if w not in {"assistant", "advisor", "expert", "specialist", "designer", "creator", "writer", "analyst", "developer", "manager", "planner", "coach", "guide"}]
+    if words:
+        return " ".join(words)
+    return category.lower()
+
+def _build_phase2_use_cases(name_lower: str, category: str) -> list:
+    """Generate precise, category-aware use case examples."""
+    domain = _domain_phrase(name_lower, category)
+
+    templates = {
+        "Coding & Development": [
+            f"Implement {domain} functionality for a production web application with clear acceptance criteria",
+            f"Refactor existing {domain} module to improve maintainability, testability, and runtime reliability",
+            f"Prepare release-ready {domain} deliverables including validation, error handling, and documentation"
+        ],
+        "Business & Strategy": [
+            f"Build a decision-ready {domain} plan for a quarterly leadership review",
+            f"Evaluate strategic options for {domain} using risks, costs, and expected outcomes",
+            f"Create an execution roadmap for {domain} with milestones, owners, and measurable KPIs"
+        ],
+        "Writing & Content": [
+            f"Produce audience-targeted {domain} content for a campaign with a clear call to action",
+            f"Revise a draft {domain} asset for clarity, tone consistency, and stronger narrative flow",
+            f"Package {domain} deliverables for publishing with headline, structure, and final polish"
+        ],
+        "Customer Service": [
+            f"Handle a high-priority {domain} case with empathy, accountability, and clear resolution steps",
+            f"Standardize {domain} response workflows to reduce response time and improve satisfaction",
+            f"Analyze recurring {domain} issues and propose service improvements with measurable impact"
+        ],
+        "Data Analysis": [
+            f"Run a {domain} analysis on operational data to identify trends, outliers, and root causes",
+            f"Create a stakeholder-ready {domain} summary with key metrics, visuals, and recommendations",
+            f"Validate data quality for {domain} decisions and document assumptions, caveats, and confidence"
+        ],
+        "Education & Learning": [
+            f"Design a structured {domain} experience with objectives, activities, and assessment criteria",
+            f"Adapt {domain} content for mixed proficiency learners while preserving measurable outcomes",
+            f"Create a {domain} plan that supports retention through spaced practice and feedback loops"
+        ],
+        "Health & Wellness": [
+            f"Create a practical {domain} routine with realistic weekly checkpoints and adherence tracking",
+            f"Adapt {domain} guidance for lifestyle constraints, schedule limits, and user preferences",
+            f"Provide a safe {domain} action plan with escalation guidance when professional help is needed"
+        ],
+        "Legal & Compliance": [
+            f"Assess {domain} exposure for a product launch and map obligations by jurisdiction",
+            f"Draft a defensible {domain} checklist for internal review and audit readiness",
+            f"Prepare a {domain} brief that flags legal risks, controls, and required policy updates"
+        ],
+        "Marketing & Sales": [
+            f"Plan a targeted {domain} initiative with segment-specific messaging and conversion goals",
+            f"Optimize current {domain} performance using experiment design and performance benchmarks",
+            f"Prepare a {domain} execution pack with channel strategy, content hooks, and measurement plan"
+        ],
+        "Creative & Design": [
+            f"Develop a concept-driven {domain} direction with clear audience intent and style rationale",
+            f"Iterate {domain} outputs based on critique, usability signals, and brand constraints",
+            f"Deliver production-ready {domain} assets with specifications for handoff and implementation"
+        ],
+        "Productivity & Organization": [
+            f"Build a sustainable {domain} workflow for weekly planning, execution, and review",
+            f"Reduce context-switching in {domain} routines through prioritization and time allocation rules",
+            f"Track {domain} progress with simple metrics and corrective actions for missed targets"
+        ],
+        "AI Assistant": [
+            f"Support a user request for {domain} with concise reasoning, assumptions, and next actions",
+            f"Compare options for {domain} and provide a clear recommendation with trade-offs",
+            f"Create a reusable {domain} response template for recurring team requests"
+        ]
+    }
+
+    return templates.get(category, [
+        f"Define a practical {domain} workflow with concrete steps and deliverables",
+        f"Analyze current {domain} performance and recommend targeted improvements",
+        f"Deliver an actionable {domain} plan with measurable success indicators"
+    ])
+
+def _build_phase2_success_criteria(name_lower: str, category: str) -> list:
+    """Generate measurable, category-aware success criteria."""
+    domain = _domain_phrase(name_lower, category)
+
+    templates = {
+        "Coding & Development": [
+            "Solution includes testable implementation details and clear acceptance checks",
+            "Edge cases, failure paths, and validation rules are explicitly handled",
+            f"Output is production-ready for {domain} with maintainable structure and documentation"
+        ],
+        "Business & Strategy": [
+            "Recommendations are prioritized with rationale, effort, and expected impact",
+            "Plan includes timeline, ownership, and measurable KPI targets",
+            f"Decision guidance for {domain} is clear enough to execute without ambiguity"
+        ],
+        "Writing & Content": [
+            "Draft has clear structure, audience fit, and consistent voice",
+            "Claims are supported and language is concise and error-free",
+            f"Final {domain} output is publish-ready with minimal additional editing"
+        ],
+        "Customer Service": [
+            "Response demonstrates empathy, clarity, and policy alignment",
+            "Resolution path is specific, time-bound, and easy to follow",
+            f"Customer-facing {domain} outcome reduces repeat contacts and confusion"
+        ],
+        "Data Analysis": [
+            "Findings are backed by relevant metrics and reproducible logic",
+            "Assumptions, limitations, and confidence levels are explicitly documented",
+            f"Insights for {domain} translate directly into prioritized actions"
+        ],
+        "Education & Learning": [
+            "Learning objectives are observable and aligned with assessment tasks",
+            "Instruction plan includes pacing, differentiation, and feedback checkpoints",
+            f"Learners can demonstrate mastery of {domain} outcomes in practice"
+        ],
+        "Health & Wellness": [
+            "Guidance is safe, realistic, and appropriate for general wellbeing context",
+            "Plan includes progression checks and adjustment rules",
+            f"{domain.capitalize()} recommendations include clear boundaries and referral cues"
+        ],
+        "Legal & Compliance": [
+            "Guidance maps obligations to concrete controls and documentation",
+            "Risk areas are prioritized with mitigation steps and owners",
+            f"{domain.capitalize()} output is audit-ready and internally actionable"
+        ],
+        "Marketing & Sales": [
+            "Plan includes clear audience targeting, offer, and channel rationale",
+            "Measurement framework defines baseline, target, and optimization loop",
+            f"{domain.capitalize()} recommendations are specific enough to execute this sprint"
+        ],
+        "Creative & Design": [
+            "Deliverables include concept intent, execution details, and constraints",
+            "Design choices are justified by user needs and brand coherence",
+            f"{domain.capitalize()} output is implementation-ready for production handoff"
+        ],
+        "Productivity & Organization": [
+            "Workflow is simple, repeatable, and resistant to common interruptions",
+            "Priorities, deadlines, and review cadence are clearly defined",
+            f"{domain.capitalize()} system improves consistency and completion rate"
+        ],
+        "AI Assistant": [
+            "Response is accurate, direct, and transparent about assumptions",
+            "Recommendations include clear next steps and decision criteria",
+            f"{domain.capitalize()} guidance is reusable for similar future requests"
+        ]
+    }
+
+    return templates.get(category, [
+        "Output is specific, actionable, and easy to execute",
+        "Reasoning and constraints are explicit and internally consistent",
+        f"{domain.capitalize()} deliverable can be used immediately with minimal revision"
+    ])
+
 def generate_metadata(filename: str, category: str, prompt_text: str = "") -> dict:
     """Generate intelligent metadata based on filename and category."""
     
@@ -371,13 +524,10 @@ def generate_metadata(filename: str, category: str, prompt_text: str = "") -> di
         "Structured output ready for implementation",
         "Comprehensive coverage of all aspects"
     ]
-    
-    # Default success criteria
-    success = [
-        "Output meets stated requirements",
-        "Information is accurate and current",
-        "Results are immediately actionable"
-    ]
+
+    # Phase 2: precise use cases and measurable success criteria
+    use_cases = _build_phase2_use_cases(name_lower, category)
+    success = _build_phase2_success_criteria(name_lower, category)
     
     return {
         "difficulty_level": difficulty,
@@ -385,11 +535,7 @@ def generate_metadata(filename: str, category: str, prompt_text: str = "") -> di
         "output_format": output_fmt,
         "expected_outcomes": expected,
         "prerequisites": ["Basic knowledge in relevant domain"],
-        "use_case_examples": [
-            f"Typical use case 1 for {name_lower}",
-            f"Best practice scenario for {name_lower}",
-            f"Integration with existing workflows"
-        ],
+        "use_case_examples": use_cases,
         "success_criteria": success,
         "tone": tone,
         "best_for": best_for,

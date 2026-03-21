@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for ui designer",
-    "Best practice scenario for ui designer",
-    "Integration with existing workflows"
+    "Develop a concept-driven ui direction with clear audience intent and style rationale",
+    "Iterate ui outputs based on critique, usability signals, and brand constraints",
+    "Deliver production-ready ui assets with specifications for handoff and implementation"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Deliverables include concept intent, execution details, and constraints",
+    "Design choices are justified by user needs and brand coherence",
+    "Ui output is implementation-ready for production handoff"
   ],
   "tone": "friendly",
   "best_for": "Users in Creative & Design",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.394726"
+  "last_updated": "2026-03-21T23:50:01.690080"
 }

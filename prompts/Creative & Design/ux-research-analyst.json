@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for ux research analyst",
-    "Best practice scenario for ux research analyst",
-    "Integration with existing workflows"
+    "Develop a concept-driven ux research direction with clear audience intent and style rationale",
+    "Iterate ux research outputs based on critique, usability signals, and brand constraints",
+    "Deliver production-ready ux research assets with specifications for handoff and implementation"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Deliverables include concept intent, execution details, and constraints",
+    "Design choices are justified by user needs and brand coherence",
+    "Ux research output is implementation-ready for production handoff"
   ],
   "tone": "friendly",
   "best_for": "Data professionals and analysts",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.396759"
+  "last_updated": "2026-03-21T23:50:01.693149"
 }

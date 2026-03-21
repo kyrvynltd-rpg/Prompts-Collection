@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for habit tracker designer",
-    "Best practice scenario for habit tracker designer",
-    "Integration with existing workflows"
+    "Build a sustainable habit tracker workflow for weekly planning, execution, and review",
+    "Reduce context-switching in habit tracker routines through prioritization and time allocation rules",
+    "Track habit tracker progress with simple metrics and corrective actions for missed targets"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Workflow is simple, repeatable, and resistant to common interruptions",
+    "Priorities, deadlines, and review cadence are clearly defined",
+    "Habit tracker system improves consistency and completion rate"
   ],
   "tone": "friendly",
   "best_for": "Users in Productivity & Organization",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.526078"
+  "last_updated": "2026-03-21T23:50:01.831174"
 }

@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for contract analyzer",
-    "Best practice scenario for contract analyzer",
-    "Integration with existing workflows"
+    "Assess contract analyzer exposure for a product launch and map obligations by jurisdiction",
+    "Draft a defensible contract analyzer checklist for internal review and audit readiness",
+    "Prepare a contract analyzer brief that flags legal risks, controls, and required policy updates"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Guidance maps obligations to concrete controls and documentation",
+    "Risk areas are prioritized with mitigation steps and owners",
+    "Contract analyzer output is audit-ready and internally actionable"
   ],
   "tone": "formal",
   "best_for": "Users in Legal & Compliance",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.480381"
+  "last_updated": "2026-03-21T23:50:01.785114"
 }

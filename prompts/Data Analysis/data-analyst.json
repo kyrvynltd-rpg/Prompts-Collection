@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for data analyst",
-    "Best practice scenario for data analyst",
-    "Integration with existing workflows"
+    "Run a data analysis on operational data to identify trends, outliers, and root causes",
+    "Create a stakeholder-ready data summary with key metrics, visuals, and recommendations",
+    "Validate data quality for data decisions and document assumptions, caveats, and confidence"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Findings are backed by relevant metrics and reproducible logic",
+    "Assumptions, limitations, and confidence levels are explicitly documented",
+    "Insights for data translate directly into prioritized actions"
   ],
   "tone": "technical",
   "best_for": "Data professionals and analysts",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.425273"
+  "last_updated": "2026-03-21T23:50:01.722890"
 }

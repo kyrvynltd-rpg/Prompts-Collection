@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for marketing strategist",
-    "Best practice scenario for marketing strategist",
-    "Integration with existing workflows"
+    "Plan a targeted marketing strategist initiative with segment-specific messaging and conversion goals",
+    "Optimize current marketing strategist performance using experiment design and performance benchmarks",
+    "Prepare a marketing strategist execution pack with channel strategy, content hooks, and measurement plan"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Plan includes clear audience targeting, offer, and channel rationale",
+    "Measurement framework defines baseline, target, and optimization loop",
+    "Marketing strategist recommendations are specific enough to execute this sprint"
   ],
   "tone": "friendly",
   "best_for": "Users in Marketing & Sales",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.511658"
+  "last_updated": "2026-03-21T23:50:01.813529"
 }

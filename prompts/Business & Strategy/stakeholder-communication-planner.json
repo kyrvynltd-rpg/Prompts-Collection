@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for stakeholder communication planner",
-    "Best practice scenario for stakeholder communication planner",
-    "Integration with existing workflows"
+    "Build a decision-ready stakeholder communication plan for a quarterly leadership review",
+    "Evaluate strategic options for stakeholder communication using risks, costs, and expected outcomes",
+    "Create an execution roadmap for stakeholder communication with milestones, owners, and measurable KPIs"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Recommendations are prioritized with rationale, effort, and expected impact",
+    "Plan includes timeline, ownership, and measurable KPI targets",
+    "Decision guidance for stakeholder communication is clear enough to execute without ambiguity"
   ],
   "tone": "formal",
   "best_for": "Users in Business & Strategy",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.327079"
+  "last_updated": "2026-03-21T23:50:01.624697"
 }

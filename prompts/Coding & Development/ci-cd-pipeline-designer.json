@@ -22,19 +22,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for ci cd pipeline designer",
-    "Best practice scenario for ci cd pipeline designer",
-    "Integration with existing workflows"
+    "Implement ci cd pipeline functionality for a production web application with clear acceptance criteria",
+    "Refactor existing ci cd pipeline module to improve maintainability, testability, and runtime reliability",
+    "Prepare release-ready ci cd pipeline deliverables including validation, error handling, and documentation"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Solution includes testable implementation details and clear acceptance checks",
+    "Edge cases, failure paths, and validation rules are explicitly handled",
+    "Output is production-ready for ci cd pipeline with maintainable structure and documentation"
   ],
   "tone": "technical",
   "best_for": "Users in Coding & Development",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.341829"
+  "last_updated": "2026-03-21T23:50:01.638163"
 }

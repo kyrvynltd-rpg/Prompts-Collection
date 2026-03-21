@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for statistical analysis expert",
-    "Best practice scenario for statistical analysis expert",
-    "Integration with existing workflows"
+    "Run a statistical analysis analysis on operational data to identify trends, outliers, and root causes",
+    "Create a stakeholder-ready statistical analysis summary with key metrics, visuals, and recommendations",
+    "Validate data quality for statistical analysis decisions and document assumptions, caveats, and confidence"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Findings are backed by relevant metrics and reproducible logic",
+    "Assumptions, limitations, and confidence levels are explicitly documented",
+    "Insights for statistical analysis translate directly into prioritized actions"
   ],
   "tone": "technical",
   "best_for": "Users in Data Analysis",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.438328"
+  "last_updated": "2026-03-21T23:50:01.738192"
 }

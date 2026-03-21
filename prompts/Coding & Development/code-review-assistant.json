@@ -13,14 +13,14 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for code review assistant",
-    "Best practice scenario for code review assistant",
-    "Integration with existing workflows"
+    "Implement code review functionality for a production web application with clear acceptance criteria",
+    "Refactor existing code review module to improve maintainability, testability, and runtime reliability",
+    "Prepare release-ready code review deliverables including validation, error handling, and documentation"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Solution includes testable implementation details and clear acceptance checks",
+    "Edge cases, failure paths, and validation rules are explicitly handled",
+    "Output is production-ready for code review with maintainable structure and documentation"
   ],
   "tone": "technical",
   "best_for": "Software developers and engineers",
@@ -41,5 +41,5 @@
     ]
   },
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.343829"
+  "last_updated": "2026-03-21T23:50:01.640945"
 }

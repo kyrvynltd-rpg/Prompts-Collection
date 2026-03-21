@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for machine learning advisor",
-    "Best practice scenario for machine learning advisor",
-    "Integration with existing workflows"
+    "Run a machine learning analysis on operational data to identify trends, outliers, and root causes",
+    "Create a stakeholder-ready machine learning summary with key metrics, visuals, and recommendations",
+    "Validate data quality for machine learning decisions and document assumptions, caveats, and confidence"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Findings are backed by relevant metrics and reproducible logic",
+    "Assumptions, limitations, and confidence levels are explicitly documented",
+    "Insights for machine learning translate directly into prioritized actions"
   ],
   "tone": "technical",
   "best_for": "Users in Data Analysis",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.431268"
+  "last_updated": "2026-03-21T23:50:01.730442"
 }

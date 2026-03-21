@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for customer satisfaction analyzer",
-    "Best practice scenario for customer satisfaction analyzer",
-    "Integration with existing workflows"
+    "Handle a high-priority customer satisfaction analyzer case with empathy, accountability, and clear resolution steps",
+    "Standardize customer satisfaction analyzer response workflows to reduce response time and improve satisfaction",
+    "Analyze recurring customer satisfaction analyzer issues and propose service improvements with measurable impact"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Response demonstrates empathy, clarity, and policy alignment",
+    "Resolution path is specific, time-bound, and easy to follow",
+    "Customer-facing customer satisfaction analyzer outcome reduces repeat contacts and confusion"
   ],
   "tone": "friendly",
   "best_for": "Customer service and support teams",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.410779"
+  "last_updated": "2026-03-21T23:50:01.710610"
 }

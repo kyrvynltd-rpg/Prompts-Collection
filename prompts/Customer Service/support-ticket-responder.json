@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for support ticket responder",
-    "Best practice scenario for support ticket responder",
-    "Integration with existing workflows"
+    "Handle a high-priority support ticket responder case with empathy, accountability, and clear resolution steps",
+    "Standardize support ticket responder response workflows to reduce response time and improve satisfaction",
+    "Analyze recurring support ticket responder issues and propose service improvements with measurable impact"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Response demonstrates empathy, clarity, and policy alignment",
+    "Resolution path is specific, time-bound, and easy to follow",
+    "Customer-facing support ticket responder outcome reduces repeat contacts and confusion"
   ],
   "tone": "friendly",
   "best_for": "Customer service and support teams",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.420843"
+  "last_updated": "2026-03-21T23:50:01.719175"
 }

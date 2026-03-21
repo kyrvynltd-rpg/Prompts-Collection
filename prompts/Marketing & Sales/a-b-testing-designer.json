@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for a b testing designer",
-    "Best practice scenario for a b testing designer",
-    "Integration with existing workflows"
+    "Plan a targeted a b testing initiative with segment-specific messaging and conversion goals",
+    "Optimize current a b testing performance using experiment design and performance benchmarks",
+    "Prepare a a b testing execution pack with channel strategy, content hooks, and measurement plan"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Plan includes clear audience targeting, offer, and channel rationale",
+    "Measurement framework defines baseline, target, and optimization loop",
+    "A b testing recommendations are specific enough to execute this sprint"
   ],
   "tone": "friendly",
   "best_for": "Users in Marketing & Sales",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.499333"
+  "last_updated": "2026-03-21T23:50:01.803213"
 }

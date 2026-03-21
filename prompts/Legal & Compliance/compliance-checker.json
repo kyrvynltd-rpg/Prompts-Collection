@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for compliance checker",
-    "Best practice scenario for compliance checker",
-    "Integration with existing workflows"
+    "Assess compliance checker exposure for a product launch and map obligations by jurisdiction",
+    "Draft a defensible compliance checker checklist for internal review and audit readiness",
+    "Prepare a compliance checker brief that flags legal risks, controls, and required policy updates"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Guidance maps obligations to concrete controls and documentation",
+    "Risk areas are prioritized with mitigation steps and owners",
+    "Compliance checker output is audit-ready and internally actionable"
   ],
   "tone": "formal",
   "best_for": "Users in Legal & Compliance",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.478647"
+  "last_updated": "2026-03-21T23:50:01.783118"
 }

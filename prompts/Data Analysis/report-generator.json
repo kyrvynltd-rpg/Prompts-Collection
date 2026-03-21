@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for report generator",
-    "Best practice scenario for report generator",
-    "Integration with existing workflows"
+    "Run a report generator analysis on operational data to identify trends, outliers, and root causes",
+    "Create a stakeholder-ready report generator summary with key metrics, visuals, and recommendations",
+    "Validate data quality for report generator decisions and document assumptions, caveats, and confidence"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Findings are backed by relevant metrics and reproducible logic",
+    "Assumptions, limitations, and confidence levels are explicitly documented",
+    "Insights for report generator translate directly into prioritized actions"
   ],
   "tone": "technical",
   "best_for": "Users in Data Analysis",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.435581"
+  "last_updated": "2026-03-21T23:50:01.736165"
 }

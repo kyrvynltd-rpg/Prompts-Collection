@@ -20,19 +20,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for cover letter writer",
-    "Best practice scenario for cover letter writer",
-    "Integration with existing workflows"
+    "Produce audience-targeted cover letter content for a campaign with a clear call to action",
+    "Revise a draft cover letter asset for clarity, tone consistency, and stronger narrative flow",
+    "Package cover letter deliverables for publishing with headline, structure, and final polish"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Draft has clear structure, audience fit, and consistent voice",
+    "Claims are supported and language is concise and error-free",
+    "Final cover letter output is publish-ready with minimal additional editing"
   ],
   "tone": "friendly",
   "best_for": "Content creators and writers",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.548682"
+  "last_updated": "2026-03-21T23:50:01.855874"
 }

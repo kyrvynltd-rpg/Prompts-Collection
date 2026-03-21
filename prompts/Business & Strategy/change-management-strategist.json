@@ -21,19 +21,19 @@
     "Basic knowledge in relevant domain"
   ],
   "use_case_examples": [
-    "Typical use case 1 for change management strategist",
-    "Best practice scenario for change management strategist",
-    "Integration with existing workflows"
+    "Build a decision-ready change management strategist plan for a quarterly leadership review",
+    "Evaluate strategic options for change management strategist using risks, costs, and expected outcomes",
+    "Create an execution roadmap for change management strategist with milestones, owners, and measurable KPIs"
   ],
   "success_criteria": [
-    "Output meets stated requirements",
-    "Information is accurate and current",
-    "Results are immediately actionable"
+    "Recommendations are prioritized with rationale, effort, and expected impact",
+    "Plan includes timeline, ownership, and measurable KPI targets",
+    "Decision guidance for change management strategist is clear enough to execute without ambiguity"
   ],
   "tone": "formal",
   "best_for": "Users in Business & Strategy",
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:45:57.309772"
+  "last_updated": "2026-03-21T23:50:01.604583"
 }
