@@ -49,10 +49,12 @@ st.markdown("""
     }
     .welcome-list {
         margin: 0.75rem auto 1rem auto;
-        text-align: left;
-        max-width: 560px;
+        text-align: center;
+        max-width: 760px;
         color: #b8c2cc;
         line-height: 1.6;
+        list-style-position: inside;
+        padding-left: 0;
     }
     .welcome-note {
         color: #93a1b0;
@@ -87,21 +89,21 @@ if app_param != "1":
         if LOGO_PATH.exists():
             st.image(str(LOGO_PATH), width=104)
 
-    st.markdown('<div class="welcome-wrap">', unsafe_allow_html=True)
-    st.markdown('<div class="main-header">Welcome to Prompt Learning Platform</div>', unsafe_allow_html=True)
-    st.markdown('<div class="welcome-lead">In this platform, you will learn how to write clearer, stronger prompts and improve AI output quality.</div>', unsafe_allow_html=True)
     st.markdown(
         """
-        <ul class="welcome-list">
-            <li>Understand prompt structure: role, goal, constraints, and output format.</li>
-            <li>Compare your prompt against best practices from a curated prompt library.</li>
-            <li>Get actionable improvements and a refined version you can reuse immediately.</li>
-        </ul>
+        <div class="welcome-wrap">
+            <div class="main-header">Welcome to Prompt Learning Platform</div>
+            <div class="welcome-lead">In this platform, you will learn how to write clearer, stronger prompts and improve AI output quality.</div>
+            <ul class="welcome-list">
+                <li>Understand prompt structure: role, goal, constraints, and output format.</li>
+                <li>Compare your prompt against best practices from a curated prompt library.</li>
+                <li>Get actionable improvements and a refined version you can reuse immediately.</li>
+            </ul>
+            <div class="welcome-note"><span class="pulse">Preparing your workspace...</span> Redirecting in 7 seconds.</div>
+        </div>
         """,
         unsafe_allow_html=True,
     )
-    st.markdown('<div class="welcome-note"><span class="pulse">Preparing your workspace...</span> Redirecting in 7 seconds.</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
     # Preload cached data while users read the intro for smoother app transition.
     _ = load_example_prompts()
