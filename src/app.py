@@ -59,13 +59,13 @@ st.markdown("""
         margin-bottom: 1rem;
     }
     .welcome-list {
+        display: inline-block;
         margin: 0.75rem auto 1rem auto;
-        text-align: center;
-        max-width: 760px;
+        text-align: left;
+        max-width: 700px;
         color: #b8c2cc;
         line-height: 1.6;
-        list-style-position: inside;
-        padding-left: 0;
+        padding-left: 1.1rem;
     }
     .welcome-note {
         color: #93a1b0;
@@ -95,39 +95,37 @@ if isinstance(app_param, list):
     app_param = app_param[0] if app_param else None
 
 if app_param != "1":
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
+    lcol1, lcol2, lcol3 = st.columns([1, 2, 1])
+    with lcol2:
         if LOGO_PATH.exists():
-            st.image(str(LOGO_PATH), width=104)
+            logo_col1, logo_col2, logo_col3 = st.columns([1, 1, 1])
+            with logo_col2:
+                st.image(str(LOGO_PATH), width=104)
 
-    st.markdown(
-        """
-        <div class="welcome-wrap">
-            <div class="main-header">Welcome to Prompt Learning Platform</div>
-            <div class="welcome-lead">In this platform, you will learn how to write clearer, stronger prompts and improve AI output quality.</div>
-            <ul class="welcome-list">
-                <li>Understand prompt structure: role, goal, constraints, and output format.</li>
-                <li>Compare your prompt against best practices from a curated prompt library.</li>
-                <li>Get actionable improvements and a refined version you can reuse immediately.</li>
-            </ul>
-            <div class="welcome-note"><span class="pulse">Preparing your workspace...</span> Redirecting in 7 seconds.</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        st.markdown(
+            """
+            <div class="welcome-wrap">
+                <div class="main-header">Welcome to Prompt Learning Platform</div>
+                <div class="welcome-lead">In this platform, you will learn how to write clearer, stronger prompts and improve AI output quality.</div>
+                <ul class="welcome-list">
+                    <li>Understand prompt structure: role, goal, constraints, and output format.</li>
+                    <li>Compare your prompt against best practices from a curated prompt library.</li>
+                    <li>Get actionable improvements and a refined version you can reuse immediately.</li>
+                </ul>
+                <div class="welcome-note"><span class="pulse">Preparing your workspace...</span> Redirecting in 7 seconds.</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    # Preload cached data while users read the intro for smoother app transition.
-    _ = load_example_prompts()
+        # Preload cached data while users read the intro for smoother app transition.
+        _ = load_example_prompts()
 
-    pcol1, pcol2, pcol3 = st.columns([1, 6, 1])
-    with pcol2:
         progress_bar = st.progress(0)
         for i in range(7):
             progress_bar.progress(int(((i + 1) / 7) * 100))
             time.sleep(1)
 
-    acol1, acol2, acol3 = st.columns([1, 6, 1])
-    with acol2:
         st.caption("If redirect does not start automatically, use this link below.")
         if st.button("Open the app now", type="primary", use_container_width=True):
             st.query_params["app"] = "1"
