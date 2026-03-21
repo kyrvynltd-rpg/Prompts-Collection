@@ -24,10 +24,6 @@ st.set_page_config(
 # Custom CSS for better styling
 st.markdown("""
     <style>
-    .brand-logo {
-        display: block;
-        margin: 0 auto 0.75rem auto;
-    }
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
@@ -41,6 +37,36 @@ st.markdown("""
         text-align: center;
         margin-bottom: 2rem;
     }
+    .welcome-wrap {
+        max-width: 820px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .welcome-lead {
+        font-size: 1.05rem;
+        color: #7b8794;
+        margin-bottom: 1rem;
+    }
+    .welcome-list {
+        margin: 0.75rem auto 1rem auto;
+        text-align: left;
+        max-width: 560px;
+        color: #b8c2cc;
+        line-height: 1.6;
+    }
+    .welcome-note {
+        color: #93a1b0;
+        margin-top: 0.8rem;
+    }
+    .pulse {
+        display: inline-block;
+        animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+        0% { opacity: 0.45; }
+        50% { opacity: 1; }
+        100% { opacity: 0.45; }
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -50,23 +76,44 @@ if isinstance(app_param, list):
     app_param = app_param[0] if app_param else None
 
 if app_param != "1":
-    if LOGO_PATH.exists():
-        st.image(str(LOGO_PATH), width=96)
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if LOGO_PATH.exists():
+            st.image(str(LOGO_PATH), width=104)
 
-    st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">Preparing your workspace...</div>', unsafe_allow_html=True)
-    st.info("Redirecting to the platform in 2 seconds...")
+    st.markdown('<div class="welcome-wrap">', unsafe_allow_html=True)
+    st.markdown('<div class="main-header">Welcome to Prompt Learning Platform</div>', unsafe_allow_html=True)
+    st.markdown('<div class="welcome-lead">In this platform, you will learn how to write clearer, stronger prompts and improve AI output quality.</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <ul class="welcome-list">
+            <li>Understand prompt structure: role, goal, constraints, and output format.</li>
+            <li>Compare your prompt against best practices from a curated prompt library.</li>
+            <li>Get actionable improvements and a refined version you can reuse immediately.</li>
+        </ul>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown('<div class="welcome-note"><span class="pulse">Preparing your workspace...</span> Redirecting in 7 seconds.</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Preload cached data while users read the intro for smoother app transition.
+    _ = load_example_prompts()
 
     components.html(
         """
         <script>
           const url = new URL(window.location.href);
           url.searchParams.set("app", "1");
-          setTimeout(() => window.location.replace(url.toString()), 2000);
+          setTimeout(() => window.location.replace(url.toString()), 7000);
         </script>
         """,
         height=0,
     )
+
+    st.progress(100)
+    st.caption("If redirect does not start automatically, use this link below.")
+    st.link_button("Open the app now", "?app=1")
     st.stop()
 
 # Initialize session state
