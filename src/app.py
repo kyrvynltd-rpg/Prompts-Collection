@@ -4,6 +4,7 @@ A platform for improving AI prompts based on best practices
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
 from prompt_loader import get_all_prompts, get_category_folders
 import re
 from collections import Counter
@@ -23,6 +24,10 @@ st.set_page_config(
 # Custom CSS for better styling
 st.markdown("""
     <style>
+    .brand-logo {
+        display: block;
+        margin: 0 auto 0.75rem auto;
+    }
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
@@ -38,6 +43,31 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
+# Show a short branded landing screen before the app content.
+app_param = st.query_params.get("app")
+if isinstance(app_param, list):
+    app_param = app_param[0] if app_param else None
+
+if app_param != "1":
+    if LOGO_PATH.exists():
+        st.image(str(LOGO_PATH), width=96)
+
+    st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">Preparing your workspace...</div>', unsafe_allow_html=True)
+    st.info("Redirecting to the platform in 2 seconds...")
+
+    components.html(
+        """
+        <script>
+          const url = new URL(window.location.href);
+          url.searchParams.set("app", "1");
+          setTimeout(() => window.location.replace(url.toString()), 2000);
+        </script>
+        """,
+        height=0,
+    )
+    st.stop()
 
 # Initialize session state
 if 'favorites' not in st.session_state:
@@ -643,25 +673,27 @@ with st.sidebar:
 
 # Main content area
 if LOGO_PATH.exists():
-    st.image(str(LOGO_PATH), width=92)
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.image(str(LOGO_PATH), width=92)
 
 st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
 
 # Main input area
 st.markdown("### Enter Your Prompt")
-user_prompt = st.text_area(
-    "Type or paste your prompt here",
-    placeholder="Example: Write a blog post about AI...",
-    height=150,
-    key="prompt_input",
-    label_visibility="collapsed"
-)
-
-# Analyze button
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    analyze_button = st.button("🔍 Analyze & Improve Prompt", type="primary", use_container_width=True)
+with st.form("analyze_form", clear_on_submit=False):
+    user_prompt = st.text_area(
+        "Type or paste your prompt here",
+        placeholder="Example: Write a blog post about AI...",
+        height=150,
+        key="prompt_input",
+        label_visibility="collapsed"
+    )
+    # Inside Streamlit forms, Ctrl+Enter submits text areas.
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        analyze_button = st.form_submit_button("🔍 Analyze & Improve Prompt", type="primary", use_container_width=True)
 
 # Process analysis
 if analyze_button and user_prompt.strip():
@@ -760,5 +792,6 @@ st.markdown("""
 <div style='text-align: center; color: #666; padding: 2rem;'>
     <p>💡 Prompt Improvement Tool | Built with Streamlit</p>
     <p>Make your prompts better using our curated collection and logical Python analysis</p>
+    <p style='margin-top: 0.8rem; font-size: 0.9rem;'>Copyright © 2026 Gabriele Iacopo Langellotto. All rights reserved. Intellectual Property of Gabriele Iacopo Langellotto.</p>
 </div>
 """, unsafe_allow_html=True)
