@@ -4,11 +4,11 @@ A platform for improving AI prompts based on best practices
 """
 
 import streamlit as st
-import streamlit.components.v1 as components
 from prompt_loader import get_all_prompts, get_category_folders
 import re
 from collections import Counter
 from pathlib import Path
+import time
 
 # Page configuration
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -70,6 +70,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Load all example prompts
+@st.cache_data
+def load_example_prompts():
+    """Load all example prompts for analysis"""
+    return get_all_prompts()
+
 # Show a short branded landing screen before the app content.
 app_param = st.query_params.get("app")
 if isinstance(app_param, list):
@@ -100,33 +106,24 @@ if app_param != "1":
     # Preload cached data while users read the intro for smoother app transition.
     _ = load_example_prompts()
 
-    components.html(
-        """
-        <script>
-          const url = new URL(window.location.href);
-          url.searchParams.set("app", "1");
-          setTimeout(() => window.location.replace(url.toString()), 7000);
-        </script>
-        """,
-        height=0,
-    )
+    progress_bar = st.progress(0)
+    for i in range(7):
+        progress_bar.progress(int(((i + 1) / 7) * 100))
+        time.sleep(1)
 
-    st.progress(100)
     st.caption("If redirect does not start automatically, use this link below.")
-    st.link_button("Open the app now", "?app=1")
-    st.stop()
+    if st.button("Open the app now", type="primary"):
+        st.query_params["app"] = "1"
+        st.rerun()
+
+    st.query_params["app"] = "1"
+    st.rerun()
 
 # Initialize session state
 if 'favorites' not in st.session_state:
     st.session_state.favorites = []
 if 'last_analyzed' not in st.session_state:
     st.session_state.last_analyzed = None
-
-# Load all example prompts
-@st.cache_data
-def load_example_prompts():
-    """Load all example prompts for analysis"""
-    return get_all_prompts()
 
 def normalize_text(text):
     """Normalize text for better comparison"""
