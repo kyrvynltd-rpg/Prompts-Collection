@@ -9,6 +9,7 @@ import re
 from collections import Counter
 from pathlib import Path
 import time
+import base64
 
 # Page configuration
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,6 +54,17 @@ st.markdown("""
         margin: 0 auto;
         text-align: center;
     }
+    .logo-center {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 0.9rem auto;
+    }
+    .logo-center img {
+        display: block;
+        margin: 0 auto;
+    }
     .welcome-lead {
         font-size: 1.05rem;
         color: #7b8794;
@@ -89,6 +101,24 @@ def load_example_prompts():
     """Load all example prompts for analysis"""
     return get_all_prompts()
 
+@st.cache_data
+def get_logo_data_uri():
+    """Return logo as data URI so it can be centered with deterministic HTML/CSS."""
+    if not LOGO_PATH.exists():
+        return None
+    encoded = base64.b64encode(LOGO_PATH.read_bytes()).decode("ascii")
+    return f"data:image/svg+xml;base64,{encoded}"
+
+def render_centered_logo(width_px=96):
+    """Render the logo fully centered regardless of Streamlit widget layout behavior."""
+    logo_uri = get_logo_data_uri()
+    if not logo_uri:
+        return
+    st.markdown(
+        f'<div class="logo-center"><img src="{logo_uri}" alt="Prompt Learning Platform logo" width="{width_px}" /></div>',
+        unsafe_allow_html=True,
+    )
+
 # Show a short branded landing screen before the app content.
 app_param = st.query_params.get("app")
 if isinstance(app_param, list):
@@ -97,10 +127,7 @@ if isinstance(app_param, list):
 if app_param != "1":
     lcol1, lcol2, lcol3 = st.columns([1, 2, 1])
     with lcol2:
-        if LOGO_PATH.exists():
-            logo_col1, logo_col2, logo_col3 = st.columns([1, 1, 1])
-            with logo_col2:
-                st.image(str(LOGO_PATH), width=104)
+        render_centered_logo(104)
 
         st.markdown(
             """
@@ -733,8 +760,7 @@ with st.sidebar:
 # Main content area
 st.markdown('<div class="center-shell">', unsafe_allow_html=True)
 st.markdown('<div class="brand-block">', unsafe_allow_html=True)
-if LOGO_PATH.exists():
-    st.image(str(LOGO_PATH), width=92)
+render_centered_logo(92)
 st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
