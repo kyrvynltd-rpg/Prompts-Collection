@@ -270,124 +270,206 @@ def extract_patterns_from_examples(example_prompts):
     
     return patterns
 
+ROLE_REGEX = re.compile(r"\b(you are|you\'re|act as|as an?|role:)\b", re.IGNORECASE)
+ROLE_EXTRACT_REGEXES = [
+    re.compile(r"you are\s+([^.]+?)(?:\.|,|$)", re.IGNORECASE),
+    re.compile(r"you\'re\s+([^.]+?)(?:\.|,|$)", re.IGNORECASE),
+    re.compile(r"act as\s+([^.]+?)(?:\.|,|$)", re.IGNORECASE),
+]
+
+ACTION_REGEXES = [
+    re.compile(r"\b(generate|create|write|analy[sz]e|provide|explain|design|develop|review|optimi[sz]e|draft|summari[sz]e|classify|compare|plan|produce|format)\b", re.IGNORECASE),
+    re.compile(r"\b(help|assist)\b", re.IGNORECASE),
+]
+
+OUTPUT_FORMAT_REGEXES = [
+    re.compile(r"\b(output|response|deliverable|result)\b\s*[:\-]", re.IGNORECASE),
+    re.compile(r"\b(json|yaml|markdown|table|bullet points?|steps?|sections?|checklist|schema|template)\b", re.IGNORECASE),
+    re.compile(r"\b(return|respond)\b.*\b(in|as)\b", re.IGNORECASE),
+]
+
+QUALITY_REGEXES = [
+    re.compile(r"\b(clear|concise|comprehensive|detailed|accurate|professional|engaging|well-structured|thorough|precise|evidence-based)\b", re.IGNORECASE),
+    re.compile(r"\b(high quality|best quality|production-ready|robust)\b", re.IGNORECASE),
+]
+
+CONSTRAINT_REGEXES = [
+    re.compile(r"\b(must|should|do not|don't|avoid|only|exactly|at least|at most|no more than|under|within|without)\b", re.IGNORECASE),
+    re.compile(r"\b(audience|tone|length|word count|limit|constraints?|requirements?|guidelines?|standards?|best practices?)\b", re.IGNORECASE),
+    re.compile(r"\b(following|according to|based on)\b", re.IGNORECASE),
+]
+
+EXAMPLE_REGEX = re.compile(r"\b(example|for instance|such as|e\.g\.|input:|output:)\b", re.IGNORECASE)
+FORMAT_HINT_REGEX = re.compile(r"\b(format|structure|layout|organize|sections?)\b", re.IGNORECASE)
+
+CATEGORY_PROFILES = {
+    'Coding & Development': {
+        'role': 'an expert software engineer',
+        'constraints': 'Add constraints like "include edge cases", "handle errors", and "follow coding best practices".',
+        'quality': ['correct', 'robust', 'well-documented'],
+    },
+    'Writing & Content': {
+        'role': 'a professional writer',
+        'constraints': 'Specify audience, tone, and length limits to improve consistency.',
+        'quality': ['clear', 'engaging', 'well-structured'],
+    },
+    'Data Analysis': {
+        'role': 'a data analyst',
+        'constraints': 'Add assumptions, method, and validation constraints (for example confidence limits or checks).',
+        'quality': ['accurate', 'evidence-based', 'clear'],
+    },
+    'Business & Strategy': {
+        'role': 'a business strategist',
+        'constraints': 'Define assumptions, decision criteria, and trade-offs to make recommendations actionable.',
+        'quality': ['practical', 'structured', 'evidence-based'],
+    },
+    'Education & Learning': {
+        'role': 'an experienced educator',
+        'constraints': 'Specify learner level, outcomes, and assessment format.',
+        'quality': ['clear', 'step-by-step', 'pedagogically sound'],
+    },
+}
+
+
+def regex_hit_count(text, regexes):
+    return sum(1 for rgx in regexes if rgx.search(text))
+
+
+def infer_category(user_keywords, similar_examples):
+    if similar_examples:
+        return similar_examples[0].get('category', '')
+
+    joined = ' '.join(sorted(user_keywords))
+    if re.search(r"\b(code|python|javascript|api|debug|algorithm|database|sql|test)\b", joined):
+        return 'Coding & Development'
+    if re.search(r"\b(write|article|content|blog|email|copy|story|resume)\b", joined):
+        return 'Writing & Content'
+    if re.search(r"\b(data|statistics|dataset|visualization|report|analysis)\b", joined):
+        return 'Data Analysis'
+    if re.search(r"\b(business|strategy|market|sales|finance)\b", joined):
+        return 'Business & Strategy'
+    if re.search(r"\b(teach|lesson|quiz|study|learn|curriculum)\b", joined):
+        return 'Education & Learning'
+    return ''
+
+
+def detect_prompt_features(prompt):
+    text = prompt.strip()
+    lower = text.lower()
+    sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
+    word_count = len(text.split())
+
+    role_hits = 1 if ROLE_REGEX.search(lower) else 0
+    action_hits = regex_hit_count(lower, ACTION_REGEXES)
+    format_hits = regex_hit_count(lower, OUTPUT_FORMAT_REGEXES)
+    quality_hits = regex_hit_count(lower, QUALITY_REGEXES)
+    constraint_hits = regex_hit_count(lower, CONSTRAINT_REGEXES)
+    has_examples = bool(EXAMPLE_REGEX.search(lower))
+    has_formatting = bool(FORMAT_HINT_REGEX.search(lower))
+
+    # Weighted confidence to reduce over-triggering on generic words.
+    action_score = min(1.0, action_hits / 1.0)
+    format_score = min(1.0, format_hits / 2.0)
+    quality_score = min(1.0, quality_hits / 1.0)
+    constraints_score = min(1.0, constraint_hits / 2.0)
+
+    avg_sentence_length = (sum(len(s.split()) for s in sentences) / len(sentences)) if sentences else 0
+
+    return {
+        'has_role': role_hits > 0,
+        'has_action': action_score >= 1.0,
+        'has_specifications': format_score >= 0.5,
+        'has_quality_markers': quality_score >= 1.0,
+        'has_constraints': constraints_score >= 0.5,
+        'has_examples': has_examples,
+        'has_formatting': has_formatting,
+        'sentence_count': len(sentences),
+        'word_count': word_count,
+        'avg_sentence_length': avg_sentence_length,
+        'scores': {
+            'action': action_score,
+            'format': format_score,
+            'quality': quality_score,
+            'constraints': constraints_score,
+        },
+    }
+
+
 def find_similar_examples(user_prompt, example_prompts, max_examples=5):
-    """Find similar example prompts using improved similarity scoring"""
-    user_normalized = normalize_text(user_prompt)
+    """Find similar examples with richer text representation to improve recommendation relevance."""
     user_keywords = extract_keywords(user_prompt)
-    user_words = set(user_normalized.split())
-    
+    user_words = set(normalize_text(user_prompt).split())
     similarities = []
-    
+
     for ex in example_prompts:
         ex_prompt = ex.get('prompt', '')
-        ex_normalized = normalize_text(ex_prompt)
-        ex_keywords = extract_keywords(ex_prompt)
-        ex_words = set(ex_normalized.split())
-        
-        # Calculate multiple similarity metrics
-        # 1. Jaccard similarity on keywords
+        ex_title = ex.get('title', '')
+        ex_description = ex.get('description', '')
+        ex_tags = ' '.join(ex.get('tags', []))
+        ex_text = f"{ex_title} {ex_description} {ex_tags} {ex_prompt}".strip()
+
+        ex_keywords = extract_keywords(ex_text)
+        ex_words = set(normalize_text(ex_text).split())
+
         keyword_similarity = calculate_jaccard_similarity(user_keywords, ex_keywords)
-        
-        # 2. Word overlap similarity
         word_similarity = calculate_jaccard_similarity(user_words, ex_words)
-        
-        # 3. Category relevance (if user prompt matches category keywords)
+
         category = ex.get('category', '').lower()
-        category_bonus = 0.1 if any(word in category for word in user_keywords) else 0
-        
-        # 4. Tag relevance
+        category_bonus = 0.08 if any(word in category for word in user_keywords) else 0
+
         tags = [tag.lower() for tag in ex.get('tags', [])]
-        tag_bonus = 0.05 * len([tag for tag in tags if tag in user_keywords])
-        
-        # Combined score (weighted)
-        combined_score = (keyword_similarity * 0.5) + (word_similarity * 0.3) + category_bonus + min(tag_bonus, 0.15)
-        
-        if combined_score > 0.05:  # Lower threshold for better matches
-            similarities.append({
-                'prompt': ex,
-                'score': combined_score,
-                'keyword_sim': keyword_similarity,
-                'word_sim': word_similarity,
-                'common_keywords': user_keywords.intersection(ex_keywords)
-            })
-    
-    # Sort by combined score
+        tag_overlap = len([tag for tag in tags if tag in user_keywords])
+        tag_bonus = min(0.12, 0.04 * tag_overlap)
+
+        combined_score = (keyword_similarity * 0.55) + (word_similarity * 0.25) + category_bonus + tag_bonus
+        if combined_score > 0.07:
+            similarities.append({'prompt': ex, 'score': combined_score})
+
     similarities.sort(key=lambda x: x['score'], reverse=True)
     return [s['prompt'] for s in similarities[:max_examples]]
 
+
 def analyze_prompt_structure(user_prompt):
-    """Analyze the structural elements of the prompt"""
-    structure = {
-        'has_role': False,
-        'has_action': False,
-        'has_specifications': False,
-        'has_quality_markers': False,
-        'has_constraints': False,
-        'sentence_count': len(re.split(r'[.!?]+', user_prompt)),
-        'word_count': len(user_prompt.split()),
-        'avg_sentence_length': 0,
-        'has_examples': False,
-        'has_formatting': False
-    }
-    
-    user_lower = user_prompt.lower()
-    
-    # Check for role
-    structure['has_role'] = any(phrase in user_lower for phrase in 
-                                ['you are', 'you\'re', 'act as', 'role:', 'as a'])
-    
-    # Check for action verbs
-    action_verbs = ['generate', 'create', 'write', 'analyze', 'help', 'provide', 
-                   'explain', 'design', 'develop', 'assist', 'review', 'optimize']
-    structure['has_action'] = any(verb in user_lower for verb in action_verbs)
-    
-    # Check for specifications
-    spec_indicators = ['include', 'with', 'should', 'must', 'following', 
-                      'according to', 'based on', 'structure', 'format']
-    structure['has_specifications'] = any(indicator in user_lower for indicator in spec_indicators)
-    
-    # Check for quality markers
-    quality_words = ['clear', 'well-structured', 'comprehensive', 'detailed', 
-                    'accurate', 'professional', 'engaging', 'effective']
-    structure['has_quality_markers'] = any(word in user_lower for word in quality_words)
-    
-    # Check for constraints
-    constraint_phrases = ['following', 'according to', 'based on', 
-                        'following standards', 'best practices', 'standards']
-    structure['has_constraints'] = any(phrase in user_lower for phrase in constraint_phrases)
-    
-    # Check for examples
-    structure['has_examples'] = any(phrase in user_lower for phrase in 
-                                   ['example', 'for instance', 'such as', 'like'])
-    
-    # Check for formatting instructions
-    structure['has_formatting'] = any(phrase in user_lower for phrase in 
-                                     ['format', 'structure', 'layout', 'organize'])
-    
-    # Calculate average sentence length
-    sentences = [s.strip() for s in re.split(r'[.!?]+', user_prompt) if s.strip()]
-    if sentences:
-        structure['avg_sentence_length'] = sum(len(s.split()) for s in sentences) / len(sentences)
-    
-    return structure
+    """Analyze structural features using boundary-aware detection."""
+    return detect_prompt_features(user_prompt)
+
+
+def infer_role_from_context(user_prompt, similar_examples, category_hint):
+    for ex in similar_examples:
+        ex_prompt = ex.get('prompt', '')
+        for rgx in ROLE_EXTRACT_REGEXES:
+            match = rgx.search(ex_prompt)
+            if match:
+                return match.group(1).strip()
+
+    user_keywords = extract_keywords(user_prompt)
+    if category_hint in CATEGORY_PROFILES:
+        return CATEGORY_PROFILES[category_hint]['role']
+
+    if any(kw in user_keywords for kw in ['code', 'program', 'python', 'javascript', 'function', 'api', 'database']):
+        return 'an expert programmer'
+    if any(kw in user_keywords for kw in ['write', 'article', 'blog', 'content', 'email', 'copy']):
+        return 'a professional writer'
+    if any(kw in user_keywords for kw in ['analyze', 'data', 'report', 'statistics']):
+        return 'a data analyst'
+    if any(kw in user_keywords for kw in ['design', 'create', 'build', 'develop']):
+        return 'a creative professional'
+    return 'a helpful AI assistant'
+
 
 def analyze_prompt(user_prompt, example_prompts):
-    """Analyze user prompt and provide improvement recommendations based on examples"""
+    """Analyze user prompt and provide calibrated, category-aware recommendations."""
     recommendations = []
-    user_lower = user_prompt.lower()
-    user_words = user_prompt.split()
-    word_count = len(user_words)
-    
-    # Extract patterns from examples
+    word_count = len(user_prompt.split())
+
     patterns = extract_patterns_from_examples(example_prompts)
-    
-    # Find similar examples
     similar_examples = find_similar_examples(user_prompt, example_prompts)
-    
-    # Analyze prompt structure
     structure = analyze_prompt_structure(user_prompt)
-    
-    # Extract best practices from example prompts
+
+    user_keywords = extract_keywords(user_prompt)
+    category_hint = infer_category(user_keywords, similar_examples)
+    profile = CATEGORY_PROFILES.get(category_hint, {})
+
     best_practices = {
         'role_definition': structure['has_role'],
         'specific_instructions': structure['has_action'],
@@ -395,316 +477,180 @@ def analyze_prompt(user_prompt, example_prompts):
         'quality_markers': structure['has_quality_markers'],
         'constraints': structure['has_constraints']
     }
-    
-    # Check for role definition
+
+    # Role guidance is contextual: strong prompts are not forced to have explicit role.
     if not best_practices['role_definition']:
-        # Suggest role based on similar examples or content analysis
-        suggested_role = "a helpful AI assistant"
-        role_context = ""
-        
-        if similar_examples:
-            for ex in similar_examples:
-                ex_prompt = ex.get('prompt', '').lower()
-                role_patterns = [
-                    r'you are ([^.]+?)(?:\.|,|$)',
-                    r'you\'re ([^.]+?)(?:\.|,|$)',
-                    r'act as ([^.]+?)(?:\.|,|$)'
-                ]
-                for pattern in role_patterns:
-                    role_match = re.search(pattern, ex_prompt)
-                    if role_match:
-                        suggested_role = role_match.group(1).strip()
-                        role_context = f" (based on similar prompt: {ex.get('title', '')})"
-                        break
-                if suggested_role != "a helpful AI assistant":
-                    break
-        
-        # If no similar examples, infer from content
-        if suggested_role == "a helpful AI assistant":
-            user_keywords = extract_keywords(user_prompt)
-            if any(kw in user_keywords for kw in ['code', 'program', 'python', 'javascript', 'function']):
-                suggested_role = "an expert programmer"
-            elif any(kw in user_keywords for kw in ['write', 'article', 'blog', 'content', 'email']):
-                suggested_role = "a professional writer"
-            elif any(kw in user_keywords for kw in ['analyze', 'data', 'report', 'statistics']):
-                suggested_role = "a data analyst"
-            elif any(kw in user_keywords for kw in ['design', 'create', 'build', 'develop']):
-                suggested_role = "a creative professional"
-        
+        role_priority = 'low'
+        if word_count < 18 and not structure['has_specifications']:
+            role_priority = 'high'
+        elif word_count < 28:
+            role_priority = 'medium'
+
+        suggested_role = infer_role_from_context(user_prompt, similar_examples, category_hint)
         recommendations.append({
             'type': 'role_definition',
-            'title': 'Add Role Definition',
-            'description': 'Effective prompts start by defining the AI\'s role. This establishes context and sets expectations for the response.',
-            'suggestion': f'Consider starting with: "You are {suggested_role}."{role_context}',
+            'title': 'Consider Adding Role Definition',
+            'description': 'Role context can improve consistency, especially for short or ambiguous prompts.',
+            'suggestion': f'You can start with: "You are {suggested_role}."',
             'similar_example': similar_examples[0].get('prompt', '') if similar_examples else None,
-            'priority': 'high'
+            'priority': role_priority
         })
-    
-    # Check for specific instructions
+
     if not best_practices['specific_instructions']:
-        # Get most common action verbs from similar examples or patterns
-        suggested_verbs = []
-        if similar_examples:
-            for ex in similar_examples:
-                ex_prompt = ex.get('prompt', '').lower()
-                for verb, count in patterns['action_verbs'].most_common(5):
-                    if verb in ex_prompt:
-                        suggested_verbs.append(verb)
-                        if len(suggested_verbs) >= 3:
-                            break
-                if len(suggested_verbs) >= 3:
-                    break
-        
-        if not suggested_verbs:
-            suggested_verbs = [verb for verb, _ in patterns['action_verbs'].most_common(5)]
-        
+        suggested_verbs = [verb for verb, _ in patterns['action_verbs'].most_common(5)] or ['analyze', 'create', 'explain']
         recommendations.append({
             'type': 'specific_instructions',
             'title': 'Add Specific Action Instructions',
-            'description': 'Include clear action verbs that specify what the AI should do. This makes your prompt more directive and effective.',
-            'suggestion': f'Consider using action verbs like: {", ".join(suggested_verbs[:5])}',
+            'description': 'Use explicit action verbs so the expected task is unambiguous.',
+            'suggestion': f'Use directive verbs such as: {", ".join(suggested_verbs[:5])}.',
             'similar_example': similar_examples[0].get('prompt', '') if similar_examples else None,
             'priority': 'high'
         })
-    
-    # Check for output format specifications
-    if not best_practices['output_format'] and word_count > 10:
+
+    if structure['scores']['format'] < 0.5 and word_count > 12:
         recommendations.append({
             'type': 'output_format',
             'title': 'Specify Output Format or Structure',
-            'description': 'Describe the desired output format, structure, or key elements to include. This helps the AI understand exactly what you need.',
-            'suggestion': 'Add phrases like "include...", "with...", "following...", or "should have..." to specify what you want in the output.',
+            'description': 'Define the response format (for example sections, bullets, JSON, table) to improve reliability.',
+            'suggestion': 'Add a clear output contract, such as "Output: 3 sections with bullet points" or "Return JSON with keys...".',
             'similar_example': similar_examples[0].get('prompt', '') if similar_examples else None,
             'priority': 'medium'
         })
-    
-    # Check prompt length and detail
-    if word_count < 10:
+
+    if word_count < 12:
         recommendations.append({
             'type': 'detail',
             'title': 'Add More Detail',
-            'description': f'Your prompt is quite short ({word_count} words). Effective prompts typically provide clear context and specific instructions (20-50 words is ideal).',
-            'suggestion': 'Add more context about what you want, any constraints, examples of desired output, or specific requirements.',
+            'description': f'Your prompt is short ({word_count} words). Add objective, context, and constraints to reduce ambiguity.',
+            'suggestion': 'Include: objective, audience/context, output format, and any limits.',
             'similar_example': similar_examples[0].get('prompt', '') if similar_examples else None,
             'priority': 'high'
         })
-    elif word_count > 200:
-        recommendations.append({
-            'type': 'conciseness',
-            'title': 'Consider Conciseness',
-            'description': f'Your prompt is quite long ({word_count} words). While detail is good, ensure every part is necessary and clear.',
-            'suggestion': 'Review if any sections can be condensed while maintaining clarity and essential information. Consider breaking into bullet points if needed.',
-            'similar_example': None,
-            'priority': 'low'
-        })
-    elif word_count < 20 and word_count >= 10:
+    elif 12 <= word_count < 20:
         recommendations.append({
             'type': 'detail',
             'title': 'Consider Adding More Context',
-            'description': f'Your prompt could benefit from more detail ({word_count} words). Adding context, constraints, or examples can improve results.',
-            'suggestion': 'Consider adding: specific requirements, examples, constraints, or quality indicators.',
+            'description': f'Your prompt is concise ({word_count} words). A bit more context can increase precision.',
+            'suggestion': 'Add one sentence clarifying constraints, audience, or acceptance criteria.',
             'similar_example': similar_examples[0].get('prompt', '') if similar_examples else None,
             'priority': 'medium'
         })
-    
-    # Check for quality markers
-    if not best_practices['quality_markers'] and word_count > 15:
-        quality_suggestions = [word for word, _ in patterns['quality_markers'].most_common(5)]
+
+    if structure['scores']['quality'] < 1.0 and word_count > 18:
+        quality_suggestions = profile.get('quality') or [word for word, _ in patterns['quality_markers'].most_common(5)]
         if not quality_suggestions:
-            quality_suggestions = ['clear', 'well-structured', 'comprehensive', 'detailed', 'professional']
-        
+            quality_suggestions = ['clear', 'comprehensive', 'accurate']
         recommendations.append({
             'type': 'quality_markers',
             'title': 'Add Quality Indicators',
-            'description': 'Specify the desired quality level or characteristics of the output. This helps guide the AI toward better results.',
-            'suggestion': f'Consider adding quality descriptors like: {", ".join(quality_suggestions[:5])}',
+            'description': 'Quality criteria improve consistency and make outputs easier to evaluate.',
+            'suggestion': f'Add quality expectations such as: {", ".join(quality_suggestions[:3])}.',
             'similar_example': similar_examples[0].get('prompt', '') if similar_examples else None,
             'priority': 'medium'
         })
-    
-    # Check for constraints or guidelines
-    if not best_practices['constraints'] and word_count > 20:
-        # Get category-specific constraint suggestions
-        constraint_suggestion = 'Add phrases like "following [standard]", "according to [guideline]", "with [best practice]", or "using [methodology]"'
-        
-        if similar_examples:
-            # Find category from similar examples
-            category = similar_examples[0].get('category', '')
-            if 'Coding' in category or 'Development' in category:
-                constraint_suggestion = 'Add phrases like "following PEP 8 standards", "with proper error handling", or "using best practices"'
-            elif 'Writing' in category or 'Content' in category:
-                constraint_suggestion = 'Add phrases like "following style guidelines", "with proper formatting", or "using clear language"'
-            elif 'Business' in category or 'Strategy' in category:
-                constraint_suggestion = 'Add phrases like "based on industry standards", "following best practices", or "using proven methodologies"'
-            elif 'Data' in category:
-                constraint_suggestion = 'Add phrases like "following data science best practices", "with proper validation", or "using statistical methods"'
-        
+
+    if structure['scores']['constraints'] < 0.5 and word_count > 24:
+        constraint_suggestion = profile.get('constraints', 'Add constraints on scope, length, tone, and must/avoid rules to tighten outputs.')
         recommendations.append({
             'type': 'constraints',
-            'title': 'Add Guidelines or Standards',
-            'description': 'Include standards, best practices, or constraints to guide the output quality and ensure it meets your requirements.',
+            'title': 'Add Explicit Constraints',
+            'description': 'Constraints reduce variability and improve control over final output.',
             'suggestion': constraint_suggestion,
             'similar_example': similar_examples[0].get('prompt', '') if similar_examples else None,
             'priority': 'medium'
         })
-    
-    # Check sentence structure
-    if structure['sentence_count'] == 1 and word_count > 30:
+
+    if structure['sentence_count'] == 1 and structure['avg_sentence_length'] > 28:
         recommendations.append({
             'type': 'structure',
             'title': 'Consider Breaking Into Multiple Sentences',
-            'description': 'Your prompt is one long sentence. Breaking it into multiple sentences can improve clarity and readability.',
-            'suggestion': 'Split complex instructions into separate sentences for better clarity.',
+            'description': 'Long single-sentence prompts are harder to parse reliably.',
+            'suggestion': 'Split request into 2-4 sentences or short bullet points.',
             'similar_example': None,
             'priority': 'low'
         })
-    
-    # Check for examples
-    if not structure['has_examples'] and word_count > 25:
+
+    if not structure['has_examples'] and word_count > 35:
         recommendations.append({
             'type': 'examples',
-            'title': 'Consider Adding Examples',
-            'description': 'Including examples can help clarify your expectations and improve the quality of the output.',
-            'suggestion': 'Add phrases like "for example", "such as", or provide a concrete example of what you want.',
+            'title': 'Consider Adding an Example',
+            'description': 'One concrete example can greatly improve alignment with your intent.',
+            'suggestion': 'Add a compact sample input/output snippet.',
             'similar_example': None,
             'priority': 'low'
         })
-    
-    # Sort recommendations by priority
+
+    # Priority sorting and calibration: suppress very low-signal recommendations for already-strong prompts.
+    strength_score = (
+        (1.0 if best_practices['role_definition'] else 0.0) * 0.8 +
+        structure['scores']['action'] * 1.0 +
+        structure['scores']['format'] * 1.1 +
+        structure['scores']['quality'] * 0.9 +
+        structure['scores']['constraints'] * 0.8
+    )
+    if strength_score >= 3.7:
+        recommendations = [r for r in recommendations if r['priority'] in ('high', 'medium')]
+
     priority_order = {'high': 0, 'medium': 1, 'low': 2}
     recommendations.sort(key=lambda x: priority_order.get(x.get('priority', 'low'), 2))
-    
-    # Generate improved version suggestion
-    improved_suggestion = generate_improved_prompt(user_prompt, example_prompts, best_practices, similar_examples, patterns)
-    
+
+    improved_suggestion = generate_improved_prompt(
+        user_prompt,
+        example_prompts,
+        best_practices,
+        similar_examples,
+        patterns,
+        structure,
+        category_hint,
+    )
+
     return recommendations, improved_suggestion, best_practices, similar_examples
 
-def generate_improved_prompt(user_prompt, example_prompts, best_practices, similar_examples, patterns):
-    """Generate a suggested improved version of the prompt using logical analysis"""
+
+def generate_improved_prompt(user_prompt, example_prompts, best_practices, similar_examples, patterns, structure=None, category_hint=''):
+    """Generate a suggested improved version of the prompt using shared feature detection logic."""
     improved = user_prompt.strip()
-    user_lower = improved.lower()
-    user_keywords = extract_keywords(improved)
     word_count = len(improved.split())
-    
-    # If no role definition, add one based on content analysis
-    if not best_practices['role_definition']:
-        # Try to find role from similar examples first
-        role = None
-        if similar_examples:
-            for ex in similar_examples:
-                ex_prompt = ex.get('prompt', '').lower()
-                role_patterns = [
-                    r'you are ([^.]+?)(?:\.|,|$)',
-                    r'you\'re ([^.]+?)(?:\.|,|$)',
-                    r'act as ([^.]+?)(?:\.|,|$)'
-                ]
-                for pattern in role_patterns:
-                    role_match = re.search(pattern, ex_prompt)
-                    if role_match:
-                        role = role_match.group(1).strip()
-                        break
-                if role:
-                    break
-        
-        # If no role from examples, infer from content with more sophisticated matching
-        if not role:
-            # Check for coding-related keywords
-            coding_keywords = ['code', 'program', 'function', 'script', 'python', 'javascript', 
-                             'api', 'algorithm', 'debug', 'test', 'database', 'sql', 'html', 'css']
-            if any(kw in user_keywords for kw in coding_keywords):
-                role = "an expert programmer"
-            # Check for writing-related keywords
-            elif any(kw in user_keywords for kw in ['write', 'article', 'blog', 'content', 'post', 
-                                                    'email', 'document', 'copy', 'story', 'essay']):
-                role = "a professional writer"
-            # Check for data/analysis keywords
-            elif any(kw in user_keywords for kw in ['analyze', 'data', 'report', 'statistics', 
-                                                   'visualization', 'dataset', 'chart', 'graph']):
-                role = "a data analyst"
-            # Check for business/strategy keywords
-            elif any(kw in user_keywords for kw in ['business', 'strategy', 'plan', 'market', 
-                                                    'sales', 'marketing', 'financial']):
-                role = "a business consultant"
-            # Check for design/creative keywords
-            elif any(kw in user_keywords for kw in ['design', 'create', 'build', 'develop', 
-                                                    'creative', 'art', 'visual']):
-                role = "a creative professional"
-            # Check for education keywords
-            elif any(kw in user_keywords for kw in ['teach', 'learn', 'explain', 'tutor', 
-                                                   'education', 'lesson', 'course']):
-                role = "an experienced educator"
-            # Check for support/help keywords
-            elif any(kw in user_keywords for kw in ['help', 'assist', 'support', 'guide', 'advice']):
-                role = "a helpful assistant"
-            else:
-                role = "a helpful AI assistant"
-        
+    structure = structure or detect_prompt_features(improved)
+
+    # Add role only when the missing-role signal is meaningful.
+    if not best_practices['role_definition'] and (word_count < 28 or not structure['has_specifications']):
+        role = infer_role_from_context(improved, similar_examples, category_hint)
         improved = f"You are {role}. {improved}"
-    
-    # Add quality markers if missing and prompt is substantial
-    if not best_practices['quality_markers'] and word_count > 15:
-        # Get most appropriate quality marker from similar examples
-        quality_suggestions = []
-        if similar_examples:
-            for ex in similar_examples:
-                ex_prompt = ex.get('prompt', '').lower()
-                for quality in ['clear', 'comprehensive', 'well-structured', 'detailed', 'professional']:
-                    if quality in ex_prompt and quality not in improved.lower():
-                        quality_suggestions.append(quality)
-                        if len(quality_suggestions) >= 2:
-                            break
-                if len(quality_suggestions) >= 2:
-                    break
-        
-        # If no suggestions from examples, add based on context
-        if not quality_suggestions:
-            if any(kw in user_keywords for kw in ['code', 'program', 'technical']):
-                quality_suggestions = ['clean', 'well-documented']
-            elif any(kw in user_keywords for kw in ['write', 'content', 'article']):
-                quality_suggestions = ['engaging', 'well-structured']
-            else:
-                quality_suggestions = ['clear', 'comprehensive']
-        
-        # Insert quality marker appropriately
-        if quality_suggestions and quality_suggestions[0] not in improved.lower():
-            # Try to insert after first action verb or at appropriate position
-            action_verbs = ['generate', 'create', 'write', 'analyze', 'help', 'provide', 'design', 'develop']
-            for verb in action_verbs:
-                if verb in improved.lower():
-                    # Insert quality marker after the verb
-                    improved = re.sub(
-                        rf'({verb}[^.]*?)([,.])',
-                        rf'\1, {quality_suggestions[0]}\2',
-                        improved,
-                        count=1,
-                        flags=re.IGNORECASE
-                    )
-                    break
-    
-    # Add constraints/standards if missing and prompt is substantial
-    if not best_practices['constraints'] and word_count > 25:
-        # Check if we should add best practices reference
-        if any(kw in user_keywords for kw in ['code', 'program', 'python', 'javascript']):
-            if 'following' not in improved.lower() and 'standards' not in improved.lower():
-                # Try to add at the end before punctuation
-                improved = re.sub(r'([.!?])$', r', following best practices\1', improved)
-        elif any(kw in user_keywords for kw in ['write', 'content', 'document']):
-            if 'best practices' not in improved.lower():
-                improved = re.sub(r'([.!?])$', r', following writing best practices\1', improved)
-    
-    # Ensure proper capitalization
+
+    # Add quality expectations when missing.
+    if structure['scores']['quality'] < 1.0 and word_count > 18:
+        if category_hint in CATEGORY_PROFILES:
+            quality_suggestions = CATEGORY_PROFILES[category_hint]['quality']
+        else:
+            quality_suggestions = ['clear', 'comprehensive']
+
+        q = quality_suggestions[0]
+        if q not in improved.lower():
+            improved = re.sub(r'([.!?])$', f', keep the output {q}\\1', improved)
+
+    # Add constraints when prompt is long enough but unconstrained.
+    if structure['scores']['constraints'] < 0.5 and word_count > 24:
+        if category_hint == 'Coding & Development':
+            addition = ' include edge cases and basic error handling'
+        elif category_hint == 'Writing & Content':
+            addition = ' define audience, tone, and length'
+        elif category_hint == 'Data Analysis':
+            addition = ' state assumptions and validation checks'
+        else:
+            addition = ' include clear constraints and limits'
+        improved = re.sub(r'([.!?])$', f',{addition}\\1', improved)
+
     if improved and improved[0].islower():
         improved = improved[0].upper() + improved[1:]
-    
-    # Ensure it ends with punctuation
+
     if improved and improved[-1] not in ['.', '!', '?']:
         improved += "."
-    
-    # Clean up any double punctuation or spacing issues
-    improved = re.sub(r'\s+', ' ', improved)  # Multiple spaces
-    improved = re.sub(r'([,.!?])\1+', r'\1', improved)  # Multiple punctuation
-    improved = re.sub(r'\s+([,.!?])', r'\1', improved)  # Space before punctuation
-    
+
+    improved = re.sub(r'\s+', ' ', improved)
+    improved = re.sub(r'([,.!?])\1+', r'\1', improved)
+    improved = re.sub(r'\s+([,.!?])', r'\1', improved)
+
     return improved.strip()
 
 # Sidebar (keeping as requested)

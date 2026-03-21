@@ -6,5 +6,33 @@
     "characters",
     "storytelling"
   ],
-  "description": "Develops fictional characters"
+  "description": "Develops fictional characters",
+  "schema_version": "2.0",
+  "difficulty_level": "intermediate",
+  "time_estimate": "moderate",
+  "output_format": "code",
+  "expected_outcomes": [
+    "Clear, actionable output aligned with requirements",
+    "Structured output ready for implementation",
+    "Comprehensive coverage of all aspects"
+  ],
+  "prerequisites": [
+    "Basic knowledge in relevant domain"
+  ],
+  "use_case_examples": [
+    "Typical use case 1 for character developer",
+    "Best practice scenario for character developer",
+    "Integration with existing workflows"
+  ],
+  "success_criteria": [
+    "Output meets stated requirements",
+    "Information is accurate and current",
+    "Results are immediately actionable"
+  ],
+  "tone": "technical",
+  "best_for": "Software developers and engineers",
+  "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
+  "constraints": {},
+  "version": "2.0",
+  "last_updated": "2026-03-21T23:45:57.379290"
 }

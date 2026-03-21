@@ -6,5 +6,34 @@
     "qa",
     "automation"
   ],
-  "description": "Creates test cases"
+  "description": "Creates test cases",
+  "schema_version": "2.0",
+  "difficulty_level": "intermediate",
+  "time_estimate": "moderate",
+  "output_format": "code",
+  "expected_outcomes": [
+    "Test cases for happy path and edge cases",
+    "Setup and teardown procedures",
+    "Clear test names documenting intent",
+    "Assertions validating expected behavior"
+  ],
+  "prerequisites": [
+    "Testing framework knowledge"
+  ],
+  "use_case_examples": [
+    "Unit tests for new feature",
+    "Regression test suite for bug fix",
+    "Integration tests for API"
+  ],
+  "success_criteria": [
+    "Tests are independent and repeatable",
+    "Code coverage >80%",
+    "All tests pass consistently"
+  ],
+  "tone": "technical",
+  "best_for": "QA engineers, developers, test automation specialists",
+  "avoid_if": "You need performance testing or load testing",
+  "constraints": {},
+  "version": "2.0",
+  "last_updated": "2026-03-21T23:45:57.371740"
 }

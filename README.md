@@ -1,34 +1,34 @@
 # 💡 Prompt Improvement Tool
 
-A powerful Python application built with Streamlit that helps you improve your AI prompts using a curated collection of best practices and logical analysis. Enter your prompt and get intelligent recommendations based on our extensive prompt collection.
+A powerful Python application built with Streamlit that helps you improve your AI prompts using a curated collection of best practices and logical analysis. Enter your prompt and get intelligent recommendations based on our extensively refined collection of 114 carefully crafted prompts.
 
 ## ✨ Features
 
-- **🔍 Prompt Analysis**: Analyze your prompts against best practices from our curated collection
-- **💡 Smart Recommendations**: Get prioritized, actionable recommendations to improve your prompts
+- **🔍 Prompt Analysis**: Analyse your prompts against best practices from our curated collection
+- **💡 Smart Recommendations**: Get prioritised, actionable recommendations to improve your prompts
 - **📊 Best Practices Scoring**: See how your prompt measures against key best practices
 - **✨ Auto-Improvement**: Get suggested improved versions of your prompts
-- **📚 Reference Collection**: Access 100+ example prompts across 12+ categories
+- **Reference Collection**: Access 114 high-quality example prompts across 12 categories
 - **🎯 Category-Specific Suggestions**: Get recommendations tailored to your prompt's category
 - **🔎 Similar Prompt Discovery**: Find similar prompts from our collection for inspiration
 - **📋 Easy Copy**: Copy improved prompts with one click
 
 ## 📦 Prompt Collection
 
-Our curated collection includes 100+ prompts across 12 categories:
+Our curated collection includes 114 high-quality prompts across 12 categories:
 
-1. **AI Assistant** (8 prompts) - General purpose and specialized AI assistants
-2. **Coding & Development** (12 prompts) - Programming, debugging, and technical prompts
-3. **Writing & Content** (11 prompts) - Blog posts, emails, social media, documentation
-4. **Business & Strategy** (9 prompts) - Business planning, market research, project management
-5. **Education & Learning** (7 prompts) - Tutoring, study guides, quizzes, language learning
-6. **Creative & Design** (7 prompts) - Storytelling, poetry, character development, world building
-7. **Data Analysis** (6 prompts) - Data analysis, statistics, visualization, machine learning
-8. **Productivity & Organization** (5 prompts) - Task management, goal setting, time management
-9. **Health & Wellness** (5 prompts) - Fitness, nutrition, mental health, sleep, meditation
-10. **Marketing & Sales** (6 prompts) - Marketing strategy, sales pitches, SEO, branding
-11. **Legal & Compliance** (4 prompts) - Legal document review, privacy policies, compliance
-12. **Customer Service** (4 prompts) - Customer support, FAQ generation, feedback analysis
+1. **AI Assistant** (10 prompts) - General purpose and specialized research assistants
+2. **Coding & Development** (15 prompts) - Programming, debugging, DevOps, and technical prompts
+3. **Writing & Content** (13 prompts) - Blog posts, emails, editing, fact-checking, documentation
+4. **Business & Strategy** (11 prompts) - Business planning, market research, proposals, change management
+5. **Education & Learning** (8 prompts) - Tutoring, study guides, quizzes, training, language learning
+6. **Creative & Design** (9 prompts) - Storytelling, poetry, world building, UI/UX design, research
+7. **Data Analysis** (7 prompts) - Data analysis, statistics, visualization, qualitative analysis, ML
+8. **Productivity & Organization** (9 prompts) - Task management, goal setting, time management, habit building
+9. **Health & Wellness** (8 prompts) - Fitness, nutrition, mental health, sleep, meditation, recovery *(with health disclaimers)*
+10. **Marketing & Sales** (8 prompts) - Marketing strategy, email campaigns, A/B testing, SEO, branding
+11. **Legal & Compliance** (8 prompts) - Legal document review, privacy policies, compliance, IP protection
+12. **Customer Service** (8 prompts) - Customer support, FAQ generation, feedback analysis, loyalty programs
 
 ## 🚀 Getting Started
 
@@ -243,7 +243,7 @@ This tool is perfect for:
 - Category-aware recommendations
 
 ### Pattern Recognition
-- Extracts common patterns from 100+ example prompts
+- Extracts common patterns from 114 carefully curated example prompts
 - Identifies best practices by category
 - Learns from similar prompts in the collection
 
@@ -255,7 +255,7 @@ This tool is perfect for:
 ## 📝 Notes
 
 - Analysis is performed using logical Python algorithms (no external AI APIs)
-- Recommendations are based on patterns found in the prompt collection
+- Recommendations are based on patterns found in our collection of 114 high-quality prompts
 - Similar prompts are found using keyword matching and similarity scoring
 - Favorites are stored in session state and reset when you refresh the page
 - All prompts are stored as JSON files in the `prompts/` directory
@@ -281,10 +281,10 @@ Feel free to:
 ## 📊 Statistics
 
 The platform currently includes:
-- **100+ prompts** across 12 categories
-- **Comprehensive coverage** of common AI use cases
-- **Intelligent analysis** using pattern recognition
-- **Category-specific** recommendations
+- **114 high-quality prompts** across 12 categories
+- **Quality-enhanced collection** with improved specificity, disclaimers, and best practices
+- **Specialized coverage** (Java, TypeScript, CI/CD, Email Marketing, UX Research, Qualitative Analysis)
+- **Comprehensive gap coverage** addressing missing domains from the original audit
 
 ## 📄 License
 

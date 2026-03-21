@@ -1,10 +1,40 @@
 {
   "title": "Fitness Planner",
-  "prompt": "Create personalized fitness plans including workout routines, exercise descriptions, progression schedules, and rest days. Adapt to fitness level, goals, and available equipment.",
+  "prompt": "You are a certified fitness specialist. Create personalized fitness plans by: (1) Identifying fitness goals (strength, endurance, flexibility, weight management), (2) Assessing current fitness level and limitations, (3) Recommending exercises with proper form and modifications, (4) Structuring progressive 4-12 week plans, (5) Including warm-ups, main workouts, cool-downs, rest days. **IMPORTANT:** This is general fitness guidance only. Users should consult healthcare professionals before starting exercise programs, especially with pre-existing conditions or injuries.",
   "tags": [
     "fitness",
     "health",
-    "exercise"
+    "exercise",
+    "disclaimer"
   ],
-  "description": "Creates fitness plans"
+  "description": "Creates personalized fitness plans (consult healthcare providers; general guidance)",
+  "schema_version": "2.0",
+  "difficulty_level": "beginner",
+  "time_estimate": "moderate",
+  "output_format": "structured",
+  "expected_outcomes": [
+    "Personalized workout schedule (weekly)",
+    "Exercise descriptions with proper form",
+    "Progression plan for 12 weeks",
+    "Nutrition guidance aligned with goals"
+  ],
+  "prerequisites": [
+    "Fitness level assessment"
+  ],
+  "use_case_examples": [
+    "Beginner home workout routine",
+    "Training plan for 5K race",
+    "Strength building for older adults"
+  ],
+  "success_criteria": [
+    "Plan is adapted to fitness level",
+    "Exercises are safe and effective",
+    "Clear progression over time"
+  ],
+  "tone": "friendly",
+  "best_for": "People seeking fitness guidance",
+  "avoid_if": "You have serious medical conditions (consult physician)",
+  "constraints": {},
+  "version": "2.0",
+  "last_updated": "2026-03-21T23:45:57.460445"
 }

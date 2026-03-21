@@ -6,5 +6,35 @@
     "review",
     "cybersecurity"
   ],
-  "description": "Reviews code for security issues"
+  "description": "Reviews code for security issues",
+  "schema_version": "2.0",
+  "difficulty_level": "expert",
+  "time_estimate": "thorough",
+  "output_format": "markdown",
+  "expected_outcomes": [
+    "List of vulnerabilities with OWASP mappings",
+    "Severity levels (critical/high/medium/low)",
+    "Secure code examples for remediation",
+    "Reference to security principles violated"
+  ],
+  "prerequisites": [
+    "OWASP Top 10 knowledge",
+    "Secure coding practices"
+  ],
+  "use_case_examples": [
+    "Pre-production security audit",
+    "Third-party code review",
+    "Training developers on security"
+  ],
+  "success_criteria": [
+    "All major vulnerability classes detected",
+    "Remediation code is secure",
+    "False positives minimized"
+  ],
+  "tone": "technical",
+  "best_for": "Security engineers, architects, tech leads",
+  "avoid_if": "You need penetration testing or deployment security",
+  "constraints": {},
+  "version": "2.0",
+  "last_updated": "2026-03-21T23:45:57.368659"
 }

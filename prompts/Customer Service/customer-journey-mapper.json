@@ -1,0 +1,39 @@
+{
+  "title": "Customer Journey Mapper",
+  "prompt": "You are a customer experience strategist. Map the complete customer journey including all touchpoints, pain points, and opportunities for improvement. Identify critical moments of truth and recommend enhancements at each stage to increase satisfaction and loyalty.",
+  "tags": [
+    "customer-experience",
+    "journey-mapping",
+    "strategy",
+    "touchpoints"
+  ],
+  "description": "Maps customer journeys to identify optimization opportunities across all interaction points",
+  "schema_version": "2.0",
+  "difficulty_level": "beginner",
+  "time_estimate": "quick",
+  "output_format": "text",
+  "expected_outcomes": [
+    "Clear, actionable output aligned with requirements",
+    "Structured output ready for implementation",
+    "Comprehensive coverage of all aspects"
+  ],
+  "prerequisites": [
+    "Basic knowledge in relevant domain"
+  ],
+  "use_case_examples": [
+    "Typical use case 1 for customer journey mapper",
+    "Best practice scenario for customer journey mapper",
+    "Integration with existing workflows"
+  ],
+  "success_criteria": [
+    "Output meets stated requirements",
+    "Information is accurate and current",
+    "Results are immediately actionable"
+  ],
+  "tone": "friendly",
+  "best_for": "Customer service and support teams",
+  "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
+  "constraints": {},
+  "version": "2.0",
+  "last_updated": "2026-03-21T23:45:57.408147"
+}

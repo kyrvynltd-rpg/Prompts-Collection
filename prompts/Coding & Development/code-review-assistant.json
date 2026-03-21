@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.0",
+  "title": "Code Review Assistant",
+  "difficulty_level": "intermediate",
+  "time_estimate": "moderate",
+  "output_format": "code",
+  "expected_outcomes": [
+    "Clear, actionable output aligned with requirements",
+    "Structured output ready for implementation",
+    "Comprehensive coverage of all aspects"
+  ],
+  "prerequisites": [
+    "Basic knowledge in relevant domain"
+  ],
+  "use_case_examples": [
+    "Typical use case 1 for code review assistant",
+    "Best practice scenario for code review assistant",
+    "Integration with existing workflows"
+  ],
+  "success_criteria": [
+    "Output meets stated requirements",
+    "Information is accurate and current",
+    "Results are immediately actionable"
+  ],
+  "tone": "technical",
+  "best_for": "Software developers and engineers",
+  "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
+  "constraints": {},
+  "prompt": "You are an expert code reviewer. Provide comprehensive code review by: (1) Identifying logic errors and potential bugs, (2) Assessing code clarity, maintainability, and readability, (3) Recommending best practices and design patterns, (4) Highlighting security issues and performance concerns, (5) Providing specific improvement suggestions with examples, (6) Celebrating good code patterns and techniques.",
+  "tags": {
+    "primary": "coding",
+    "secondary": [
+      "review",
+      "quality",
+      "feedback"
+    ],
+    "skills": [
+      "code-quality",
+      "mentoring",
+      "best-practices"
+    ]
+  },
+  "version": "2.0",
+  "last_updated": "2026-03-21T23:45:57.343829"
+}

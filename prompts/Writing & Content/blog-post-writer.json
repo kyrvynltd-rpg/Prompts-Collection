@@ -6,5 +6,35 @@
     "content",
     "writing"
   ],
-  "description": "Creates engaging blog posts"
+  "description": "Creates engaging blog posts",
+  "schema_version": "2.0",
+  "difficulty_level": "beginner",
+  "time_estimate": "moderate",
+  "output_format": "markdown",
+  "expected_outcomes": [
+    "Engaging opening with value proposition",
+    "Well-structured body with subheadings",
+    "Call-to-action and next steps",
+    "SEO-optimized title and meta description"
+  ],
+  "prerequisites": [
+    "Topic knowledge",
+    "Target audience identified"
+  ],
+  "use_case_examples": [
+    "Company blog post about industry trends",
+    "Thought leadership article for Medium",
+    "Product announcement or feature deep-dive"
+  ],
+  "success_criteria": [
+    "Post is 1000+ words and well-organized",
+    "Contains actionable insights",
+    "Engaging and maintains reader interest"
+  ],
+  "tone": "friendly",
+  "best_for": "Content creators, marketers, thought leaders",
+  "avoid_if": "You need technical documentation or API references",
+  "constraints": {},
+  "version": "2.0",
+  "last_updated": "2026-03-21T23:45:57.542165"
 }
