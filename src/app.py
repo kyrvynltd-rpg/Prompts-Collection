@@ -41,6 +41,13 @@ st.markdown("""
         max-width: 980px;
         margin: 0 auto;
     }
+    .brand-block {
+        text-align: center;
+    }
+    .prompt-title {
+        text-align: center;
+        margin-bottom: 0.75rem;
+    }
     .welcome-wrap {
         max-width: 820px;
         margin: 0 auto;
@@ -726,34 +733,30 @@ with st.sidebar:
     """)
 
 # Main content area
-mcol1, mcol2, mcol3 = st.columns([1, 6, 1])
-with mcol2:
-    st.markdown('<div class="center-shell">', unsafe_allow_html=True)
+st.markdown('<div class="center-shell">', unsafe_allow_html=True)
+st.markdown('<div class="brand-block">', unsafe_allow_html=True)
+if LOGO_PATH.exists():
+    st.image(str(LOGO_PATH), width=92)
+st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-    if LOGO_PATH.exists():
-        lcol1, lcol2, lcol3 = st.columns([1, 1, 1])
-        with lcol2:
-            st.image(str(LOGO_PATH), width=92)
+# Main input area
+st.markdown('<h3 class="prompt-title">Enter Your Prompt</h3>', unsafe_allow_html=True)
+with st.form("analyze_form", clear_on_submit=False):
+    user_prompt = st.text_area(
+        "Type or paste your prompt here",
+        placeholder="Example: Write a blog post about AI...",
+        height=150,
+        key="prompt_input",
+        label_visibility="collapsed"
+    )
+    # Inside Streamlit forms, Ctrl+Enter submits text areas.
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        analyze_button = st.form_submit_button("🔍 Analyze & Improve Prompt", type="primary", use_container_width=True)
 
-    st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
-
-    # Main input area
-    st.markdown("### Enter Your Prompt")
-    with st.form("analyze_form", clear_on_submit=False):
-        user_prompt = st.text_area(
-            "Type or paste your prompt here",
-            placeholder="Example: Write a blog post about AI...",
-            height=150,
-            key="prompt_input",
-            label_visibility="collapsed"
-        )
-        # Inside Streamlit forms, Ctrl+Enter submits text areas.
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            analyze_button = st.form_submit_button("🔍 Analyze & Improve Prompt", type="primary", use_container_width=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Process analysis
 if analyze_button and user_prompt.strip():
