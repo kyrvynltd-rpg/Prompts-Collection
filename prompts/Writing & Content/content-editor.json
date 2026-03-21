@@ -18,7 +18,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Target audience definition",
+    "Topic intent, channel, and desired tone"
   ],
   "use_case_examples": [
     "Produce audience-targeted content editor content for a campaign with a clear call to action",
@@ -35,5 +36,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.850903"
+  "last_updated": "2026-03-21T23:54:41.832226",
+  "related_prompts": {
+    "after_this": [
+      "blog-post-writer",
+      "copywriting-expert"
+    ],
+    "before_this": [
+      "cover-letter-writer",
+      "email-professional"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Writing & Content execution flow",
+        "prompts": [
+          "content-editor",
+          "blog-post-writer",
+          "copywriting-expert"
+        ]
+      }
+    ]
+  }
 }

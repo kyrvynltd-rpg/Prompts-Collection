@@ -18,7 +18,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Personal goals and lifestyle constraints",
+    "Awareness that guidance is informational and not medical diagnosis"
   ],
   "use_case_examples": [
     "Create a practical sleep optimization routine with realistic weekly checkpoints and adherence tracking",
@@ -35,5 +36,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.776682"
+  "last_updated": "2026-03-21T23:54:41.757458",
+  "related_prompts": {
+    "after_this": [
+      "fitness-planner",
+      "meditation-guide"
+    ],
+    "before_this": [
+      "mental-health-support",
+      "nutrition-advisor"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Health & Wellness execution flow",
+        "prompts": [
+          "sleep-optimization-coach",
+          "fitness-planner",
+          "meditation-guide"
+        ]
+      }
+    ]
+  }
 }

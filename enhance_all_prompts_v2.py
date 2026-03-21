@@ -453,18 +453,108 @@ def _build_phase2_success_criteria(name_lower: str, category: str) -> list:
         f"{domain.capitalize()} deliverable can be used immediately with minimal revision"
     ])
 
-def generate_metadata(filename: str, category: str, prompt_text: str = "") -> dict:
+def _build_phase3_prerequisites(name_lower: str, category: str) -> list:
+    """Generate more concrete prerequisites by category for Phase 3 quality."""
+    base = {
+        "AI Assistant": [
+            "Clear objective and expected outcome",
+            "Relevant context or source material when available"
+        ],
+        "Coding & Development": [
+            "Programming fundamentals in target language",
+            "Access to codebase context, requirements, and constraints"
+        ],
+        "Business & Strategy": [
+            "Business objective and decision context",
+            "Baseline metrics, assumptions, or market inputs"
+        ],
+        "Writing & Content": [
+            "Target audience definition",
+            "Topic intent, channel, and desired tone"
+        ],
+        "Customer Service": [
+            "Customer issue context and relevant history",
+            "Service policy boundaries or escalation rules"
+        ],
+        "Data Analysis": [
+            "Access to data sources and field definitions",
+            "Clarity on business question and success metric"
+        ],
+        "Education & Learning": [
+            "Learner level and intended outcomes",
+            "Available time, format, and assessment needs"
+        ],
+        "Health & Wellness": [
+            "Personal goals and lifestyle constraints",
+            "Awareness that guidance is informational and not medical diagnosis"
+        ],
+        "Legal & Compliance": [
+            "Jurisdiction and applicable regulatory context",
+            "Current policy/process documentation for review"
+        ],
+        "Marketing & Sales": [
+            "Campaign objective and target segment",
+            "Baseline conversion metrics or historical performance"
+        ],
+        "Creative & Design": [
+            "Creative brief including audience and intent",
+            "Brand/style constraints and delivery format"
+        ],
+        "Productivity & Organization": [
+            "Clear priorities and timeline",
+            "Known constraints such as workload or calendar availability"
+        ]
+    }
+
+    prereqs = list(base.get(category, ["Clear goal and relevant context"]))
+    if "api" in name_lower:
+        prereqs.append("API requirements, auth model, and request/response expectations")
+    if "security" in name_lower:
+        prereqs.append("Security requirements and threat model expectations")
+    if "research" in name_lower:
+        prereqs.append("Scope boundaries and credible source criteria")
+    return prereqs[:3]
+
+def _slugify_filename(filename: str) -> str:
+    return filename.replace('.json', '')
+
+def _build_related_prompts(filename: str, category: str, category_index: dict) -> dict:
+    """Create related prompt links and a simple within-category workflow chain."""
+    current_slug = _slugify_filename(filename)
+    category_slugs = sorted([_slugify_filename(n) for n in category_index.get(category, [])])
+    peers = [s for s in category_slugs if s != current_slug]
+
+    after_this = peers[:2]
+    before_this = peers[2:4] if len(peers) > 2 else peers[:2]
+    chain = [current_slug] + after_this
+
+    return {
+        "after_this": after_this,
+        "before_this": before_this,
+        "workflow_chains": [
+            {
+                "name": f"{category} execution flow",
+                "prompts": chain[:3]
+            }
+        ]
+    }
+
+def generate_metadata(filename: str, category: str, category_index: dict, prompt_text: str = "") -> dict:
     """Generate intelligent metadata based on filename and category."""
+    name_lower = filename.lower().replace("-", " ").replace(".json", "")
     
     # Check if we have specific override
     if filename in SPECIFIC_ENHANCEMENTS:
-        return SPECIFIC_ENHANCEMENTS[filename]
+        enriched = dict(SPECIFIC_ENHANCEMENTS[filename])
+        if not enriched.get("prerequisites"):
+            enriched["prerequisites"] = _build_phase3_prerequisites(name_lower, category)
+        enriched["related_prompts"] = _build_related_prompts(filename, category, category_index)
+        return enriched
     
     # Get category defaults
     category_defaults = CATEGORY_METADATA.get(category, CATEGORY_METADATA["AI Assistant"])
     
     # Analyze filename to refine metadata
-    name_lower = filename.lower().replace("-", " ").replace(".json", "")
     
     # Determine difficulty based on keywords in filename
     difficulty = category_defaults["default_difficulty"]
@@ -534,15 +624,16 @@ def generate_metadata(filename: str, category: str, prompt_text: str = "") -> di
         "time_estimate": time_est,
         "output_format": output_fmt,
         "expected_outcomes": expected,
-        "prerequisites": ["Basic knowledge in relevant domain"],
+        "prerequisites": _build_phase3_prerequisites(name_lower, category),
         "use_case_examples": use_cases,
         "success_criteria": success,
         "tone": tone,
         "best_for": best_for,
-        "avoid_if": "Your use case falls outside the defined scope or requires expert consultation"
+        "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
+        "related_prompts": _build_related_prompts(filename, category, category_index)
     }
 
-def enhance_prompt(file_path: str) -> bool:
+def enhance_prompt(file_path: str, category_index: dict) -> bool:
     """Enhance a single prompt to v2.0 schema."""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -553,7 +644,7 @@ def enhance_prompt(file_path: str) -> bool:
         prompt_text = prompt.get("prompt", "")
         
         # Generate or fetch metadata
-        metadata = generate_metadata(filename, category, prompt_text)
+        metadata = generate_metadata(filename, category, category_index, prompt_text)
         
         # Add v2.0 fields
         prompt['schema_version'] = '2.0'
@@ -568,6 +659,11 @@ def enhance_prompt(file_path: str) -> bool:
         prompt['best_for'] = metadata.get('best_for', '')
         prompt['avoid_if'] = metadata.get('avoid_if', '')
         prompt['constraints'] = metadata.get('constraints', {})
+        prompt['related_prompts'] = metadata.get('related_prompts', {
+            'after_this': [],
+            'before_this': [],
+            'workflow_chains': []
+        })
         prompt['version'] = '2.0'
         prompt['last_updated'] = datetime.now().isoformat()
         
@@ -586,6 +682,11 @@ def main():
     enhanced_count = 0
     failed_count = 0
     skipped_count = 0
+
+    category_index = {}
+    for category_dir in sorted(prompts_dir.iterdir()):
+        if category_dir.is_dir():
+            category_index[category_dir.name] = [p.name for p in sorted(category_dir.glob("*.json"))]
     
     print("🚀 Starting v2.0 Mass Enhancement for All 115 Prompts")
     print("=" * 60)
@@ -594,7 +695,7 @@ def main():
         if category_dir.is_dir():
             print(f"\n📁 Processing: {category_dir.name}")
             for prompt_file in sorted(category_dir.glob("*.json")):
-                if enhance_prompt(str(prompt_file)):
+                if enhance_prompt(str(prompt_file), category_index):
                     enhanced_count += 1
                     print(f"  ✅ {prompt_file.name}")
                 else:

@@ -17,7 +17,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Access to data sources and field definitions",
+    "Clarity on business question and success metric"
   ],
   "use_case_examples": [
     "Run a data analysis on operational data to identify trends, outliers, and root causes",
@@ -34,5 +35,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.722890"
+  "last_updated": "2026-03-21T23:54:41.708964",
+  "related_prompts": {
+    "after_this": [
+      "data-cleaning-specialist",
+      "data-visualization-designer"
+    ],
+    "before_this": [
+      "machine-learning-advisor",
+      "qualitative-data-analyst"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Data Analysis execution flow",
+        "prompts": [
+          "data-analyst",
+          "data-cleaning-specialist",
+          "data-visualization-designer"
+        ]
+      }
+    ]
+  }
 }

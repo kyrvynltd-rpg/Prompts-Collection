@@ -18,7 +18,10 @@
     "Professional resources when appropriate",
     "Crisis resources if needed"
   ],
-  "prerequisites": [],
+  "prerequisites": [
+    "Personal goals and lifestyle constraints",
+    "Awareness that guidance is informational and not medical diagnosis"
+  ],
   "use_case_examples": [
     "Managing stress about work deadlines",
     "Processing grief or loss",
@@ -34,5 +37,25 @@
   "avoid_if": "You are in acute crisis (call emergency services immediately)",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.769813"
+  "last_updated": "2026-03-21T23:54:41.751413",
+  "related_prompts": {
+    "after_this": [
+      "fitness-planner",
+      "meditation-guide"
+    ],
+    "before_this": [
+      "nutrition-advisor",
+      "recovery-specialist"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Health & Wellness execution flow",
+        "prompts": [
+          "mental-health-support",
+          "fitness-planner",
+          "meditation-guide"
+        ]
+      }
+    ]
+  }
 }

@@ -36,5 +36,25 @@
   "avoid_if": "You need penetration testing or deployment security",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.663477"
+  "last_updated": "2026-03-21T23:54:41.661025",
+  "related_prompts": {
+    "after_this": [
+      "algorithm-designer",
+      "api-developer"
+    ],
+    "before_this": [
+      "api-documentation-generator",
+      "ci-cd-pipeline-designer"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Coding & Development execution flow",
+        "prompts": [
+          "security-code-reviewer",
+          "algorithm-designer",
+          "api-developer"
+        ]
+      }
+    ]
+  }
 }

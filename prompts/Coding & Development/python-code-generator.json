@@ -35,5 +35,25 @@
   "avoid_if": "You need system-level code or multi-file structure",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.658335"
+  "last_updated": "2026-03-21T23:54:41.657041",
+  "related_prompts": {
+    "after_this": [
+      "algorithm-designer",
+      "api-developer"
+    ],
+    "before_this": [
+      "api-documentation-generator",
+      "ci-cd-pipeline-designer"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Coding & Development execution flow",
+        "prompts": [
+          "python-code-generator",
+          "algorithm-designer",
+          "api-developer"
+        ]
+      }
+    ]
+  }
 }

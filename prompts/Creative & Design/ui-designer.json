@@ -18,7 +18,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Creative brief including audience and intent",
+    "Brand/style constraints and delivery format"
   ],
   "use_case_examples": [
     "Develop a concept-driven ui direction with clear audience intent and style rationale",
@@ -35,5 +36,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.690080"
+  "last_updated": "2026-03-21T23:54:41.682083",
+  "related_prompts": {
+    "after_this": [
+      "character-developer",
+      "dialogue-writer"
+    ],
+    "before_this": [
+      "plot-structure-advisor",
+      "poetry-creator"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Creative & Design execution flow",
+        "prompts": [
+          "ui-designer",
+          "character-developer",
+          "dialogue-writer"
+        ]
+      }
+    ]
+  }
 }

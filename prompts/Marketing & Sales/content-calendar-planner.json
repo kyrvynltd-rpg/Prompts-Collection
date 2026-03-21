@@ -17,7 +17,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Campaign objective and target segment",
+    "Baseline conversion metrics or historical performance"
   ],
   "use_case_examples": [
     "Plan a targeted content calendar initiative with segment-specific messaging and conversion goals",
@@ -34,5 +35,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.807581"
+  "last_updated": "2026-03-21T23:54:41.788700",
+  "related_prompts": {
+    "after_this": [
+      "a-b-testing-designer",
+      "brand-voice-developer"
+    ],
+    "before_this": [
+      "customer-persona-builder",
+      "email-marketing-specialist"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Marketing & Sales execution flow",
+        "prompts": [
+          "content-calendar-planner",
+          "a-b-testing-designer",
+          "brand-voice-developer"
+        ]
+      }
+    ]
+  }
 }

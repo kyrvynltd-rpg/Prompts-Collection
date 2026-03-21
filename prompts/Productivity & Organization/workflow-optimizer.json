@@ -17,7 +17,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Clear priorities and timeline",
+    "Known constraints such as workload or calendar availability"
   ],
   "use_case_examples": [
     "Build a sustainable workflow optimizer workflow for weekly planning, execution, and review",
@@ -34,5 +35,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.844772"
+  "last_updated": "2026-03-21T23:54:41.826197",
+  "related_prompts": {
+    "after_this": [
+      "goal-setting-coach",
+      "goal-tracker"
+    ],
+    "before_this": [
+      "habit-builder",
+      "habit-tracker-designer"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Productivity & Organization execution flow",
+        "prompts": [
+          "workflow-optimizer",
+          "goal-setting-coach",
+          "goal-tracker"
+        ]
+      }
+    ]
+  }
 }

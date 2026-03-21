@@ -35,5 +35,25 @@
   "avoid_if": "You need highly specialized niche expertise",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.580794"
+  "last_updated": "2026-03-21T23:54:41.592450",
+  "related_prompts": {
+    "after_this": [
+      "code-review-assistant",
+      "competitive-research-analyst"
+    ],
+    "before_this": [
+      "conversational-ai",
+      "creative-writing-assistant"
+    ],
+    "workflow_chains": [
+      {
+        "name": "AI Assistant execution flow",
+        "prompts": [
+          "general-purpose-assistant",
+          "code-review-assistant",
+          "competitive-research-analyst"
+        ]
+      }
+    ]
+  }
 }

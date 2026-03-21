@@ -11,6 +11,7 @@ from pathlib import Path
 import time
 import base64
 
+
 # Page configuration
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOGO_PATH = BASE_DIR / "assets" / "logo.svg"
@@ -166,6 +167,12 @@ if 'favorites' not in st.session_state:
     st.session_state.favorites = []
 if 'last_analyzed' not in st.session_state:
     st.session_state.last_analyzed = None
+if 'recommendations' not in st.session_state:
+    st.session_state.recommendations = []
+if 'last_recommendation_query' not in st.session_state:
+    st.session_state.last_recommendation_query = ""
+if 'last_recommendation_filters' not in st.session_state:
+    st.session_state.last_recommendation_filters = {}
 
 def normalize_text(text):
     """Normalize text for better comparison"""
@@ -429,6 +436,121 @@ def find_similar_examples(user_prompt, example_prompts, max_examples=5):
     return [s['prompt'] for s in similarities[:max_examples]]
 
 
+def _metadata_completeness(prompt):
+    fields = [
+        'difficulty_level', 'time_estimate', 'output_format', 'expected_outcomes',
+        'prerequisites', 'use_case_examples', 'success_criteria', 'tone',
+        'best_for', 'avoid_if', 'constraints', 'related_prompts'
+    ]
+    present = 0
+    for f in fields:
+        value = prompt.get(f)
+        if value is None:
+            continue
+        if isinstance(value, (list, dict, str)) and len(value) == 0:
+            continue
+        present += 1
+    return present / len(fields)
+
+
+def _build_prompt_search_text(prompt):
+    parts = [
+        prompt.get('title', ''),
+        prompt.get('description', ''),
+        prompt.get('prompt', ''),
+        ' '.join(prompt.get('tags', [])),
+        ' '.join(prompt.get('expected_outcomes', [])),
+        ' '.join(prompt.get('use_case_examples', [])),
+        ' '.join(prompt.get('success_criteria', [])),
+        prompt.get('best_for', ''),
+    ]
+    return ' '.join(p for p in parts if p)
+
+
+def _recommendation_score(prompt, query, filters):
+    text_blob = _build_prompt_search_text(prompt)
+    query_keywords = extract_keywords(query) if query else set()
+    prompt_keywords = extract_keywords(text_blob)
+
+    query_score = calculate_jaccard_similarity(query_keywords, prompt_keywords) if query_keywords else 0.0
+
+    # Metadata filter scoring
+    filter_score = 0.0
+    filter_count = 0
+    if filters.get('difficulty') and filters['difficulty'] != 'Any':
+        filter_count += 1
+        filter_score += 1.0 if prompt.get('difficulty_level', '').lower() == filters['difficulty'].lower() else 0.0
+    if filters.get('time') and filters['time'] != 'Any':
+        filter_count += 1
+        filter_score += 1.0 if prompt.get('time_estimate', '').lower() == filters['time'].lower() else 0.0
+    if filters.get('output_format') and filters['output_format'] != 'Any':
+        filter_count += 1
+        filter_score += 1.0 if prompt.get('output_format', '').lower() == filters['output_format'].lower() else 0.0
+
+    normalized_filter_score = (filter_score / filter_count) if filter_count > 0 else 0.0
+    metadata_score = _metadata_completeness(prompt)
+
+    # Weighted composite favors intent match first, then filter fit and metadata quality.
+    if query_keywords:
+        final_score = (query_score * 0.65) + (normalized_filter_score * 0.25) + (metadata_score * 0.10)
+    else:
+        final_score = (normalized_filter_score * 0.70) + (metadata_score * 0.30)
+    return final_score
+
+
+def recommend_prompts(query, prompts, filters, max_results=8):
+    scored = []
+    for prompt in prompts:
+        score = _recommendation_score(prompt, query, filters)
+        if score > 0.08 or (not query and any(v != 'Any' for v in filters.values())):
+            scored.append((score, prompt))
+
+    scored.sort(key=lambda item: item[0], reverse=True)
+    top = scored[:max_results]
+
+    recommendations = []
+    for score, prompt in top:
+        reasons = []
+        if query:
+            reasons.append("Strong intent match")
+        if filters.get('difficulty') != 'Any' and prompt.get('difficulty_level') == filters.get('difficulty'):
+            reasons.append("Difficulty aligned")
+        if filters.get('time') != 'Any' and prompt.get('time_estimate') == filters.get('time'):
+            reasons.append("Time estimate aligned")
+        if filters.get('output_format') != 'Any' and prompt.get('output_format') == filters.get('output_format'):
+            reasons.append("Output format aligned")
+        if not reasons:
+            reasons.append("High metadata quality")
+
+        recommendations.append({
+            'score': score,
+            'prompt': prompt,
+            'reasons': reasons,
+        })
+    return recommendations
+
+
+def build_learning_paths(prompts):
+    difficulty_order = {'beginner': 0, 'intermediate': 1, 'expert': 2}
+    by_category = {}
+    for p in prompts:
+        cat = p.get('category', 'General')
+        by_category.setdefault(cat, []).append(p)
+
+    paths = {}
+    for cat, items in by_category.items():
+        ordered = sorted(
+            items,
+            key=lambda p: (
+                difficulty_order.get(p.get('difficulty_level', 'intermediate'), 1),
+                p.get('title', '')
+            )
+        )
+        if ordered:
+            paths[cat] = ordered[:6]
+    return paths
+
+
 def analyze_prompt_structure(user_prompt):
     """Analyze structural features using boundary-aware detection."""
     return detect_prompt_features(user_prompt)
@@ -655,6 +777,43 @@ def generate_improved_prompt(user_prompt, example_prompts, best_practices, simil
 
 # Sidebar (keeping as requested)
 with st.sidebar:
+    st.header("🎯 Smart Discovery")
+
+    all_prompts = load_example_prompts()
+    recommendation_query = st.text_area(
+        "What do you need right now?",
+        placeholder="Example: I need a quick prompt to analyze customer churn trends and produce actionable recommendations.",
+        height=90,
+        key="recommendation_query"
+    )
+
+    rec_col1, rec_col2 = st.columns(2)
+    with rec_col1:
+        rec_difficulty = st.selectbox("Difficulty", ["Any", "beginner", "intermediate", "expert"], key="rec_difficulty")
+    with rec_col2:
+        rec_time = st.selectbox("Time", ["Any", "quick", "moderate", "thorough"], key="rec_time")
+    rec_output = st.selectbox("Output format", ["Any", "text", "markdown", "code", "json", "structured"], key="rec_output")
+
+    if st.button("🎯 Recommend Best Prompts", type="primary", use_container_width=True):
+        filters = {
+            'difficulty': rec_difficulty,
+            'time': rec_time,
+            'output_format': rec_output,
+        }
+        st.session_state.recommendations = recommend_prompts(recommendation_query.strip(), all_prompts, filters)
+        st.session_state.last_recommendation_query = recommendation_query.strip()
+        st.session_state.last_recommendation_filters = filters
+
+    paths = build_learning_paths(all_prompts)
+    selected_path_category = st.selectbox("Learning path", ["None"] + sorted(paths.keys()), key="learning_path_category")
+    if selected_path_category != "None" and selected_path_category in paths:
+        st.caption(f"Suggested progression in {selected_path_category}")
+        for i, prompt in enumerate(paths[selected_path_category][:4], 1):
+            level = prompt.get('difficulty_level', 'intermediate')
+            st.write(f"{i}. {prompt.get('title', 'Untitled')} ({level})")
+
+    st.divider()
+
     st.header("🔍 Search & Filter")
     
     # Search
@@ -666,7 +825,6 @@ with st.sidebar:
     selected_category = st.selectbox("Filter by Category", categories)
     
     # Load prompts for sidebar
-    all_prompts = load_example_prompts()
     
     # Tag filter
     all_tags = set()
@@ -710,6 +868,29 @@ render_centered_logo(92)
 st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+
+if st.session_state.recommendations:
+    st.markdown("### 🧠 Intelligent Recommendations")
+    query_label = st.session_state.last_recommendation_query or "(filter-only recommendation)"
+    st.caption(f"Query: {query_label}")
+
+    for i, rec in enumerate(st.session_state.recommendations, 1):
+        prompt = rec['prompt']
+        score_pct = int(rec['score'] * 100)
+        title = prompt.get('title', 'Untitled')
+        category = prompt.get('category', 'Unknown')
+        difficulty = prompt.get('difficulty_level', 'intermediate')
+        time_est = prompt.get('time_estimate', 'moderate')
+        output_fmt = prompt.get('output_format', 'text')
+
+        with st.expander(f"{i}. {title} ({score_pct}% match)", expanded=(i == 1)):
+            st.markdown(f"**Category:** {category}")
+            st.markdown(f"**Profile:** {difficulty} | {time_est} | {output_fmt}")
+            st.markdown(f"**Why this was selected:** {', '.join(rec['reasons'])}")
+            st.markdown(f"**Description:** {prompt.get('description', '')}")
+            st.code(prompt.get('prompt', ''), language=None)
+
+    st.divider()
 
 # Main input area
 st.markdown('<h3 class="prompt-title">Enter Your Prompt</h3>', unsafe_allow_html=True)

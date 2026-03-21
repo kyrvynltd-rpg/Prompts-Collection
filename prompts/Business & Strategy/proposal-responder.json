@@ -18,7 +18,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Business objective and decision context",
+    "Baseline metrics, assumptions, or market inputs"
   ],
   "use_case_examples": [
     "Build a decision-ready proposal responder plan for a quarterly leadership review",
@@ -35,5 +36,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.621983"
+  "last_updated": "2026-03-21T23:54:41.625050",
+  "related_prompts": {
+    "after_this": [
+      "business-model-designer",
+      "business-plan-writer"
+    ],
+    "before_this": [
+      "change-management-strategist",
+      "competitive-analysis-specialist"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Business & Strategy execution flow",
+        "prompts": [
+          "proposal-responder",
+          "business-model-designer",
+          "business-plan-writer"
+        ]
+      }
+    ]
+  }
 }

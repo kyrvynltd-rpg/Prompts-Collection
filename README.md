@@ -11,6 +11,8 @@ A powerful Python application built with Streamlit that helps you improve your A
 - **Reference Collection**: Access 114 high-quality example prompts across 12 categories
 - **🎯 Category-Specific Suggestions**: Get recommendations tailored to your prompt's category
 - **🔎 Similar Prompt Discovery**: Find similar prompts from our collection for inspiration
+- **🧠 Intelligent Recommendations**: Match prompts by intent, difficulty, time, and output format
+- **🛤️ Learning Paths**: Follow category progression from beginner to expert prompts
 - **📋 Easy Copy**: Copy improved prompts with one click
 
 ## 📦 Prompt Collection
@@ -164,14 +166,36 @@ Prompts-Collection/
 
 ## 📄 Prompt File Format
 
-Each prompt in the collection is stored as a JSON file with the following structure:
+Each prompt in the collection is stored as a JSON file using Schema v2.0:
 
 ```json
 {
+   "schema_version": "2.0",
   "title": "Prompt Title",
   "prompt": "You are an expert... [the actual prompt text]",
   "tags": ["tag1", "tag2", "tag3"],
-  "description": "Brief description of what this prompt does"
+   "description": "Brief description of what this prompt does",
+   "difficulty_level": "beginner|intermediate|expert",
+   "time_estimate": "quick|moderate|thorough",
+   "output_format": "text|markdown|code|json|structured",
+   "expected_outcomes": ["Outcome 1", "Outcome 2"],
+   "prerequisites": ["Prerequisite 1", "Prerequisite 2"],
+   "use_case_examples": ["Use case 1", "Use case 2", "Use case 3"],
+   "success_criteria": ["Criterion 1", "Criterion 2", "Criterion 3"],
+   "tone": "formal|friendly|technical|neutral",
+   "best_for": "Target user profile",
+   "avoid_if": "When this prompt is not appropriate",
+   "constraints": {},
+   "related_prompts": {
+      "after_this": ["prompt-a", "prompt-b"],
+      "before_this": ["prompt-c", "prompt-d"],
+      "workflow_chains": [
+         {
+            "name": "Category execution flow",
+            "prompts": ["current-prompt", "next-prompt", "follow-up-prompt"]
+         }
+      ]
+   }
 }
 ```
 

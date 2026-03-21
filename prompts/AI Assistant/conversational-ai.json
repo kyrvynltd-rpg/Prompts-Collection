@@ -17,7 +17,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Clear objective and expected outcome",
+    "Relevant context or source material when available"
   ],
   "use_case_examples": [
     "Support a user request for conversational ai with concise reasoning, assumptions, and next actions",
@@ -34,5 +35,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.577287"
+  "last_updated": "2026-03-21T23:54:41.588899",
+  "related_prompts": {
+    "after_this": [
+      "code-review-assistant",
+      "competitive-research-analyst"
+    ],
+    "before_this": [
+      "creative-writing-assistant",
+      "general-purpose-assistant"
+    ],
+    "workflow_chains": [
+      {
+        "name": "AI Assistant execution flow",
+        "prompts": [
+          "conversational-ai",
+          "code-review-assistant",
+          "competitive-research-analyst"
+        ]
+      }
+    ]
+  }
 }

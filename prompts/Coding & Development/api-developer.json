@@ -17,7 +17,9 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Programming fundamentals in target language",
+    "Access to codebase context, requirements, and constraints",
+    "API requirements, auth model, and request/response expectations"
   ],
   "use_case_examples": [
     "Implement api functionality for a production web application with clear acceptance criteria",
@@ -34,5 +36,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.633402"
+  "last_updated": "2026-03-21T23:54:41.635233",
+  "related_prompts": {
+    "after_this": [
+      "algorithm-designer",
+      "api-documentation-generator"
+    ],
+    "before_this": [
+      "ci-cd-pipeline-designer",
+      "code-review-assistant"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Coding & Development execution flow",
+        "prompts": [
+          "api-developer",
+          "algorithm-designer",
+          "api-documentation-generator"
+        ]
+      }
+    ]
+  }
 }

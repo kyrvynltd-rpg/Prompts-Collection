@@ -18,7 +18,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Customer issue context and relevant history",
+    "Service policy boundaries or escalation rules"
   ],
   "use_case_examples": [
     "Handle a high-priority customer satisfaction analyzer case with empathy, accountability, and clear resolution steps",
@@ -35,5 +36,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.710610"
+  "last_updated": "2026-03-21T23:54:41.697066",
+  "related_prompts": {
+    "after_this": [
+      "complaint-handler",
+      "customer-feedback-analyzer"
+    ],
+    "before_this": [
+      "customer-journey-mapper",
+      "customer-support-agent"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Customer Service execution flow",
+        "prompts": [
+          "customer-satisfaction-analyzer",
+          "complaint-handler",
+          "customer-feedback-analyzer"
+        ]
+      }
+    ]
+  }
 }

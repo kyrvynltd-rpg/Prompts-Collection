@@ -36,5 +36,25 @@
   "avoid_if": "You need technical documentation or API references",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.848577"
+  "last_updated": "2026-03-21T23:54:41.829853",
+  "related_prompts": {
+    "after_this": [
+      "content-editor",
+      "copywriting-expert"
+    ],
+    "before_this": [
+      "cover-letter-writer",
+      "email-professional"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Writing & Content execution flow",
+        "prompts": [
+          "blog-post-writer",
+          "content-editor",
+          "copywriting-expert"
+        ]
+      }
+    ]
+  }
 }

@@ -18,7 +18,9 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Clear objective and expected outcome",
+    "Relevant context or source material when available",
+    "Scope boundaries and credible source criteria"
   ],
   "use_case_examples": [
     "Support a user request for market research with concise reasoning, assumptions, and next actions",
@@ -35,5 +37,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.582943"
+  "last_updated": "2026-03-21T23:54:41.594840",
+  "related_prompts": {
+    "after_this": [
+      "code-review-assistant",
+      "competitive-research-analyst"
+    ],
+    "before_this": [
+      "conversational-ai",
+      "creative-writing-assistant"
+    ],
+    "workflow_chains": [
+      {
+        "name": "AI Assistant execution flow",
+        "prompts": [
+          "market-research-specialist",
+          "code-review-assistant",
+          "competitive-research-analyst"
+        ]
+      }
+    ]
+  }
 }

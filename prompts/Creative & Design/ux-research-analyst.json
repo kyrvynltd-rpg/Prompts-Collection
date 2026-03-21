@@ -18,7 +18,9 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Creative brief including audience and intent",
+    "Brand/style constraints and delivery format",
+    "Scope boundaries and credible source criteria"
   ],
   "use_case_examples": [
     "Develop a concept-driven ux research direction with clear audience intent and style rationale",
@@ -35,5 +37,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.693149"
+  "last_updated": "2026-03-21T23:54:41.684752",
+  "related_prompts": {
+    "after_this": [
+      "character-developer",
+      "dialogue-writer"
+    ],
+    "before_this": [
+      "plot-structure-advisor",
+      "poetry-creator"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Creative & Design execution flow",
+        "prompts": [
+          "ux-research-analyst",
+          "character-developer",
+          "dialogue-writer"
+        ]
+      }
+    ]
+  }
 }

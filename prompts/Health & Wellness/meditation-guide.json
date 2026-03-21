@@ -18,7 +18,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Personal goals and lifestyle constraints",
+    "Awareness that guidance is informational and not medical diagnosis"
   ],
   "use_case_examples": [
     "Create a practical meditation routine with realistic weekly checkpoints and adherence tracking",
@@ -35,5 +36,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.767822"
+  "last_updated": "2026-03-21T23:54:41.748758",
+  "related_prompts": {
+    "after_this": [
+      "fitness-planner",
+      "mental-health-support"
+    ],
+    "before_this": [
+      "nutrition-advisor",
+      "recovery-specialist"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Health & Wellness execution flow",
+        "prompts": [
+          "meditation-guide",
+          "fitness-planner",
+          "mental-health-support"
+        ]
+      }
+    ]
+  }
 }

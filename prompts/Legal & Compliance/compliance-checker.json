@@ -17,7 +17,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Jurisdiction and applicable regulatory context",
+    "Current policy/process documentation for review"
   ],
   "use_case_examples": [
     "Assess compliance checker exposure for a product launch and map obligations by jurisdiction",
@@ -34,5 +35,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.783118"
+  "last_updated": "2026-03-21T23:54:41.765167",
+  "related_prompts": {
+    "after_this": [
+      "contract-analyzer",
+      "data-protection-officer"
+    ],
+    "before_this": [
+      "intellectual-property-guide",
+      "legal-document-reviewer"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Legal & Compliance execution flow",
+        "prompts": [
+          "compliance-checker",
+          "contract-analyzer",
+          "data-protection-officer"
+        ]
+      }
+    ]
+  }
 }

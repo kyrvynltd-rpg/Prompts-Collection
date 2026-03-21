@@ -19,7 +19,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Programming fundamentals in target language",
+    "Access to codebase context, requirements, and constraints"
   ],
   "use_case_examples": [
     "Implement ci cd pipeline functionality for a production web application with clear acceptance criteria",
@@ -36,5 +37,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.638163"
+  "last_updated": "2026-03-21T23:54:41.639593",
+  "related_prompts": {
+    "after_this": [
+      "algorithm-designer",
+      "api-developer"
+    ],
+    "before_this": [
+      "api-documentation-generator",
+      "code-review-assistant"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Coding & Development execution flow",
+        "prompts": [
+          "ci-cd-pipeline-designer",
+          "algorithm-designer",
+          "api-developer"
+        ]
+      }
+    ]
+  }
 }

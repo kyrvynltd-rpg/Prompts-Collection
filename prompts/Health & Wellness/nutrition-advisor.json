@@ -36,5 +36,25 @@
   "avoid_if": "You have serious medical conditions (consult a doctor)",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.772474"
+  "last_updated": "2026-03-21T23:54:41.753606",
+  "related_prompts": {
+    "after_this": [
+      "fitness-planner",
+      "meditation-guide"
+    ],
+    "before_this": [
+      "mental-health-support",
+      "recovery-specialist"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Health & Wellness execution flow",
+        "prompts": [
+          "nutrition-advisor",
+          "fitness-planner",
+          "meditation-guide"
+        ]
+      }
+    ]
+  }
 }

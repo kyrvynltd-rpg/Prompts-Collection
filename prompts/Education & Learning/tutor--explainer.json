@@ -17,7 +17,8 @@
     "Comprehensive coverage of all aspects"
   ],
   "prerequisites": [
-    "Basic knowledge in relevant domain"
+    "Learner level and intended outcomes",
+    "Available time, format, and assessment needs"
   ],
   "use_case_examples": [
     "Design a structured tutor explainer experience with objectives, activities, and assessment criteria",
@@ -34,5 +35,25 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "version": "2.0",
-  "last_updated": "2026-03-21T23:50:01.761306"
+  "last_updated": "2026-03-21T23:54:41.742412",
+  "related_prompts": {
+    "after_this": [
+      "curriculum-developer",
+      "language-learning-assistant"
+    ],
+    "before_this": [
+      "learning-path-designer",
+      "lesson-plan-creator"
+    ],
+    "workflow_chains": [
+      {
+        "name": "Education & Learning execution flow",
+        "prompts": [
+          "tutor--explainer",
+          "curriculum-developer",
+          "language-learning-assistant"
+        ]
+      }
+    ]
+  }
 }
