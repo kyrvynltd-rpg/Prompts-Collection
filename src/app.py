@@ -5,7 +5,6 @@ A platform for improving AI prompts based on best practices
 
 import base64
 import re
-import time
 from collections import Counter
 from pathlib import Path
 
@@ -121,47 +120,7 @@ def render_centered_logo(width_px=96):
         unsafe_allow_html=True,
     )
 
-# Show a short branded landing screen before the app content.
-app_param = st.query_params.get("app")
-if isinstance(app_param, list):
-    app_param = app_param[0] if app_param else None
-
-if app_param != "1":
-    lcol1, lcol2, lcol3 = st.columns([1, 2, 1])
-    with lcol2:
-        render_centered_logo(104)
-
-        st.markdown(
-            """
-            <div class="welcome-wrap">
-                <div class="main-header">Welcome to Prompt Learning Platform</div>
-                <div class="welcome-lead">In this platform, you will learn how to write clearer, stronger prompts and improve AI output quality.</div>
-                <ul class="welcome-list">
-                    <li>Understand prompt structure: role, goal, constraints, and output format.</li>
-                    <li>Compare your prompt against best practices from a curated prompt library.</li>
-                    <li>Get actionable improvements and a refined version you can reuse immediately.</li>
-                </ul>
-                <div class="welcome-note"><span class="pulse">Preparing your workspace...</span> Redirecting in 7 seconds.</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # Preload cached data while users read the intro for smoother app transition.
-        _ = load_example_prompts()
-
-        progress_bar = st.progress(0)
-        for i in range(7):
-            progress_bar.progress(int(((i + 1) / 7) * 100))
-            time.sleep(1)
-
-        st.caption("If redirect does not start automatically, use this link below.")
-        if st.button("Open the app now", type="primary", use_container_width=True):
-            st.query_params["app"] = "1"
-            st.rerun()
-
-    st.query_params["app"] = "1"
-    st.rerun()
+# (The timed splash screen was removed: it delayed every visit by 7 seconds.)
 
 # Initialize session state
 if 'favorites' not in st.session_state:
@@ -868,6 +827,11 @@ st.markdown('<div class="brand-block">', unsafe_allow_html=True)
 render_centered_logo(92)
 st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
+
+_nav1, _nav2, _nav3 = st.columns(3)
+_nav1.page_link("pages/1_Practice.py", label="🎯 Practice mode", use_container_width=True)
+_nav2.page_link("pages/2_Library.py", label="📚 Prompt library", use_container_width=True)
+_nav3.page_link("pages/3_Account.py", label="🔑 Premium access", use_container_width=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.recommendations:
