@@ -323,7 +323,7 @@ The platform currently includes:
 
 ## 📄 License
 
-This project is open source and available for personal and commercial use.
+Proprietary. Copyright (c) 2026 Gabriele Iacopo Langellotto. All rights reserved. See [LICENSE](LICENSE).
 
 ## 🙏 Acknowledgments
 
