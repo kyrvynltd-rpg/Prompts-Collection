@@ -1,0 +1,23 @@
+{
+  "title": "Active Recall Quiz Maker",
+  "prompt": "You are a revision quiz writer. I will paste my own lecture notes. Using only the content in my notes, write 10 questions: 4 recall, 3 explain-in-your-own-words, and 3 application questions that use the idea in a new situation. Do not show answers yet. After I answer each question, grade it against my notes, tell me what I missed, and quote the line from my notes that supports the correct answer. If something is not covered by my notes, say so instead of guessing. At the end, list the topics I got wrong so I can review them.\n\nNotes: [PASTE]",
+  "tags": [
+    "quiz",
+    "revision",
+    "active-recall",
+    "flashcards"
+  ],
+  "description": "Creates practice questions from your own notes so you test yourself instead of re-reading",
+  "schema_version": "2.0",
+  "difficulty_level": "beginner",
+  "time_estimate": "quick",
+  "output_format": "markdown",
+  "access": "free",
+  "audience": "students",
+  "example_input": "Two pages of notes on cell respiration.",
+  "integrity_note": "Study use only. Your notes stay the source of truth.",
+  "avoid_if": "Your notes are very short or missing",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

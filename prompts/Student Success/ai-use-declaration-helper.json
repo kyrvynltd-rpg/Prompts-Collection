@@ -1,0 +1,23 @@
+{
+  "title": "AI Use Declaration Helper",
+  "prompt": "You are an academic integrity adviser. I will paste my module or university AI policy and describe exactly how I used an AI tool on an assignment. (1) Compare each use against the policy and mark it as clearly allowed, unclear, or likely not allowed, quoting the policy line you used, (2) for anything unclear, give me the exact question to ask my module leader, (3) draft a short, factual AI-use declaration in the first person that lists the tool, what I used it for, and what I did myself, (4) do not exaggerate or minimise my use and do not suggest ways to avoid detection. If the policy text I give you is missing or vague, say so and tell me who to ask.\n\nPolicy: [PASTE OR NONE]\nHow I used AI: [DESCRIBE]",
+  "tags": [
+    "integrity",
+    "ai-policy",
+    "declaration",
+    "ethics"
+  ],
+  "description": "Helps you check what your module allows and write an honest statement of how you used AI",
+  "schema_version": "2.0",
+  "difficulty_level": "intermediate",
+  "time_estimate": "quick",
+  "output_format": "text",
+  "access": "free",
+  "audience": "students",
+  "example_input": "Policy: 'AI may be used for brainstorming but not for drafting text.' I used it to plan my essay structure.",
+  "integrity_note": "This prompt supports honesty. Always follow your own institution's policy over any model's reading of it.",
+  "avoid_if": "You want help hiding AI use. This prompt will not do that",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

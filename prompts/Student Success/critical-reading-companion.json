@@ -1,0 +1,23 @@
+{
+  "title": "Critical Reading Companion",
+  "prompt": "You are a critical reading coach. I will paste the abstract and sections of a paper I am reading. Guide me through it: (1) state the central claim and the research question in plain language, (2) describe the method and the evidence in two sentences each, (3) list the main limitations the authors admit and two they may not have considered, (4) give me five questions to ask while reading the rest, (5) ask me to write my own two-sentence summary and then compare it to what the paper says. Do not summarise parts I have not shown you.\n\nPaper text: [PASTE]",
+  "tags": [
+    "reading",
+    "critical-thinking",
+    "academic-papers",
+    "analysis"
+  ],
+  "description": "Guides you through reading an academic paper by asking what it claims, how, and how well",
+  "schema_version": "2.0",
+  "difficulty_level": "intermediate",
+  "time_estimate": "moderate",
+  "output_format": "markdown",
+  "access": "premium",
+  "audience": "students",
+  "example_input": "The methods and results sections of a psychology paper.",
+  "integrity_note": "Use it to understand papers you read yourself. Do not cite a paper based on an AI summary alone.",
+  "avoid_if": "You need to cite details you have not checked in the paper",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

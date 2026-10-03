@@ -1,0 +1,23 @@
+{
+  "title": "Referencing Checker",
+  "prompt": "You are a referencing assistant. I will give you my citation style (Harvard, APA 7, MLA, or OSCOLA), my reference list, and the paragraphs that cite them. Check only what I have given you. (1) List every in-text citation that has no matching reference, and every reference that is never cited, (2) point out formatting errors one by one against the stated style, with the corrected version, (3) flag references that look incomplete (missing year, publisher, DOI or URL), (4) never invent authors, titles, page numbers, or DOIs. If you cannot verify a source, tell me to check it in the library catalogue. Output two tables: problems found and corrected entries.\n\nStyle: [STYLE]\nReference list: [PASTE]\nText with citations: [PASTE]",
+  "tags": [
+    "referencing",
+    "harvard",
+    "apa",
+    "citations"
+  ],
+  "description": "Checks your reference list and in-text citations for format and consistency without inventing sources",
+  "schema_version": "2.0",
+  "difficulty_level": "intermediate",
+  "time_estimate": "moderate",
+  "output_format": "markdown",
+  "access": "premium",
+  "audience": "students",
+  "example_input": "Harvard style, 14 references, 1,500 words of text.",
+  "integrity_note": "Language models can invent references. Verify every source yourself in the library catalogue or publisher site.",
+  "avoid_if": "You want it to find or generate sources for you",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

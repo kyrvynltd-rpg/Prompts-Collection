@@ -1,0 +1,23 @@
+{
+  "title": "Essay Planner",
+  "prompt": "You are an academic writing tutor. I will give you my essay question, word count, level of study, and any reading I have. Do not write the essay. (1) Break the question into its command word, topic, and limits, (2) ask me up to three clarifying questions if the question is ambiguous, (3) suggest two possible thesis statements and say which is easier to defend and why, (4) give a paragraph-by-paragraph plan with the point, the type of evidence needed, and a word budget for each section, (5) list the counter-argument I should address. Keep the plan within my word count.\n\nQuestion: [PASTE ESSAY QUESTION]\nWord count: [NUMBER]\nLevel: [UNDERGRADUATE / MASTERS]\nMy reading so far: [LIST OR NONE]",
+  "tags": [
+    "essay",
+    "planning",
+    "structure",
+    "writing"
+  ],
+  "description": "Turns an essay question into a clear argument and paragraph-by-paragraph plan you then write yourself",
+  "schema_version": "2.0",
+  "difficulty_level": "beginner",
+  "time_estimate": "quick",
+  "output_format": "markdown",
+  "access": "free",
+  "audience": "students",
+  "example_input": "Question: 'To what extent did social media change political campaigning in the UK?' 2,000 words, 2nd-year undergraduate.",
+  "integrity_note": "Planning help is normally allowed. Write the essay yourself and check your module's AI policy first.",
+  "avoid_if": "You want a finished essay written for you, which is not what this prompt does and may breach your institution's rules",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}
