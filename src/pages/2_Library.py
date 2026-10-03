@@ -7,6 +7,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import ui  # noqa: E402
+from entitlements import can_view, preview
 from library import STUDENT_CATEGORY, access_of, category_counts, search_prompts  # noqa: E402
 from prompt_loader import get_all_prompts  # noqa: E402
 
@@ -42,7 +43,11 @@ for i, p in enumerate(results[:limit]):
     with st.expander(f"{p['title']}  ·  {p['category']}  ·  {p.get('difficulty_level', '')}"):
         st.markdown(ui.badge(acc), unsafe_allow_html=True)
         st.write(p.get("description", ""))
-        st.code(p["prompt"], language=None)
+        if can_view(p, st.session_state.get("entitlement")):
+            st.code(p["prompt"], language=None)
+        else:
+            st.code(preview(p["prompt"]), language=None)
+            st.warning("🔒 Premium prompt. Enter an access code on the Account page to see the full text.")
         if p.get("integrity_note"):
             st.info("Integrity: " + p["integrity_note"])
         if p.get("example_input"):
