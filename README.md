@@ -75,7 +75,7 @@ This app is ready to deploy as a standard Streamlit web service.
 
 Detailed operational guide:
 
-- See [DEPLOYMENT_RUNBOOK.md](DEPLOYMENT_RUNBOOK.md) for click-by-click Render deployment, Azure Container Apps steps, and launch-day rollback/contingency planning.
+- See [docs/DEPLOYMENT_RUNBOOK.md](docs/DEPLOYMENT_RUNBOOK.md) for click-by-click Render deployment, Azure Container Apps steps, and launch-day rollback/contingency planning.
 
 ### Option A: Render (Fastest hosted setup)
 

@@ -20,3 +20,9 @@ Thumbs.db
 # Local-only data
 .streamlit/
 *.log
+tests/
+docs/
+scripts/
+.github/
+.pytest_cache/
+.ruff_cache/

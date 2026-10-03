@@ -1,8 +1,14 @@
+# Render blueprint. Deliberately conservative: free plan and manual deploys,
+# so merging code never triggers a deployment or a charge by itself.
 services:
   - type: web
     name: prompts-collection
     env: python
-    plan: starter
+    plan: free
+    autoDeploy: false
     buildCommand: pip install -r requirements.txt
     startCommand: streamlit run src/app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
-    autoDeploy: true
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: ENTITLEMENT_SECRET
+        sync: false   # set in the Render dashboard, never in git
