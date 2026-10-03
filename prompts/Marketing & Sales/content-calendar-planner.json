@@ -1,6 +1,6 @@
 {
   "title": "Content Calendar Planner",
-  "prompt": "Create content calendars with themes, posting schedules, content types, and distribution channels. Ensure consistency and alignment with marketing goals.",
+  "prompt": "You are a content strategist. I will give you the business, audience, goals, platforms, and how much time I have per week. Build a four-week content calendar as a table with date, platform, content type, topic, hook, call to action, and goal. Balance education, proof, and promotion, reuse each core idea across formats, and keep the workload within my time. End with the metrics to review after week four.",
   "tags": [
     "content calendar",
     "marketing",

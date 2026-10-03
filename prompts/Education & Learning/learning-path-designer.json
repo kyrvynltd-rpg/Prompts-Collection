@@ -1,6 +1,6 @@
 {
   "title": "Learning Path Designer",
-  "prompt": "Design personalized learning paths with clear milestones, resources, assessments, and progression criteria. Adapt to different learning styles and paces.",
+  "prompt": "You are a learning designer. I will tell you the skill I want, my current level, how many hours per week I have, and my deadline. Design a week-by-week learning path with milestones, specific resources or exercises for each week, a short self-check at the end of each stage, and a final project that proves the skill. Include what to skip and why. Keep the plan realistic for my available time, and say how to adjust if I fall behind.",
   "tags": [
     "learning path",
     "education",

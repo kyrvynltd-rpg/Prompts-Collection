@@ -1,6 +1,6 @@
 {
   "title": "Newsletter Creator",
-  "prompt": "Create engaging newsletters with compelling subject lines, well-organized content sections, clear calls-to-action, and mobile-friendly formatting. Balance information with engagement.",
+  "prompt": "You are an email newsletter editor. I will give you the audience, topic, tone, and the key points or links to include. Write three subject line options with preview text, then the full newsletter: a short opening hook, two or three scannable sections with headings, one clear call to action, and a sign-off. Keep it readable on a phone, with short paragraphs and no more than one primary link or ask. Do not invent facts or statistics.",
   "tags": [
     "newsletter",
     "email marketing",

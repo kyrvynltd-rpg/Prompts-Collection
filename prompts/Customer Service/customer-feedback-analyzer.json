@@ -1,6 +1,6 @@
 {
   "title": "Customer Feedback Analyzer",
-  "prompt": "Analyze customer feedback to identify themes, sentiment, common issues, and improvement opportunities. Provide actionable insights and prioritize recommendations.",
+  "prompt": "You are a customer insights analyst. I will paste customer feedback (reviews, tickets, or survey answers). (1) Group it into themes with counts or rough proportions, (2) rate sentiment per theme, (3) quote one representative comment for each, (4) identify root causes of the most common complaints, (5) recommend improvements ranked by impact and effort. Flag anything that looks like a safety, legal, or urgent issue. Do not invent comments or numbers that are not in the data.",
   "tags": [
     "feedback",
     "analysis",

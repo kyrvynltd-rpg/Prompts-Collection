@@ -3,14 +3,15 @@ Streamlit Prompts Collection Platform
 A platform for improving AI prompts based on best practices
 """
 
-import streamlit as st
-from prompt_loader import get_all_prompts, get_category_folders
+import base64
 import re
+import time
 from collections import Counter
 from pathlib import Path
-import time
-import base64
 
+import streamlit as st
+
+from prompt_loader import get_all_prompts, get_category_folders
 
 # Page configuration
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -191,12 +192,12 @@ def calculate_jaccard_similarity(set1, set2):
 def extract_keywords(text, min_length=3):
     """Extract meaningful keywords from text"""
     # Remove common stop words
-    stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 
-                  'of', 'with', 'by', 'from', 'as', 'is', 'are', 'was', 'were', 'be', 
-                  'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 
-                  'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this', 
+    stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+                  'of', 'with', 'by', 'from', 'as', 'is', 'are', 'was', 'were', 'be',
+                  'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will',
+                  'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this',
                   'that', 'these', 'those', 'you', 'your', 'it', 'its', 'they', 'them'}
-    
+
     words = normalize_text(text).split()
     keywords = [w for w in words if len(w) >= min_length and w not in stop_words]
     return set(keywords)
@@ -212,11 +213,11 @@ def extract_patterns_from_examples(example_prompts):
         'common_structures': [],
         'category_patterns': {}
     }
-    
+
     for ex in example_prompts:
         prompt_text = ex.get('prompt', '').lower()
         category = ex.get('category', '')
-        
+
         # Track patterns by category
         if category not in patterns['category_patterns']:
             patterns['category_patterns'][category] = {
@@ -224,7 +225,7 @@ def extract_patterns_from_examples(example_prompts):
                 'verbs': Counter(),
                 'quality': Counter()
             }
-        
+
         # Extract role definitions with better regex
         role_patterns = [
             r'you are ([^.]+?)(?:\.|,|$)',
@@ -239,9 +240,9 @@ def extract_patterns_from_examples(example_prompts):
                 patterns['role_definitions'].append(role)
                 patterns['category_patterns'][category]['roles'].append(role)
                 break
-        
+
         # Extract action verbs with context
-        action_verbs = ['generate', 'create', 'write', 'analyze', 'help', 'provide', 
+        action_verbs = ['generate', 'create', 'write', 'analyze', 'help', 'provide',
                        'explain', 'design', 'develop', 'assist', 'review', 'optimize',
                        'draft', 'build', 'make', 'produce', 'formulate', 'construct',
                        'compose', 'craft', 'prepare', 'organize', 'structure']
@@ -249,32 +250,32 @@ def extract_patterns_from_examples(example_prompts):
             if verb in prompt_text:
                 patterns['action_verbs'][verb] += 1
                 patterns['category_patterns'][category]['verbs'][verb] += 1
-        
+
         # Extract quality markers
-        quality_words = ['clear', 'well-structured', 'comprehensive', 'detailed', 
+        quality_words = ['clear', 'well-structured', 'comprehensive', 'detailed',
                         'accurate', 'professional', 'engaging', 'effective', 'concise',
                         'well-organized', 'thorough', 'precise', 'polished', 'refined']
         for word in quality_words:
             if word in prompt_text:
                 patterns['quality_markers'][word] += 1
                 patterns['category_patterns'][category]['quality'][word] += 1
-        
+
         # Extract format indicators
-        format_phrases = ['include', 'with', 'should', 'must', 'following', 
+        format_phrases = ['include', 'with', 'should', 'must', 'following',
                          'according to', 'based on', 'structure', 'format',
                          'containing', 'featuring', 'consisting of']
         for phrase in format_phrases:
             if phrase in prompt_text:
                 patterns['format_indicators'][phrase] += 1
-        
+
         # Extract constraint phrases
-        constraint_phrases = ['following', 'according to', 'based on', 
+        constraint_phrases = ['following', 'according to', 'based on',
                             'following standards', 'best practices', 'standards',
                             'guidelines', 'principles', 'conventions']
         for phrase in constraint_phrases:
             if phrase in prompt_text:
                 patterns['constraint_phrases'][phrase] += 1
-    
+
     return patterns
 
 ROLE_REGEX = re.compile(r"\b(you are|you\'re|act as|as an?|role:)\b", re.IGNORECASE)
@@ -815,27 +816,27 @@ with st.sidebar:
     st.divider()
 
     st.header("🔍 Search & Filter")
-    
+
     # Search
     search_query = st.text_input("Search prompts", placeholder="Type keywords, tags, or titles...")
-    
+
     # Category filter
     category_folders = get_category_folders()
     categories = ["All Categories"] + sorted(category_folders)
     selected_category = st.selectbox("Filter by Category", categories)
-    
+
     # Load prompts for sidebar
-    
+
     # Tag filter
     all_tags = set()
     for prompt in all_prompts:
         all_tags.update(prompt.get('tags', []))
     all_tags = sorted(list(all_tags))
-    
+
     selected_tags = st.multiselect("Filter by Tags", all_tags)
-    
+
     st.divider()
-    
+
     # Favorites section
     st.header("⭐ Favorites")
     if st.session_state.favorites:
@@ -850,14 +851,14 @@ with st.sidebar:
                     st.rerun()
     else:
         st.info("No favorites yet. Click ⭐ on any prompt to add it!")
-    
+
     st.divider()
-    
+
     # About section
     st.header("ℹ️ About")
     st.info("""
-    Enter your prompt in the main area and get improvement 
-    recommendations based on our curated prompt collection 
+    Enter your prompt in the main area and get improvement
+    recommendations based on our curated prompt collection
     and logical Python analysis.
     """)
 
@@ -926,15 +927,15 @@ if analyze_button and user_prompt.strip():
 # Display results if available
 if st.session_state.last_analyzed:
     analysis = st.session_state.last_analyzed
-    
+
     st.divider()
     st.markdown("### 📊 Analysis Results")
-    
+
     # Show best practices score with detailed breakdown
     practices_count = sum(analysis['best_practices'].values())
     total_practices = len(analysis['best_practices'])
     score = (practices_count / total_practices) * 100
-    
+
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("Best Practices Score", f"{score:.0f}%", f"{practices_count}/{total_practices} practices found")
@@ -943,7 +944,7 @@ if st.session_state.last_analyzed:
     with col3:
         word_count = len(analysis['original'].split())
         st.metric("Word Count", word_count, "Optimal: 20-50 words" if word_count < 20 or word_count > 50 else "✓")
-    
+
     # Detailed breakdown of best practices
     with st.expander("📋 Detailed Best Practices Breakdown"):
         practice_names = {
@@ -956,7 +957,7 @@ if st.session_state.last_analyzed:
         for practice, name in practice_names.items():
             status = "✅" if analysis['best_practices'].get(practice, False) else "❌"
             st.write(f"{status} **{name}**: {'Found' if analysis['best_practices'].get(practice, False) else 'Missing'}")
-    
+
     # Display recommendations using Streamlit native components
     if analysis['recommendations']:
         st.markdown("### 💡 Recommendations for Improvement")
@@ -976,7 +977,7 @@ if st.session_state.last_analyzed:
     st.divider()
     st.markdown("### ✨ Suggested Improved Prompt")
     st.code(analysis['improved'], language=None)
-    
+
     col1, col2 = st.columns(2)
     with col1:
         if st.button("📋 Copy Improved Prompt", use_container_width=True):
@@ -986,11 +987,11 @@ if st.session_state.last_analyzed:
         if st.button("🔄 Analyze Again", use_container_width=True):
             st.session_state.last_analyzed = None
             st.rerun()
-        
+
     # Show original for comparison
     with st.expander("📝 View Original Prompt"):
         st.code(analysis['original'], language=None)
-    
+
     # Show similar examples if available
     if analysis.get('similar_examples'):
         st.divider()

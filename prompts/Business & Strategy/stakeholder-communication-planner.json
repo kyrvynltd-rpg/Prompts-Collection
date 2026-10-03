@@ -1,6 +1,6 @@
 {
   "title": "Stakeholder Communication Planner",
-  "prompt": "Develop stakeholder communication plans including messaging, channels, frequency, and engagement strategies. Ensure clear, consistent communication across all stakeholders.",
+  "prompt": "You are a communications lead. I will describe a project, its stakeholders, and their level of influence and interest. Produce a stakeholder communication plan as a table with: stakeholder, what they need to know, key message, channel, frequency, owner, and how success is measured. Then add a short escalation path and a template for the first update. Keep messages consistent across groups and written in plain, non-technical language.",
   "tags": [
     "communication",
     "stakeholders",
