@@ -1,0 +1,195 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "name": "Foundations",
+      "goal": "Say who, what and how"
+    },
+    {
+      "id": 2,
+      "name": "Precision",
+      "goal": "Add context, constraints and format"
+    },
+    {
+      "id": 3,
+      "name": "Rigour",
+      "goal": "Make answers checkable and safe to use"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "e1",
+      "level": 1,
+      "title": "Summarise a reading",
+      "scenario": "You have a 6-page journal article and 30 minutes before a seminar. You want to understand it, not just get a summary.",
+      "weak_prompt": "Summarise this paper.",
+      "focus": [
+        "task",
+        "audience",
+        "format"
+      ],
+      "must_mention": [],
+      "model_prompt": "I am a second-year sociology student preparing for a seminar. Explain the main argument of the paper below in plain language, then list its method and two limitations as bullet points, under 250 words. Then ask me three questions to test whether I understood it.\n\n[PASTE TEXT]",
+      "tip": "Say who you are and what the output is for. A prompt that names a purpose gets a more useful answer."
+    },
+    {
+      "id": "e2",
+      "level": 1,
+      "title": "Plan an essay",
+      "scenario": "You must write 2,000 words on whether remote work improves productivity. You want help planning, not a written essay.",
+      "weak_prompt": "Help me with my essay on remote work.",
+      "focus": [
+        "role",
+        "task",
+        "constraints"
+      ],
+      "must_mention": [
+        "2000|2,000"
+      ],
+      "model_prompt": "Act as an academic writing tutor. I have a 2,000 word essay on whether remote work improves productivity. Do not write the essay. Suggest two thesis options, a paragraph-by-paragraph plan with a word budget, and one counter-argument to address.",
+      "tip": "Tell the model what NOT to do. It protects your learning and your integrity."
+    },
+    {
+      "id": "e3",
+      "level": 1,
+      "title": "Explain a concept",
+      "scenario": "You do not understand p-values and your exam is next week.",
+      "weak_prompt": "What is a p-value?",
+      "focus": [
+        "role",
+        "audience",
+        "examples"
+      ],
+      "must_mention": [
+        "p-value|p value"
+      ],
+      "model_prompt": "You are a statistics tutor. Explain p-values to a first-year student who has not studied statistics, using one everyday example. Then give a common misconception and ask me one question to check I understand.",
+      "tip": "Name your level. 'Explain to a first-year' beats 'explain'."
+    },
+    {
+      "id": "e4",
+      "level": 2,
+      "title": "Revision timetable",
+      "scenario": "Three exams in four weeks. You can study 4 hours a day. Biology is your weakest.",
+      "weak_prompt": "Make me a revision plan.",
+      "focus": [
+        "context",
+        "constraints",
+        "format"
+      ],
+      "must_mention": [
+        "4 hours|four hours|4h",
+        "week"
+      ],
+      "model_prompt": "Create a day-by-day revision plan for three exams in four weeks. I can study 4 hours a day on weekdays. Biology is my weakest subject, so give it the most time. Include one rest day a week and never schedule more than 4 hours in a day. Output a table by date.",
+      "tip": "Numbers are the strongest form of context: hours, dates, word counts, counts of items."
+    },
+    {
+      "id": "e5",
+      "level": 2,
+      "title": "Feedback, not rewriting",
+      "scenario": "You have a draft lab report and the marking criteria. You want to improve it yourself.",
+      "weak_prompt": "Improve my lab report.",
+      "focus": [
+        "role",
+        "task",
+        "constraints",
+        "format"
+      ],
+      "must_mention": [
+        "criteria|rubric|marking"
+      ],
+      "model_prompt": "You are a university marker. Using the marking criteria below, give feedback on my draft. Score each criterion 1-5 with a quoted example from my draft. Do not rewrite any text. List my three highest-impact improvements in order, presented as a table.\n\nCriteria: [PASTE]\nDraft: [PASTE]",
+      "tip": "Paste the marking criteria. It turns vague feedback into feedback on what you are graded on."
+    },
+    {
+      "id": "e6",
+      "level": 2,
+      "title": "Debug without the answer",
+      "scenario": "Your Python function returns None instead of a list. You want to learn why.",
+      "weak_prompt": "Fix my code.",
+      "focus": [
+        "role",
+        "context",
+        "constraints"
+      ],
+      "must_mention": [
+        "hint|clue|do not give|don't give|without giving"
+      ],
+      "model_prompt": "You are a programming tutor. My Python function returns None instead of a list (code below). Because I want to learn, do not give me the fixed code. Give me a hint and ask a question that helps me find the cause. If I am still stuck after two tries, explain the bug.\n\n[PASTE CODE]",
+      "tip": "Ask for hints first. You learn the concept and avoid pasting code you do not understand."
+    },
+    {
+      "id": "e7",
+      "level": 3,
+      "title": "Find sources safely",
+      "scenario": "You need academic sources for an essay, and you know models can invent references.",
+      "weak_prompt": "Give me references for climate policy.",
+      "focus": [
+        "task",
+        "verification",
+        "constraints"
+      ],
+      "must_mention": [
+        "verify|check|real"
+      ],
+      "model_prompt": "I am researching UK climate policy. Suggest search terms, key authors to look up, and journals to search. Do not invent references or quotes. Tell me clearly that I must verify every source in the library catalogue.",
+      "tip": "Models invent plausible references. Ask for search strategies and verify everything yourself."
+    },
+    {
+      "id": "e8",
+      "level": 3,
+      "title": "Check a claim",
+      "scenario": "A tool says 'the average student spends 3 hours a day on revision'. You want to know if it is safe to use.",
+      "weak_prompt": "Is this statistic true?",
+      "focus": [
+        "task",
+        "verification",
+        "format"
+      ],
+      "must_mention": [
+        "source|evidence"
+      ],
+      "model_prompt": "I want to use this statistic in an essay: 'the average student spends 3 hours a day on revision'. Present your answer as three bullet points. Tell me what evidence would be needed to support it, what could make it misleading, and what to search for. If you do not know a source, say so instead of guessing.",
+      "tip": "Ask the model to say when it does not know. It reduces confident-sounding mistakes."
+    },
+    {
+      "id": "e9",
+      "level": 3,
+      "title": "Honest AI declaration",
+      "scenario": "You used AI to plan an essay. Your module says AI may be used for brainstorming but not drafting.",
+      "weak_prompt": "Write an AI statement for my essay.",
+      "focus": [
+        "context",
+        "constraints",
+        "verification"
+      ],
+      "must_mention": [
+        "policy",
+        "planning|plan|brainstorm"
+      ],
+      "model_prompt": "My module policy says AI may be used for brainstorming but not drafting. I used an AI tool to plan my essay structure and wrote all text myself. Write a short, factual first-person declaration of that use. Do not exaggerate or hide anything. If the policy is unclear, tell me what to ask my module leader.",
+      "tip": "Give the real facts and ask for an honest statement. Never ask for help to hide use."
+    },
+    {
+      "id": "e10",
+      "level": 3,
+      "title": "Presentation rehearsal",
+      "scenario": "You present for 10 minutes to a lecturer panel and fear hard questions.",
+      "weak_prompt": "Help me with my presentation.",
+      "focus": [
+        "role",
+        "context",
+        "constraints",
+        "format",
+        "examples"
+      ],
+      "must_mention": [
+        "10 minutes|ten minutes|10-minute|10 min",
+        "question"
+      ],
+      "model_prompt": "Act as a panel of lecturers. I give a 10-minute presentation on [TOPIC]. Ask me the five hardest questions one at a time, wait for my answer, then give feedback on it in two bullet points. For example, push on assumptions and evidence. Do not write my script.",
+      "tip": "Role-play makes the model an examiner, which is more useful than a cheerleader."
+    }
+  ]
+}
