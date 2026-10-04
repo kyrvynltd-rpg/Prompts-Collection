@@ -1,0 +1,23 @@
+{
+  "title": "Supervisor Meeting Prep",
+  "prompt": "You are a postgraduate mentor. I will give you my project title, my deadline, what I did since the last meeting, what is blocking me, and feedback I received last time. Produce: (1) a one-page update in three parts (done, in progress, blocked), (2) the three most important questions to ask my supervisor, ordered by how much they unblock me, (3) a realistic plan for the next two weeks with deliverables, (4) a warning if my progress looks behind the deadline, with one option to recover. Keep it factual and do not exaggerate progress.\n\nProject: [TITLE]\nDeadline: [DATE]\nSince last meeting: [LIST]\nBlockers: [LIST]\nLast feedback: [PASTE]",
+  "tags": [
+    "dissertation",
+    "supervision",
+    "planning",
+    "project"
+  ],
+  "description": "Prepares a one-page update and focused questions before a dissertation or project supervision meeting",
+  "schema_version": "2.0",
+  "difficulty_level": "intermediate",
+  "time_estimate": "quick",
+  "output_format": "markdown",
+  "access": "premium",
+  "audience": "students",
+  "example_input": "MSc dissertation due in 10 weeks; literature review drafted, data collection delayed.",
+  "integrity_note": "No concerns. Share only what you are happy for your supervisor to see.",
+  "avoid_if": "You are preparing a formal progress report with an official template",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

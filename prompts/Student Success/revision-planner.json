@@ -1,0 +1,23 @@
+{
+  "title": "Exam Revision Planner",
+  "prompt": "You are a study coach. I will give you my exam dates, the topics for each module, how confident I feel in each topic (red, amber, green), and the hours I can study each day. Build a day-by-day revision plan up to my last exam that: (1) spends most time on red topics but revisits green ones, (2) uses spaced repetition with review sessions after 1, 3 and 7 days, (3) alternates modules so I do not study one subject for more than two hours in a row, (4) includes breaks, one rest day a week, and a light day before each exam, (5) puts past-paper practice in the final two weeks. Output a table by date and a short list of the three biggest risks in the plan.\n\nExams: [MODULE, DATE]\nTopics and confidence: [LIST]\nHours available per day: [NUMBER]",
+  "tags": [
+    "revision",
+    "exams",
+    "planning",
+    "time-management"
+  ],
+  "description": "Builds a realistic revision timetable from your exams, topics and available hours",
+  "schema_version": "2.0",
+  "difficulty_level": "beginner",
+  "time_estimate": "quick",
+  "output_format": "markdown",
+  "access": "free",
+  "audience": "students",
+  "example_input": "Three exams over 4 weeks, 4 hours a day on weekdays and 2 on weekends.",
+  "integrity_note": "No integrity concerns. Check the dates against your official timetable.",
+  "avoid_if": "You have not got your official exam timetable yet",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

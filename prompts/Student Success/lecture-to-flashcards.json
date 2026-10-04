@@ -1,0 +1,23 @@
+{
+  "title": "Lecture Notes to Flashcards",
+  "prompt": "You are a study card designer. From my lecture notes below, create flashcards as a table with columns Front, Back, and Topic. Rules: one idea per card, the front is a question or cloze sentence, the back is under 25 words, include 3 cards that ask me to compare two concepts, and use only facts that appear in my notes. Mark any card where my notes look incomplete or contradictory with a question mark so I can check my textbook. Finish with a CSV version I can import into Anki or Quizlet.\n\nNotes: [PASTE]",
+  "tags": [
+    "flashcards",
+    "notes",
+    "revision",
+    "memory"
+  ],
+  "description": "Converts your lecture notes into concise question and answer cards for spaced repetition apps",
+  "schema_version": "2.0",
+  "difficulty_level": "beginner",
+  "time_estimate": "quick",
+  "output_format": "structured",
+  "access": "premium",
+  "audience": "students",
+  "example_input": "One lecture on the French Revolution causes.",
+  "integrity_note": "Based only on your notes. Verify facts against course materials before relying on them.",
+  "avoid_if": "Your notes are mostly images or slides you have not typed up",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

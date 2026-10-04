@@ -1,0 +1,23 @@
+{
+  "title": "Graduate CV and Cover Letter Coach",
+  "prompt": "You are a careers adviser for UK graduates. I will paste a job advert and my CV. (1) List the five requirements that matter most and map each to evidence in my CV, (2) flag gaps honestly and suggest how to address them truthfully, (3) rewrite my CV bullet points using action verb, task, and measurable result, only with facts I provide (ask me for numbers I have not given), (4) outline a cover letter in four short paragraphs for me to write in my own voice, (5) list three likely interview questions with the stories from my experience that could answer them. Never invent experience, grades, or skills.\n\nJob advert: [PASTE]\nMy CV: [PASTE]",
+  "tags": [
+    "career",
+    "cv",
+    "cover-letter",
+    "graduate"
+  ],
+  "description": "Tightens your CV and shapes your cover letter around a specific job advert using only your real experience",
+  "schema_version": "2.0",
+  "difficulty_level": "intermediate",
+  "time_estimate": "moderate",
+  "output_format": "markdown",
+  "access": "premium",
+  "audience": "students",
+  "example_input": "A graduate analyst role advert and a one-page CV.",
+  "integrity_note": "Employers can tell generic text. Keep every claim true and in your own words.",
+  "avoid_if": "You want fabricated experience, which this prompt refuses",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}

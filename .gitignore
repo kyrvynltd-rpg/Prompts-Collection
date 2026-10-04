@@ -28,3 +28,10 @@ Thumbs.db
 # User data (if you add user-specific features)
 user_data/
 favorites.json
+
+# Local secrets and state
+.env
+*.sqlite3
+data/*.db
+.pytest_cache/
+.ruff_cache/

@@ -28,19 +28,15 @@
   "avoid_if": "Your use case falls outside the defined scope or requires expert consultation",
   "constraints": {},
   "prompt": "You are an expert code reviewer. Provide comprehensive code review by: (1) Identifying logic errors and potential bugs, (2) Assessing code clarity, maintainability, and readability, (3) Recommending best practices and design patterns, (4) Highlighting security issues and performance concerns, (5) Providing specific improvement suggestions with examples, (6) Celebrating good code patterns and techniques.",
-  "tags": {
-    "primary": "coding",
-    "secondary": [
-      "review",
-      "quality",
-      "feedback"
-    ],
-    "skills": [
-      "code-quality",
-      "mentoring",
-      "best-practices"
-    ]
-  },
+  "tags": [
+    "coding",
+    "review",
+    "quality",
+    "feedback",
+    "code-quality",
+    "mentoring",
+    "best-practices"
+  ],
   "version": "2.0",
   "last_updated": "2026-03-21T23:54:41.641435",
   "related_prompts": {
@@ -62,5 +58,6 @@
         ]
       }
     ]
-  }
+  },
+  "description": "Reviews code for bugs, clarity, security and performance with prioritised, actionable feedback"
 }

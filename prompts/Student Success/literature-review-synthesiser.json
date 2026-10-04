@@ -1,0 +1,23 @@
+{
+  "title": "Literature Review Synthesiser",
+  "prompt": "You are a research methods tutor. I will give you short notes on each paper I have read: citation, question, method, main finding, and limits. Using only my notes, (1) group the papers into 3-5 themes, (2) build a table showing which papers agree, disagree, or use different methods on each theme, (3) identify gaps or contradictions that might justify my research question, (4) suggest a logical order for my literature review sections with a one-line purpose for each, (5) list questions I should answer by re-reading specific papers. Do not add papers or findings that are not in my notes, and do not write the review text.\n\nResearch question: [QUESTION]\nPaper notes: [PASTE]",
+  "tags": [
+    "literature-review",
+    "research",
+    "synthesis",
+    "dissertation"
+  ],
+  "description": "Organises papers you have read into themes, agreements and gaps so you can write the synthesis yourself",
+  "schema_version": "2.0",
+  "difficulty_level": "expert",
+  "time_estimate": "thorough",
+  "output_format": "markdown",
+  "access": "premium",
+  "audience": "students",
+  "example_input": "Twelve papers on remote work and productivity, with 3-line notes each.",
+  "integrity_note": "You do the reading and the writing. This tool only helps you see structure in your own notes.",
+  "avoid_if": "You have not yet read the papers",
+  "best_for": "Students using AI as a study aid within their institution's rules",
+  "tone": "supportive",
+  "version": "3.0"
+}
