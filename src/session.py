@@ -13,7 +13,7 @@ import streamlit as st
 from accounts import AccountService, User
 from billing import DbEntitlements
 from db import Database, get_db
-from entitlements import Entitlement
+from entitlements import Entitlement, tier_for
 from learning import ProgressStore
 
 
@@ -67,3 +67,7 @@ def sign_out() -> None:
 
 def days_left(ent: Entitlement) -> int:
     return max(0, int((ent.expires_at - time.time()) // 86400))
+
+
+def current_tier() -> str:
+    return tier_for(current_entitlement())

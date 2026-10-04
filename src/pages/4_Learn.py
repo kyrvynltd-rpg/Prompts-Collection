@@ -8,7 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import session  # noqa: E402
 import ui  # noqa: E402
-from learning import grade, load_modules, module_summary, overall_percent  # noqa: E402
+from learning import grade, load_modules, module_summary, overall_percent, required_tier  # noqa: E402
+from tiers import allows  # noqa: E402
 
 ui.setup("Learn", "🎓")
 ui.header("🎓 Learn", "Short modules, graded exercises and a progress track. Grading runs locally and instantly. Nothing is sent to an AI.")
@@ -21,7 +22,7 @@ def _modules():
 
 modules = _modules()
 user = session.current_user()
-ent = session.current_entitlement()
+tier = session.current_tier()
 store = session.progress_store()
 saved = store.for_user(user.id) if user else st.session_state.setdefault("guest_progress", {})
 
@@ -31,12 +32,13 @@ if not user:
 
 for m in modules:
     s = module_summary(m, saved)
-    locked = m["access"] == "premium" and ent is None
+    need = required_tier(m)
+    locked = not allows(tier, need)
     label = f"{'🔒 ' if locked else ''}{m['title']}  ({s['done']}/{s['total']})"
     with st.expander(label):
         st.write(m["summary"])
         if locked:
-            st.warning("Premium module. Upgrade on the Account page to open it.")
+            st.warning(f"{need.capitalize()} module. Upgrade on the Account page to open it.")
             continue
         for lesson in m["lessons"]:
             st.markdown(f"**{lesson['title']}**  \n{lesson['body']}")

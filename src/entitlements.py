@@ -15,7 +15,7 @@ import time
 from dataclasses import dataclass
 
 PREFIX = "PL1"
-PLANS = {"student", "workshop"}
+PLANS = {"student", "workshop", "plus", "pro"}
 MIN_SECRET_LEN = 24
 
 
@@ -79,10 +79,16 @@ def verify_code(secret: str, code: str, now: float | None = None) -> Entitlement
     return ent
 
 
+def tier_for(ent: Entitlement | None, now: float | None = None) -> str:
+    """The tier an entitlement grants right now: free when missing or expired."""
+    from tiers import tier_of_plan
+    return tier_of_plan(ent.plan) if ent and ent.is_active(now) else "free"
+
+
 def can_view(prompt: dict, ent: Entitlement | None, now: float | None = None) -> bool:
     if prompt.get("access") != "premium":
         return True
-    return bool(ent and ent.is_active(now))
+    return tier_for(ent, now) != "free"
 
 
 def preview(text: str, words: int = 25) -> str:

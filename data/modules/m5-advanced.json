@@ -1,0 +1,188 @@
+{
+ "id": "m5-advanced",
+ "title": "Advanced: chains, critique loops and system prompts",
+ "level": 4,
+ "access": "premium",
+ "tier": "pro",
+ "summary": "Multi-step workflows, self-critique and reusable instructions for heavier projects such as dissertations.",
+ "lessons": [
+  {
+   "title": "Chains and critique loops",
+   "body": "Split a big task into stages and feed each result into the next. Add a critique step: ask the model to list weaknesses in its own answer, then revise. You stay the judge."
+  },
+  {
+   "title": "Reusable instructions",
+   "body": "Write a standing instruction block (role, rules, format, what to refuse) you paste at the start of a session. Keep it short and test it."
+  }
+ ],
+ "exercises": [
+  {
+   "id": "m5e1",
+   "title": "Plan a dissertation chain",
+   "scenario": "You have a 10,000 word dissertation and 12 weeks.",
+   "task": "Write a prompt that sets up a staged workflow, not one giant request.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Uses stages",
+     "weight": 2,
+     "terms": [
+      "step 1",
+      "stage",
+      "first,",
+      "then",
+      "next",
+      "phase"
+     ],
+     "hint": "Lay out stages: first..., then..."
+    },
+    {
+     "type": "contains_any",
+     "label": "Includes a checkpoint for you",
+     "weight": 2,
+     "terms": [
+      "wait for me",
+      "before moving on",
+      "check with me",
+      "confirm",
+      "pause"
+     ],
+     "hint": "Make it pause for your approval."
+    },
+    {
+     "type": "contains_any",
+     "label": "States the project",
+     "weight": 1,
+     "terms": [
+      "dissertation",
+      "10,000",
+      "12 weeks",
+      "thesis"
+     ],
+     "hint": "Name the project and deadline."
+    },
+    {
+     "type": "min_words",
+     "label": "Specific enough",
+     "weight": 1,
+     "n": 30,
+     "hint": "At least 30 words."
+    }
+   ],
+   "model_answer_tip": "'We will work in stages on my 12 week, 10,000 word dissertation. Stage 1: ask me five questions to narrow my topic. Then wait for me before moving on. Stage 2: help me outline chapters.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m5e2",
+   "title": "Add a critique loop",
+   "scenario": "You asked for a literature summary and want it checked.",
+   "task": "Ask the model to critique its own answer, then improve it.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Asks for self-critique",
+     "weight": 3,
+     "terms": [
+      "critique",
+      "weaknesses",
+      "what could be wrong",
+      "check your answer",
+      "review your"
+     ],
+     "hint": "Ask it to critique its own answer."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for a revision",
+     "weight": 2,
+     "terms": [
+      "revise",
+      "improve",
+      "rewrite your",
+      "second version",
+      "then fix"
+     ],
+     "hint": "Ask for a revised version."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks to flag uncertainty",
+     "weight": 1,
+     "terms": [
+      "unsure",
+      "uncertain",
+      "confidence",
+      "verify"
+     ],
+     "hint": "Ask it to flag what I must verify."
+    }
+   ],
+   "model_answer_tip": "'Summarise the main debates on X in 150 words. Then critique your own summary: list weaknesses and anything I must verify. Then revise it.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m5e3",
+   "title": "Write a standing instruction block",
+   "scenario": "You use AI for study every week and keep re-typing the rules.",
+   "task": "Write a short reusable instruction block.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Sets a role",
+     "weight": 1,
+     "terms": [
+      "you are",
+      "act as",
+      "as a ",
+      "as an ",
+      "role:"
+     ],
+     "hint": "Give a role."
+    },
+    {
+     "type": "contains_any",
+     "label": "Sets rules",
+     "weight": 2,
+     "terms": [
+      "always",
+      "never",
+      "rules",
+      "must",
+      "do not",
+      "don't"
+     ],
+     "hint": "Add rules with always or never."
+    },
+    {
+     "type": "contains_any",
+     "label": "Protects integrity",
+     "weight": 2,
+     "terms": [
+      "do not write",
+      "don't write",
+      "my own work",
+      "integrity",
+      "explain",
+      "hints"
+     ],
+     "hint": "Make it a coach, not a ghost-writer."
+    },
+    {
+     "type": "contains_any",
+     "label": "Sets format",
+     "weight": 1,
+     "terms": [
+      "format",
+      "bullet",
+      "under",
+      "words",
+      "short"
+     ],
+     "hint": "Say how long or what format."
+    }
+   ],
+   "model_answer_tip": "'You are my study coach. Always explain, never write assessed work for me, give hints first, keep answers under 150 words in bullet points, and tell me when you are unsure.'",
+   "pass_mark": 70
+  }
+ ]
+}

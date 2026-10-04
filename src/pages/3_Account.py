@@ -12,6 +12,7 @@ from accounts import AccountError  # noqa: E402
 from billing import checkout_url, configured_providers  # noqa: E402
 from entitlements import get_secret, verify_code  # noqa: E402
 from pricing import get_pricing  # noqa: E402
+from tiers import PRO_FEATURES  # noqa: E402
 
 ui.setup("Account", "🔑")
 ui.header("🔑 Account", "Free prompts and Practice are open to everyone. An account saves your progress and unlocks Premium.")
@@ -54,19 +55,27 @@ else:
     st.success(f"Signed in as {user.email}")
     ent = session.current_entitlement()
     if ent:
-        st.success(f"Premium active ({ent.plan}). About {session.days_left(ent)} days left.")
+        st.success(f"{session.current_tier().capitalize()} active. About {session.days_left(ent)} days left.")
     else:
-        st.subheader("Upgrade to Premium")
-        st.write(f"**{price.monthly_label()}** or **{price.annual_label()}** (save {price.annual_saving_percent}%). Cancel any time.")
+        st.subheader("Choose a plan")
+        period = st.radio("Billing", ["monthly", "annual"], horizontal=True, format_func=str.capitalize)
+        cols = st.columns(2)
+        for col, tier_name, blurb in ((cols[0], "plus", "All Premium prompts and modules, saved progress."),
+                                      (cols[1], "pro", "Plus, and: " + "; ".join(PRO_FEATURES).lower() + ".")):
+            with col:
+                st.markdown(f"**{tier_name.capitalize()}**  \n{price.get(tier_name, period).label()}"
+                            + (f" (save {price.annual_saving_percent(tier_name)}%)" if period == "annual" else ""))
+                st.caption(blurb)
+                providers = configured_providers(tier_name, period)
+                for p in providers:
+                    link = checkout_url(p, user.id, user.email, tier_name, period)
+                    if link:
+                        st.link_button(f"{tier_name.capitalize()} with {p.capitalize()}", link, use_container_width=True)
+                if not providers:
+                    st.caption("Online payment is not switched on yet.")
+        st.caption("Free tier: free prompts, Practice and the first module. Cancel any time.")
         if not user.student_verified:
             st.info("Student? Verify your university email below to confirm you are eligible for student pricing.")
-        providers = configured_providers()
-        if not providers:
-            st.caption("Online payment is not switched on for this deployment yet.")
-        for p in providers:
-            link = checkout_url(p, user.id, user.email)
-            if link:
-                st.link_button(f"Pay with {p.capitalize()}", link, use_container_width=True)
 
     st.subheader("Student verification")
     if user.student_verified:

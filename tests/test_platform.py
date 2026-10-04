@@ -174,13 +174,31 @@ def test_unknown_event_ignored_and_unmapped_customer(db):
 
 
 def test_checkout_urls(monkeypatch):
-    monkeypatch.delenv("STRIPE_PAYMENT_LINK", raising=False)
+    for name in ("STRIPE_LINK_PLUS_MONTHLY", "LEMONSQUEEZY_LINK_PLUS_MONTHLY", "PAYPAL_LINK_PRO_ANNUAL"):
+        monkeypatch.delenv(name, raising=False)
     assert billing.checkout_url("stripe", "u", "a@b.co") is None
-    monkeypatch.setenv("STRIPE_PAYMENT_LINK", "https://buy.example/abc")
+    monkeypatch.setenv("STRIPE_LINK_PLUS_MONTHLY", "https://buy.example/abc")
     assert "client_reference_id=u" in billing.checkout_url("stripe", "u", "a@b.co")
-    monkeypatch.setenv("LEMONSQUEEZY_CHECKOUT_URL", "https://s.example/checkout/buy/1?x=1")
+    assert billing.checkout_url("stripe", "u", "a@b.co", "pro", "annual") is None
+    monkeypatch.setenv("LEMONSQUEEZY_LINK_PLUS_MONTHLY", "https://s.example/checkout/buy/1?x=1")
     assert "%5Buser_id%5D=u" in billing.checkout_url("lemonsqueezy", "u", "a@b.co")
+    monkeypatch.setenv("PAYPAL_LINK_PRO_ANNUAL", "https://paypal.example/s")
+    assert "custom_id=u%3Apro" in billing.checkout_url("paypal", "u", "a@b.co", "pro", "annual")
     assert billing.configured_providers() == ["stripe", "lemonsqueezy"]
+
+
+def test_renewal_keeps_the_tier_the_user_bought(db):
+    store, now = DbEntitlements(db), int(time.time())
+    billing.apply_event(store, {"id": "a", "type": "payment.succeeded", "subject": "u9", "customer": "c9", "plan": "pro", "period_end": now + 100})
+    billing.apply_event(store, {"id": "b", "type": "payment.succeeded", "subject": None, "customer": "c9", "plan": None, "period_end": now + 999})
+    assert store.get("u9")["plan"] == "pro" and store.get("u9")["expires_at"] == now + 999
+
+
+def test_paypal_tier_from_custom_id(db):
+    body = json.dumps({"id": "WH-2", "event_type": "BILLING.SUBSCRIPTION.ACTIVATED", "resource": {"id": "I-2", "custom_id": "u4:pro"}}).encode()
+    store = DbEntitlements(db)
+    billing.process_provider_webhook(store, PayPalProvider(lambda b, h: True), "", body, {})
+    assert store.get("u4")["plan"] == "pro"
 
 
 def test_webhook_server_handler(db, monkeypatch):
@@ -192,14 +210,102 @@ def test_webhook_server_handler(db, monkeypatch):
     assert webhook_server.handle("/webhooks/stripe", body, _stripe_headers("s", body, now), store) == (200, "ignored")
 
 
-# ---- pricing
+# ---- pricing and tiers
 def test_pricing_defaults_and_override(monkeypatch):
+    for name in ("PRICE_PLUS_MONTHLY_GBP", "PRICE_PRO_MONTHLY_GBP"):
+        monkeypatch.delenv(name, raising=False)
     p = get_pricing()
-    assert (p.monthly, p.annual) == (4.99, 39.99) and p.annual_saving_percent == 33
-    monkeypatch.setenv("PRICE_MONTHLY_GBP", "9.99")
-    assert get_pricing().monthly_label() == "£9.99/month"
-    monkeypatch.setenv("PRICE_MONTHLY_GBP", "junk")
-    assert get_pricing().monthly == 4.99
+    assert p.get("plus", "monthly").label() == "\u00a34.99/month" and p.get("plus", "annual").amount == 39.99
+    assert p.get("pro", "monthly").amount == 9.99 and p.get("pro", "annual").amount == 99.99
+    assert p.annual_saving_percent("plus") == 33
+    monkeypatch.setenv("PRICE_PLUS_MONTHLY_GBP", "5.99")
+    assert get_pricing().get("plus", "monthly").amount == 5.99
+    monkeypatch.setenv("PRICE_PLUS_MONTHLY_GBP", "junk")
+    assert get_pricing().get("plus", "monthly").amount == 4.99
+
+
+def test_tiers_and_gating():
+    from entitlements import Entitlement, can_view, tier_for
+    from tiers import allows, tier_of_plan
+    assert tier_of_plan("student") == "plus" and tier_of_plan("workshop") == "pro" and tier_of_plan(None) == "free"
+    assert allows("pro", "plus") and not allows("plus", "pro") and allows("free", "free")
+    live, dead = Entitlement("u", "pro", 4_000_000_000), Entitlement("u", "plus", 1)
+    assert tier_for(live) == "pro" and tier_for(dead) == "free" and tier_for(None) == "free"
+    assert can_view({"access": "premium"}, Entitlement("u", "plus", 4_000_000_000))
+    assert not can_view({"access": "premium"}, dead)
+
+
+def test_module_tiers():
+    mods = {m["id"]: m for m in learning.load_modules()}
+    assert learning.required_tier(mods["m1-foundations"]) == "free"
+    assert learning.required_tier(mods["m2-precision"]) == "plus"
+    assert learning.required_tier(mods["m5-advanced"]) == "pro"
+
+
+# ---- workspace
+def test_workspace_crud_isolation_and_export(db):
+    from workspace import Workspace, WorkspaceError
+    ws = Workspace(db)
+    pid = ws.save("u1", "Essay helper", "Plan my essay", "study, essay")
+    ws.save("u2", "Other", "not yours")
+    assert [i["title"] for i in ws.list("u1")] == ["Essay helper"] and ws.list("u1", "essay")[0]["tags"] == ["study", "essay"]
+    assert ws.list("u1", "zzz") == []
+    ws.save("u1", "Essay helper v2", "Plan my essay better", "", prompt_id=pid)
+    assert ws.list("u1")[0]["title"] == "Essay helper v2"
+    with pytest.raises(WorkspaceError):
+        ws.save("u2", "x", "y", prompt_id=pid)  # cannot edit someone else's prompt
+    with pytest.raises(WorkspaceError):
+        ws.save("u1", "", "")
+    with pytest.raises(WorkspaceError):
+        ws.save("u1", "t", "x" * 9000)
+    assert "Essay helper v2" in ws.export_markdown("u1") and json.loads(ws.export_json("u1"))[0]["id"] == pid
+    ws.delete("u2", pid)  # no effect on another user's prompt
+    assert len(ws.list("u1")) == 1
+    ws.delete("u1", pid)
+    assert ws.list("u1") == []
+
+
+# ---- ai feedback
+def test_ai_feedback_off_cap_and_failure(db, monkeypatch):
+    import ai_feedback as ai
+    monkeypatch.delenv("AI_API_KEY", raising=False)
+    with pytest.raises(ai.AIFeedbackError, match="not switched on"):
+        ai.get_feedback(db, "u", "a prompt that is long enough")
+    monkeypatch.setenv("AI_API_KEY", "sk-secret-123")
+    monkeypatch.setenv("AI_MONTHLY_CAP", "2")
+    calls = []
+
+    def ok(url, headers, payload):
+        calls.append(payload)
+        return {"choices": [{"message": {"content": "Looks good."}}]}
+
+    assert ai.get_feedback(db, "u", "a prompt that is long enough", ok) == "Looks good."
+    assert "sk-secret-123" not in json.dumps(calls[0])  # the key goes in a header only
+    assert ai.remaining(db, "u") == 1
+
+    def boom(url, headers, payload):
+        raise OSError("network")
+
+    with pytest.raises(ai.AIFeedbackError, match="did not use your allowance"):
+        ai.get_feedback(db, "u", "a prompt that is long enough", boom)
+    assert ai.remaining(db, "u") == 1  # failures are free
+    ai.get_feedback(db, "u", "a prompt that is long enough", ok)
+    with pytest.raises(ai.AIFeedbackError, match="allowance"):
+        ai.get_feedback(db, "u", "a prompt that is long enough", ok)
+    assert ai.remaining(db, "u", now=time.time() + 40 * 86400) == 2  # next month resets
+    with pytest.raises(ai.AIFeedbackError):
+        ai.get_feedback(db, "other", "short", ok)
+    with pytest.raises(ai.AIFeedbackError):
+        ai.get_feedback(db, "other", "x" * 5000, ok)
+    monkeypatch.setenv("AI_MONTHLY_CAP", "junk")
+    assert ai.monthly_cap() == 30
+
+
+def test_templates_file():
+    from pathlib import Path
+    data = json.loads((Path(__file__).resolve().parent.parent / "data" / "templates.json").read_text())
+    ids = [t["id"] for t in data["templates"]]
+    assert len(ids) == len(set(ids)) >= 8 and all(t["body"] and t["title"] for t in data["templates"])
 
 
 # ---- learning

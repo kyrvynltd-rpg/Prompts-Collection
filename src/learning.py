@@ -43,6 +43,11 @@ def load_modules(directory: Path = MODULES_DIR) -> list[dict[str, Any]]:
     return sorted(modules, key=lambda m: (m["level"], m["id"]))
 
 
+def required_tier(module: dict[str, Any]) -> str:
+    """Tier needed to open a module: explicit `tier`, else plus for premium, else free."""
+    return str(module.get("tier") or ("plus" if module.get("access") == "premium" else "free"))
+
+
 def exercise_ids(modules: list[dict[str, Any]]) -> list[str]:
     return [e["id"] for m in modules for e in m["exercises"]]
 

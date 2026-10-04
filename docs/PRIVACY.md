@@ -4,7 +4,7 @@
 
 **What we collect:** email address, name (optional), password (stored only as a salted scrypt hash), the exercises you attempt and your scores, favourites, whether you verified a university email and its domain. Payment details are handled by the payment provider (Stripe, Lemon Squeezy or PayPal); we receive only a customer reference, plan and renewal date.
 
-**Prompts you type in exercises** are graded in the app and are not sent to any AI service or third party. They are not stored, only your score is.
+**Prompts you type in exercises** are graded in the app and are not sent to any third party. They are not stored, only your score. **Pro AI feedback:** if you use it, the prompt text you submit is sent to our AI provider [name] to generate feedback, and is not stored by us. **Pro workspace:** prompts you save are stored until you delete them.
 
 **Why (lawful basis):** to run your account and deliver the service (contract); to prevent abuse and keep the service secure (legitimate interests); to meet tax and accounting duties (legal obligation).
 

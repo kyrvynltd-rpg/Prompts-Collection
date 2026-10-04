@@ -77,6 +77,24 @@ MIGRATIONS: list[str] = [
         user_id TEXT NOT NULL
     );
     """,
+    # 4: Pro features
+    """
+    CREATE TABLE workspace_prompts (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL,
+        tags TEXT NOT NULL DEFAULT '',
+        created_at BIGINT NOT NULL,
+        updated_at BIGINT NOT NULL
+    );
+    CREATE TABLE ai_usage (
+        user_id TEXT NOT NULL,
+        month TEXT NOT NULL,
+        count INTEGER NOT NULL,
+        PRIMARY KEY (user_id, month)
+    );
+    """,
 ]
 
 

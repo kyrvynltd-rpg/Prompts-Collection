@@ -80,7 +80,7 @@ class StripeProvider:
         if not base["id"]:
             raise WebhookError("missing event id")
         if kind == "checkout.session.completed" and obj.get("payment_status") == "paid":
-            plan = (obj.get("metadata") or {}).get("plan", "student")
+            plan = (obj.get("metadata") or {}).get("plan", "plus")
             span = 35 * 24 * 3600 if obj.get("mode") == "subscription" else 365 * 24 * 3600
             return {**base, "type": "payment.succeeded", "subject": obj.get("client_reference_id"), "plan": plan,
                     "period_end": int(event.get("created", time.time())) + span}
@@ -88,11 +88,11 @@ class StripeProvider:
             line = (obj.get("lines", {}).get("data") or [{}])[0]
             end = (line.get("period") or {}).get("end")
             if end:
-                return {**base, "type": "payment.succeeded", "subject": None, "plan": "student", "period_end": int(end) + GRACE_SECONDS}
+                return {**base, "type": "payment.succeeded", "subject": None, "plan": None, "period_end": int(end) + GRACE_SECONDS}
         if kind == "customer.subscription.deleted":
-            return {**base, "type": "subscription.cancelled", "subject": None, "plan": "student", "period_end": 0}
+            return {**base, "type": "subscription.cancelled", "subject": None, "plan": None, "period_end": 0}
         if kind == "charge.refunded":
-            return {**base, "type": "payment.refunded", "subject": None, "plan": "student", "period_end": 0}
+            return {**base, "type": "payment.refunded", "subject": None, "plan": None, "period_end": 0}
         return None
 
 
@@ -116,7 +116,7 @@ class LemonSqueezyProvider:
         sub_id = str(data.get("id", ""))
         event_id = f"ls:{name}:{sub_id}:{attrs.get('updated_at', attrs.get('created_at', ''))}"
         subject = custom.get("user_id")
-        plan = custom.get("plan", "student")
+        plan = custom.get("plan")
         base = {"id": event_id, "subject": subject, "plan": plan, "customer": f"ls:{attrs.get('customer_id', sub_id)}"}
         if name in ("subscription_created", "subscription_payment_success", "subscription_resumed"):
             end = attrs.get("renews_at") or attrs.get("ends_at")
@@ -147,7 +147,9 @@ class PayPalProvider:
         event = _json(body)
         kind = event.get("event_type", "")
         res = event.get("resource", {})
-        base = {"id": str(event.get("id", "")), "subject": res.get("custom_id") or res.get("custom"), "plan": "student",
+        custom = str(res.get("custom_id") or res.get("custom") or "")
+        user_part, _, tier_part = custom.partition(":")
+        base = {"id": str(event.get("id", "")), "subject": user_part or None, "plan": tier_part or None,
                 "customer": f"pp:{res.get('id', '')}"}
         if not base["id"]:
             raise WebhookError("missing event id")
@@ -191,6 +193,10 @@ class DbEntitlements:
             return None
         return {"subject": subject, "plan": row[0], "expires_at": int(row[1])}
 
+    def plan_of(self, subject: str) -> str | None:
+        row = self.db.one("SELECT plan FROM grants WHERE subject=?", (subject,))
+        return row[0] if row else None
+
     def link_customer(self, customer: str, user_id: str) -> None:
         self.db.execute(
             "INSERT INTO customers (provider_customer, user_id) VALUES (?,?) "
@@ -217,7 +223,7 @@ def apply_event(store: DbEntitlements, event: dict) -> str:
     result = "ignored"
     if subject:
         if event["type"] == "payment.succeeded":
-            store.grant(subject, event["plan"], int(event["period_end"]))
+            store.grant(subject, event.get("plan") or store.plan_of(subject) or "plus", int(event["period_end"]))
             result = "applied"
         elif event["type"] in ("subscription.cancelled", "payment.refunded"):
             store.revoke(subject)
@@ -233,24 +239,23 @@ def process_provider_webhook(store: DbEntitlements, provider: Provider, secret: 
     return "ignored" if event is None else apply_event(store, event)
 
 
-def checkout_url(provider: str, user_id: str, email: str, plan: str = "student") -> str | None:
+def checkout_url(provider: str, user_id: str, email: str, tier: str = "plus", period: str = "monthly") -> str | None:
     """Hosted checkout link for this user, built from a link you create in the provider dashboard.
 
-    STRIPE_PAYMENT_LINK / LEMONSQUEEZY_CHECKOUT_URL / PAYPAL_SUBSCRIBE_URL come from the environment. Returns None
-    when that provider is not configured, so the UI can hide the button.
+    One env var per link: STRIPE_LINK_PLUS_MONTHLY, STRIPE_LINK_PRO_ANNUAL, LEMONSQUEEZY_LINK_PLUS_MONTHLY,
+    PAYPAL_LINK_PRO_MONTHLY and so on. Returns None when that link is not configured, so the UI hides the button.
     """
-    env = {"stripe": "STRIPE_PAYMENT_LINK", "lemonsqueezy": "LEMONSQUEEZY_CHECKOUT_URL", "paypal": "PAYPAL_SUBSCRIBE_URL"}
-    base = os.getenv(env.get(provider, ""), "")
-    if not base:
+    base = os.getenv(f"{provider.upper()}_LINK_{tier.upper()}_{period.upper()}", "")
+    if not base or provider not in ("stripe", "lemonsqueezy", "paypal"):
         return None
     if provider == "stripe":
         query = {"client_reference_id": user_id, "prefilled_email": email}
     elif provider == "lemonsqueezy":
-        query = {"checkout[email]": email, "checkout[custom][user_id]": user_id, "checkout[custom][plan]": plan}
+        query = {"checkout[email]": email, "checkout[custom][user_id]": user_id, "checkout[custom][plan]": tier}
     else:
-        query = {"custom_id": user_id}
+        query = {"custom_id": f"{user_id}:{tier}"}
     return f"{base}{'&' if '?' in base else '?'}{urlencode(query)}"
 
 
-def configured_providers() -> list[str]:
-    return [p for p in ("stripe", "lemonsqueezy", "paypal") if checkout_url(p, "x", "x@example.com")]
+def configured_providers(tier: str = "plus", period: str = "monthly") -> list[str]:
+    return [p for p in ("stripe", "lemonsqueezy", "paypal") if checkout_url(p, "x", "x@example.com", tier, period)]

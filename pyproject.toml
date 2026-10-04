@@ -14,7 +14,7 @@ ignore = ["E501"]
 [tool.mypy]
 python_version = "3.10"
 mypy_path = "src"
-files = ["src/db.py", "src/accounts.py", "src/billing.py", "src/learning.py", "src/pricing.py", "src/webhook_server.py", "src/entitlements.py"]
+files = ["src/db.py", "src/accounts.py", "src/billing.py", "src/learning.py", "src/pricing.py", "src/webhook_server.py", "src/entitlements.py", "src/tiers.py", "src/workspace.py", "src/ai_feedback.py"]
 ignore_missing_imports = true
 warn_unused_ignores = true
 check_untyped_defs = true

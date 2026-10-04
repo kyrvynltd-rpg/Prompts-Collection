@@ -1,0 +1,52 @@
+{
+ "templates": [
+  {
+   "id": "t1",
+   "title": "Seminar prep brief",
+   "category": "Study",
+   "body": "You are a seminar tutor. I am a [year] [subject] student preparing for a seminar on [topic] in [time] minutes. From the text I paste, give: 1) the main argument in two sentences, 2) five key terms with one-line definitions, 3) three questions I could raise. Flag anything you are unsure about."
+  },
+  {
+   "id": "t2",
+   "title": "Revision timetable builder",
+   "category": "Study",
+   "body": "Build a day-by-day revision table. Exams: [list with dates]. Hours per day: [n]. Weakest topics: [list] (give them extra time). Include one rest block per day and a catch-up slot every fourth day. Output a table with columns Day, Block, Topic, Task."
+  },
+  {
+   "id": "t3",
+   "title": "Essay outline, not the essay",
+   "category": "Writing",
+   "body": "I am writing an essay: [question]. Give a [n]-paragraph outline with a claim per paragraph, the type of evidence to look for, and one counter-argument. Do not write any paragraphs for me."
+  },
+  {
+   "id": "t4",
+   "title": "Feedback on my own draft",
+   "category": "Writing",
+   "body": "Below is my own draft. Give feedback against these marking criteria: [criteria]. List strengths, then the three biggest weaknesses with where they appear. Do not rewrite any sentences."
+  },
+  {
+   "id": "t5",
+   "title": "Lab report checker",
+   "category": "STEM",
+   "body": "Check my lab report section for structure only: aim, method, results, discussion. For each, say if it is present, what is missing, and one fix. Do not change my data or add results."
+  },
+  {
+   "id": "t6",
+   "title": "Code debugging coach",
+   "category": "Coding",
+   "body": "My [language] code should [expected] but [actual]. Here is the code and the error. Walk me through why it happens, give a hint first, then wait. Only show the fix if I ask."
+  },
+  {
+   "id": "t7",
+   "title": "Graduate CV bullet tailor",
+   "category": "Careers",
+   "body": "Rewrite these duties as 3 CV bullets for [role] at [company]. Use strong verbs, show impact where it is real, and do not invent numbers or achievements: [duties]."
+  },
+  {
+   "id": "t8",
+   "title": "Workshop warm-up: spot the gap",
+   "category": "Workshop",
+   "body": "Here is a weak prompt: [prompt]. List what is missing (role, context, constraints, format, checkability). Then ask me to rewrite it and give feedback on my version before showing yours."
+  }
+ ]
+}
