@@ -95,6 +95,17 @@ MIGRATIONS: list[str] = [
         PRIMARY KEY (user_id, month)
     );
     """,
+    # 5: audit log, terms acceptance
+    """
+    CREATE TABLE audit_log (
+        ts BIGINT NOT NULL,
+        event TEXT NOT NULL,
+        user_id TEXT NOT NULL,
+        detail TEXT NOT NULL
+    );
+    ALTER TABLE users ADD COLUMN terms_accepted_at BIGINT;
+    ALTER TABLE users ADD COLUMN terms_version TEXT;
+    """,
 ]
 
 

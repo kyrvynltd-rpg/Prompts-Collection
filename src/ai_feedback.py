@@ -14,6 +14,7 @@ import time
 import urllib.request
 from collections.abc import Callable
 
+import audit
 from db import Database
 
 MAX_INPUT = 4000
@@ -85,4 +86,5 @@ def get_feedback(db: Database, user_id: str, prompt: str, transport: Transport |
     else:
         db.execute("INSERT INTO ai_usage (user_id, month, count) VALUES (?,?,1)", (user_id, month))
     db.commit()
+    audit.record(db, "ai_feedback", user_id)
     return text

@@ -8,6 +8,7 @@ from __future__ import annotations
 import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+import audit
 from billing import PROVIDERS, DbEntitlements, WebhookError, process_provider_webhook
 from db import get_db
 
@@ -24,6 +25,7 @@ def handle(path: str, body: bytes, headers: dict[str, str], store: DbEntitlement
     try:
         result = process_provider_webhook(store, provider, os.getenv(SECRET_ENV.get(name, ""), ""), body, headers)
     except WebhookError:
+        audit.record(store.db, "webhook_rejected", detail=name)
         return 400, "rejected"
     return 200, result
 

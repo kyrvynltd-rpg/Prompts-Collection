@@ -1,6 +1,8 @@
 """Shared look and feel: responsive CSS, header and footer for all pages."""
 import streamlit as st
 
+import brand
+
 CSS = """
 <style>
 .block-container { max-width: 1000px; padding-top: 1.5rem; }
@@ -33,7 +35,8 @@ def header(title: str, subtitle: str) -> None:
 
 def footer() -> None:
     st.markdown(
-        "<div class='pl-footer'>Copyright © 2026 Gabriele Iacopo Langellotto. All rights reserved. "
+        f"<div class='pl-footer'>{brand.copyright_line()} {brand.company_line()} "
+        f"<a href='{brand.site_url()}'>{brand.site_url().split('//')[-1]}</a><br>"
         "AI can be wrong: verify facts and follow your institution's AI policy.</div>",
         unsafe_allow_html=True,
     )

@@ -8,6 +8,7 @@ from pathlib import Path
 
 import streamlit as st
 
+import brand
 from prompt_loader import get_all_prompts, get_category_folders
 
 # Page configuration
@@ -370,10 +371,10 @@ if st.session_state.last_analyzed:
 
 # Footer
 st.divider()
-st.markdown("""
+st.markdown(f"""
 <div style='text-align: center; color: #666; padding: 2rem;'>
     <p>💡 Prompt Improvement Tool | Built with Streamlit</p>
     <p>Make your prompts better using our curated collection and logical Python analysis</p>
-    <p style='margin-top: 0.8rem; font-size: 0.9rem;'>Copyright © 2026 Gabriele Iacopo Langellotto. All rights reserved. Intellectual Property of Gabriele Iacopo Langellotto.</p>
+    <p style='margin-top: 0.8rem; font-size: 0.9rem;'>{brand.copyright_line()} Intellectual property of {brand.owner_name()}. <a href='{brand.site_url()}'>{brand.site_url().split('//')[-1]}</a></p>
 </div>
 """, unsafe_allow_html=True)

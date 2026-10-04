@@ -19,6 +19,7 @@ from datetime import datetime
 from typing import Protocol
 from urllib.parse import urlencode
 
+import audit
 from db import Database
 
 TOLERANCE_SECONDS = 300
@@ -230,6 +231,7 @@ def apply_event(store: DbEntitlements, event: dict) -> str:
             result = "applied"
     store.record_event(event["id"])
     store.commit()
+    audit.record(store.db, "payment_event", subject or "", detail=f"{event['type']}:{result}")
     return result
 
 

@@ -34,6 +34,21 @@ if user is None:
                     st.rerun()
                 except AccountError as exc:
                     st.error(str(exc))
+        with st.expander("Forgot your password?"):
+            with st.form("reset_request"):
+                r_email = st.text_input("Account email", key="reset_email")
+                if st.form_submit_button("Send reset code"):
+                    svc.request_password_reset(r_email)
+                    st.success("If that email has an account, a code is on its way.")
+            with st.form("reset_do"):
+                r_code = st.text_input("Reset code")
+                r_pw = st.text_input("New password", type="password")
+                if st.form_submit_button("Set new password"):
+                    try:
+                        svc.reset_password(r_email, r_code, r_pw)
+                        st.success("Password changed. You can sign in now.")
+                    except AccountError as exc:
+                        st.error(str(exc))
     with tab_up:
         with st.form("register"):
             name = st.text_input("Name (optional)")
@@ -76,6 +91,17 @@ else:
         st.caption("Free tier: free prompts, Practice and the first module. Cancel any time.")
         if not user.student_verified:
             st.info("Student? Verify your university email below to confirm you are eligible for student pricing.")
+
+    if not svc.is_email_verified(user.id):
+        with st.form("verify_email"):
+            st.caption("Confirm your email: we sent a code when you signed up.")
+            v_code = st.text_input("Email confirmation code")
+            if st.form_submit_button("Confirm email"):
+                try:
+                    svc.confirm_email(user.id, v_code)
+                    st.rerun()
+                except AccountError as exc:
+                    st.error(str(exc))
 
     st.subheader("Student verification")
     if user.student_verified:

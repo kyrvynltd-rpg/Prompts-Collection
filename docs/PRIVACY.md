@@ -1,6 +1,6 @@
 # Privacy Policy (DRAFT - have a UK solicitor review before launch)
 
-**Controller:** [business name and address], contact [email]. Last updated: [date].
+**Controller:** Kyrvyn Ltd, registered in England and Wales, company number [company number], registered office [registered office address], https://kyrvynltd.co.uk, contact [contact email]. ICO registration number: [ICO number]. Last updated: [date].
 
 **What we collect:** email address, name (optional), password (stored only as a salted scrypt hash), the exercises you attempt and your scores, favourites, whether you verified a university email and its domain. Payment details are handled by the payment provider (Stripe, Lemon Squeezy or PayPal); we receive only a customer reference, plan and renewal date.
 
@@ -19,3 +19,9 @@
 **International transfers:** where a provider is outside the UK, we rely on UK-approved safeguards [confirm per provider].
 
 **Cookies:** only a session cookie needed for the app to work. No analytics or advertising cookies [update if that changes].
+
+**Security logging:** we keep a security log (event type, account id, time, and a one-way tag instead of your email on failed sign-ins) for 12 months to detect abuse.
+
+**Backups:** deleted accounts may remain in encrypted backups until those backups expire [state period, e.g. 35 days].
+
+**Complaints:** contact us first at [contact email], or the ICO at ico.org.uk.

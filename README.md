@@ -2,7 +2,7 @@
 
 A Streamlit app that teaches students to write better AI prompts and gives them a library of study-focused prompts, with a free tier and a premium tier.
 
-**Copyright (c) 2026 Gabriele Iacopo Langellotto. All rights reserved.** See [LICENSE](LICENSE).
+**Copyright (c) 2026 Kyrvyn Ltd (kyrvynltd.co.uk), company number [company number]. All rights reserved.** See [LICENSE](LICENSE) and [docs/OWNERSHIP.md](docs/OWNERSHIP.md).
 
 ## What it does
 
@@ -81,3 +81,6 @@ See [docs/ACADEMIC_INTEGRITY.md](docs/ACADEMIC_INTEGRITY.md). Students must foll
 ## Prompt schema
 
 See [docs/SCHEMA_V2_SPECIFICATION.md](docs/SCHEMA_V2_SPECIFICATION.md). Student Success prompts add `access` (`free` or `premium`), `audience`, `example_input` and `integrity_note`.
+
+## Security and compliance
+Aligned with UK GDPR and ISO 27001-style controls (not certified). See [docs/COMPLIANCE_GAP_REVIEW.md](docs/COMPLIANCE_GAP_REVIEW.md), [SECURITY.md](SECURITY.md), [docs/PRIVACY.md](docs/PRIVACY.md), [docs/TERMS.md](docs/TERMS.md), [docs/DATA_RETENTION.md](docs/DATA_RETENTION.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md), [docs/INCIDENT_RESPONSE.md](docs/INCIDENT_RESPONSE.md). Owner: Kyrvyn Ltd, see [docs/OWNERSHIP.md](docs/OWNERSHIP.md).
