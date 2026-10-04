@@ -6,6 +6,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+import session  # noqa: E402
 import ui  # noqa: E402
 from entitlements import can_view, preview
 from library import STUDENT_CATEGORY, access_of, category_counts, search_prompts  # noqa: E402
@@ -43,7 +44,7 @@ for i, p in enumerate(results[:limit]):
     with st.expander(f"{p['title']}  ·  {p['category']}  ·  {p.get('difficulty_level', '')}"):
         st.markdown(ui.badge(acc), unsafe_allow_html=True)
         st.write(p.get("description", ""))
-        if can_view(p, st.session_state.get("entitlement")):
+        if can_view(p, session.current_entitlement()):
             st.code(p["prompt"], language=None)
         else:
             st.code(preview(p["prompt"]), language=None)

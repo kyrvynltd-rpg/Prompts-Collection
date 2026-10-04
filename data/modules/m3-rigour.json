@@ -1,0 +1,199 @@
+{
+ "id": "m3-rigour",
+ "title": "Rigour: checkable, honest, integrity-safe",
+ "level": 3,
+ "access": "premium",
+ "summary": "Get answers you can check, and use AI in ways your university will accept.",
+ "lessons": [
+  {
+   "title": "Make answers checkable",
+   "body": "Ask for sources you can verify, for the model to flag uncertainty, and for step-by-step working. Then check them. Models can invent references."
+  },
+  {
+   "title": "Academic integrity",
+   "body": "Use AI to learn and to give feedback on your own work, not to submit its writing as yours. Read your institution's policy and declare use where required."
+  }
+ ],
+ "exercises": [
+  {
+   "id": "m3e1",
+   "title": "Ask for verifiable help",
+   "scenario": "You need background on a topic and must cite real sources.",
+   "task": "Write a prompt that asks for checkable claims and honest uncertainty.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Asks to flag uncertainty",
+     "weight": 2,
+     "terms": [
+      "uncertain",
+      "not sure",
+      "confidence",
+      "if you are unsure",
+      "say if",
+      "flag"
+     ],
+     "hint": "Ask it to say when it is unsure."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for verifiable sources",
+     "weight": 2,
+     "terms": [
+      "source",
+      "sources",
+      "reference",
+      "cite",
+      "citation",
+      "link"
+     ],
+     "hint": "Ask for sources."
+    },
+    {
+     "type": "contains_any",
+     "label": "Warns against invention",
+     "weight": 2,
+     "terms": [
+      "do not invent",
+      "don't invent",
+      "do not make up",
+      "only real",
+      "do not fabricate",
+      "don't make up"
+     ],
+     "hint": "Tell it not to invent references."
+    },
+    {
+     "type": "min_words",
+     "label": "Specific enough",
+     "weight": 1,
+     "n": 18,
+     "hint": "At least 18 words."
+    }
+   ],
+   "model_answer_tip": "'Give me background on X. Cite real sources I can look up, say if you are unsure, and do not invent any references.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m3e2",
+   "title": "Feedback, not ghost-writing",
+   "scenario": "You wrote an essay draft and want help improving it without the AI writing it.",
+   "task": "Ask for feedback on YOUR draft, not a rewrite.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Asks for feedback",
+     "weight": 2,
+     "terms": [
+      "feedback",
+      "critique",
+      "review",
+      "comments",
+      "weaknesses"
+     ],
+     "hint": "Ask for feedback."
+    },
+    {
+     "type": "contains_any",
+     "label": "Refuses a rewrite",
+     "weight": 3,
+     "terms": [
+      "do not rewrite",
+      "don't rewrite",
+      "without rewriting",
+      "do not write",
+      "don't write",
+      "not rewrite",
+      "only suggest"
+     ],
+     "hint": "Say it must not rewrite or write for you."
+    },
+    {
+     "type": "contains_any",
+     "label": "Refers to your own draft",
+     "weight": 1,
+     "terms": [
+      "my draft",
+      "my essay",
+      "my paragraph",
+      "my own",
+      "i wrote"
+     ],
+     "hint": "Say it is your own work."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for a rubric/criteria",
+     "weight": 1,
+     "terms": [
+      "criteria",
+      "rubric",
+      "marking",
+      "assignment brief",
+      "learning outcomes"
+     ],
+     "hint": "Mention the marking criteria."
+    }
+   ],
+   "model_answer_tip": "'Here is my own draft. Give feedback against the marking criteria below. Do not rewrite any sentences; point to weaknesses and suggest what to improve.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m3e3",
+   "title": "Declare your AI use",
+   "scenario": "Your module requires an AI-use declaration.",
+   "task": "Ask for help drafting an honest declaration of how you used AI.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Mentions declaration/disclosure",
+     "weight": 2,
+     "terms": [
+      "declaration",
+      "declare",
+      "disclose",
+      "disclosure",
+      "acknowledge"
+     ],
+     "hint": "Mention the declaration."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks to list what the AI did",
+     "weight": 2,
+     "terms": [
+      "what i used",
+      "how i used",
+      "tools",
+      "prompts",
+      "tasks",
+      "list"
+     ],
+     "hint": "Say you will list what the AI did."
+    },
+    {
+     "type": "contains_any",
+     "label": "Keeps it truthful",
+     "weight": 2,
+     "terms": [
+      "honest",
+      "accurate",
+      "truthful",
+      "exactly",
+      "only what"
+     ],
+     "hint": "Ask it to stay accurate to what you actually did."
+    },
+    {
+     "type": "min_words",
+     "label": "Specific enough",
+     "weight": 1,
+     "n": 15,
+     "hint": "At least 15 words."
+    }
+   ],
+   "model_answer_tip": "'Help me write a short, honest AI-use declaration. I used it only to explain concepts and check grammar. List exactly that and nothing more.'",
+   "pass_mark": 70
+  }
+ ]
+}

@@ -1,0 +1,206 @@
+{
+ "id": "m4-applied",
+ "title": "Applied: study, career and projects",
+ "level": 3,
+ "access": "premium",
+ "summary": "Put it together on real student tasks: essays, code, CVs, group work.",
+ "lessons": [
+  {
+   "title": "Chain the steps",
+   "body": "Break big jobs into steps: plan, draft, critique, revise. One prompt per step is easier to check than one giant prompt."
+  },
+  {
+   "title": "Iterate",
+   "body": "Treat the first answer as a draft. Say what is wrong and what to keep."
+  }
+ ],
+ "exercises": [
+  {
+   "id": "m4e1",
+   "title": "Plan an essay",
+   "scenario": "Essay due in two weeks: 'To what extent did the printing press cause the Reformation?'",
+   "task": "Ask for a plan, not the essay.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Asks for a plan/outline",
+     "weight": 2,
+     "terms": [
+      "plan",
+      "outline",
+      "structure",
+      "argument map"
+     ],
+     "hint": "Ask for an outline."
+    },
+    {
+     "type": "contains_any",
+     "label": "Says not to write the essay",
+     "weight": 2,
+     "terms": [
+      "do not write the essay",
+      "don't write the essay",
+      "not the essay",
+      "without writing",
+      "only an outline",
+      "not write"
+     ],
+     "hint": "Say you want a plan, not the essay."
+    },
+    {
+     "type": "contains_any",
+     "label": "Includes the question",
+     "weight": 1,
+     "terms": [
+      "printing press",
+      "reformation"
+     ],
+     "hint": "Include the essay question."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for counter-arguments",
+     "weight": 2,
+     "terms": [
+      "counter",
+      "counterargument",
+      "opposing",
+      "other factors",
+      "alternative"
+     ],
+     "hint": "Ask for counter-arguments."
+    }
+   ],
+   "model_answer_tip": "'Give me a 5-paragraph outline for: To what extent did the printing press cause the Reformation? Include counter-arguments. Do not write the essay.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m4e2",
+   "title": "Debug with a coach",
+   "scenario": "Your Python loop prints the wrong total.",
+   "task": "Ask for hints, not just the fixed code.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Asks for hints/explanation",
+     "weight": 2,
+     "terms": [
+      "hint",
+      "explain",
+      "why",
+      "walk me through",
+      "step by step",
+      "teach"
+     ],
+     "hint": "Ask it to explain or hint."
+    },
+    {
+     "type": "contains_any",
+     "label": "Says what is wrong",
+     "weight": 2,
+     "terms": [
+      "wrong",
+      "bug",
+      "error",
+      "expected",
+      "instead of",
+      "should be",
+      "prints"
+     ],
+     "hint": "Say expected vs actual."
+    },
+    {
+     "type": "contains_any",
+     "label": "Mentions language/code",
+     "weight": 1,
+     "terms": [
+      "python",
+      "code",
+      "loop",
+      "function"
+     ],
+     "hint": "Say the language."
+    },
+    {
+     "type": "contains_any",
+     "label": "Avoids giving the full answer",
+     "weight": 2,
+     "terms": [
+      "do not give the answer",
+      "don't give the answer",
+      "without giving",
+      "before showing",
+      "hint first",
+      "don't just give",
+      "do not just give"
+     ],
+     "hint": "Ask for hints before the fix."
+    }
+   ],
+   "model_answer_tip": "'My Python loop prints 10 but should print 15. Here is the code. Walk me through why, give a hint first, and do not just give the fixed code.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m4e3",
+   "title": "Tailor a CV bullet",
+   "scenario": "You have a retail job and are applying for a graduate analyst scheme.",
+   "task": "Ask for CV bullet rewrites that stay truthful.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Names the target role",
+     "weight": 1,
+     "terms": [
+      "analyst",
+      "graduate",
+      "scheme",
+      "role"
+     ],
+     "hint": "Name the role."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for bullets",
+     "weight": 1,
+     "terms": [
+      "bullet",
+      "bullets",
+      "cv line",
+      "achievement"
+     ],
+     "hint": "Ask for bullets."
+    },
+    {
+     "type": "contains_any",
+     "label": "Keeps it truthful",
+     "weight": 3,
+     "terms": [
+      "do not invent",
+      "don't invent",
+      "only what",
+      "truthful",
+      "honest",
+      "do not exaggerate",
+      "don't exaggerate"
+     ],
+     "hint": "Say not to invent achievements."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for numbers/impact",
+     "weight": 1,
+     "terms": [
+      "impact",
+      "metric",
+      "number",
+      "quantify",
+      "result"
+     ],
+     "hint": "Ask for impact where it is real."
+    }
+   ],
+   "model_answer_tip": "'Rewrite these retail duties as 3 CV bullets for a graduate analyst scheme. Show impact where it is real, and do not invent numbers.'",
+   "pass_mark": 70
+  }
+ ]
+}

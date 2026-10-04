@@ -1,0 +1,189 @@
+{
+ "id": "m2-precision",
+ "title": "Precision: constraints, format and examples",
+ "level": 2,
+ "access": "premium",
+ "summary": "Control length, structure and style, and show the model what good looks like.",
+ "lessons": [
+  {
+   "title": "Constraints are instructions",
+   "body": "Limits on length, tone, sources and things to avoid make answers shorter to edit. 'Under 200 words, plain English, no jargon' beats 'make it good'."
+  },
+  {
+   "title": "Format and examples",
+   "body": "Ask for the shape you need: a table, numbered steps, JSON. One short example of the output style (few-shot) usually beats a paragraph of description."
+  }
+ ],
+ "exercises": [
+  {
+   "id": "m2e1",
+   "title": "Constrain the answer",
+   "scenario": "You need a 150-word abstract for a lab report.",
+   "task": "Write a prompt with clear limits on length, tone and what to leave out.",
+   "checks": [
+    {
+     "type": "regex",
+     "label": "States a length limit",
+     "weight": 2,
+     "pattern": "\\b\\d{2,4}[\\s-]*words?\\b|\\bunder \\d+|\\bat most \\d+|\\bno more than \\d+",
+     "hint": "Give a number, e.g. 'under 150 words'."
+    },
+    {
+     "type": "contains_any",
+     "label": "Sets tone or style",
+     "weight": 1,
+     "terms": [
+      "formal",
+      "academic",
+      "plain",
+      "neutral",
+      "tone",
+      "style",
+      "concise"
+     ],
+     "hint": "Say the tone."
+    },
+    {
+     "type": "contains_any",
+     "label": "Says what to avoid",
+     "weight": 2,
+     "terms": [
+      "avoid",
+      "do not",
+      "don't",
+      "without",
+      "no jargon",
+      "never"
+     ],
+     "hint": "Add something to avoid."
+    },
+    {
+     "type": "contains_any",
+     "label": "Names the document type",
+     "weight": 1,
+     "terms": [
+      "abstract",
+      "lab report"
+     ],
+     "hint": "Name what you are writing."
+    }
+   ],
+   "model_answer_tip": "'Write a formal 150-word abstract for my chemistry lab report from the notes below. Avoid first person and do not invent results.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m2e2",
+   "title": "Ask for a structure",
+   "scenario": "You want to compare two theories for an essay.",
+   "task": "Ask for a comparison in a specific structure.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Asks for a table or headings",
+     "weight": 2,
+     "terms": [
+      "table",
+      "columns",
+      "headings",
+      "sections",
+      "side by side"
+     ],
+     "hint": "Ask for a table or headed sections."
+    },
+    {
+     "type": "contains_any",
+     "label": "Names the comparison criteria",
+     "weight": 2,
+     "terms": [
+      "compare",
+      "criteria",
+      "strengths",
+      "weaknesses",
+      "differences",
+      "similarities"
+     ],
+     "hint": "Name what to compare on."
+    },
+    {
+     "type": "count_at_least",
+     "label": "Names both theories (two proper items)",
+     "weight": 1,
+     "terms": [
+      "and",
+      "vs",
+      "versus",
+      "between"
+     ],
+     "n": 1,
+     "hint": "Name both things being compared."
+    },
+    {
+     "type": "min_words",
+     "label": "Specific enough",
+     "weight": 1,
+     "n": 15,
+     "hint": "At least 15 words."
+    }
+   ],
+   "model_answer_tip": "'Compare behaviourism and constructivism in a table with columns for key idea, strengths, weaknesses and one classroom example.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m2e3",
+   "title": "Show, do not tell",
+   "scenario": "You want feedback written in a consistent style.",
+   "task": "Include one short example of the feedback style you want.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Includes an example marker",
+     "weight": 3,
+     "terms": [
+      "example:",
+      "for example",
+      "e.g.",
+      "like this",
+      "sample",
+      "input:",
+      "output:"
+     ],
+     "hint": "Add an 'Example:' with a short sample."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for feedback/critique",
+     "weight": 1,
+     "terms": [
+      "feedback",
+      "critique",
+      "review",
+      "comment"
+     ],
+     "hint": "Say you want feedback."
+    },
+    {
+     "type": "contains_any",
+     "label": "Defines the style",
+     "weight": 1,
+     "terms": [
+      "tone",
+      "style",
+      "format",
+      "structure",
+      "bullet"
+     ],
+     "hint": "Describe the style."
+    },
+    {
+     "type": "min_words",
+     "label": "Long enough to hold an example",
+     "weight": 1,
+     "n": 25,
+     "hint": "At least 25 words."
+    }
+   ],
+   "model_answer_tip": "'Give feedback on my paragraph in this style. Example: Strength: clear claim. Fix: add evidence from week 3. Next step: cite one source.'",
+   "pass_mark": 70
+  }
+ ]
+}

@@ -52,7 +52,14 @@ python scripts/issue_access_code.py student@example.ac.uk student 30
 
 ```
 src/app.py            Home: prompt analyser
-src/pages/            Practice, Library, Account pages
+src/pages/            Practice, Library, Account, Learn pages
+src/analysis.py       prompt analysis logic
+src/db.py             SQLite / Postgres layer
+src/accounts.py       accounts, sessions, student verification
+src/billing.py        Stripe / Lemon Squeezy / PayPal adapters
+src/learning.py       modules and grading
+data/modules/         learning modules (JSON)
+docs/                 PAYMENTS, ARCHITECTURE, PRIVACY and TERMS drafts
 src/practice.py       Rubric scoring engine
 src/library.py        Search and filtering
 src/entitlements.py   Signed access codes

@@ -10,3 +10,20 @@ extend-exclude = ["scripts/enhance_all_prompts_v2.py", "scripts/enhance_prompts_
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+mypy_path = "src"
+files = ["src/db.py", "src/accounts.py", "src/billing.py", "src/learning.py", "src/pricing.py", "src/webhook_server.py", "src/entitlements.py"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+check_untyped_defs = true
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["src/app.py", "src/pages/*", "src/session.py", "src/ui.py"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]

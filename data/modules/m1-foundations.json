@@ -1,0 +1,200 @@
+{
+ "id": "m1-foundations",
+ "title": "Foundations: say who, what and how",
+ "level": 1,
+ "access": "free",
+ "summary": "The three parts of almost every good prompt: a role, a task and the context.",
+ "lessons": [
+  {
+   "title": "Why vague prompts fail",
+   "body": "A model fills gaps with guesses. 'Summarise this' leaves out who it is for, how long, and what you need it for. Every gap you close is one less guess."
+  },
+  {
+   "title": "Role, task, context",
+   "body": "Role: who the model should act as. Task: the one thing to do. Context: the facts it cannot know, such as your course, level or deadline. Start with these three before anything else."
+  }
+ ],
+ "exercises": [
+  {
+   "id": "m1e1",
+   "title": "Summarise a reading",
+   "scenario": "You have a 6-page journal article and 30 minutes before a seminar. 'Summarise this paper.' is too thin.",
+   "task": "Rewrite the prompt so you get something you can use in the seminar.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Gives the model a role",
+     "weight": 2,
+     "terms": [
+      "you are",
+      "act as",
+      "as a ",
+      "as an ",
+      "role:",
+      "imagine you"
+     ],
+     "hint": "Start with a role, e.g. 'You are a patient seminar tutor'."
+    },
+    {
+     "type": "contains_any",
+     "label": "Says who it is for / your level",
+     "weight": 2,
+     "terms": [
+      "undergraduate",
+      "first-year",
+      "second-year",
+      "student",
+      "beginner",
+      "level",
+      "seminar",
+      "audience"
+     ],
+     "hint": "Say who the answer is for and their level."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for a specific output",
+     "weight": 2,
+     "terms": [
+      "bullet",
+      "key points",
+      "summary of",
+      "questions",
+      "list",
+      "outline",
+      "paragraph",
+      "table"
+     ],
+     "hint": "Name the output: e.g. five bullet points and two discussion questions."
+    },
+    {
+     "type": "min_words",
+     "label": "Long enough to carry context",
+     "weight": 1,
+     "n": 18,
+     "hint": "Aim for at least 18 words so context fits."
+    }
+   ],
+   "model_answer_tip": "A strong version: 'You are a seminar tutor. I am a second-year history student with 30 minutes. Summarise the attached article in five bullets, then give two questions I could raise.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m1e2",
+   "title": "Explain a concept",
+   "scenario": "You do not understand 'opportunity cost' from your economics lecture.",
+   "task": "Write a prompt that gets an explanation pitched at your level with an example.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Sets a role",
+     "weight": 1,
+     "terms": [
+      "you are",
+      "act as",
+      "as a ",
+      "as an ",
+      "role:",
+      "imagine you"
+     ],
+     "hint": "Give the model a role such as a tutor."
+    },
+    {
+     "type": "contains_any",
+     "label": "States your level",
+     "weight": 2,
+     "terms": [
+      "beginner",
+      "first-year",
+      "a-level",
+      "no background",
+      "new to",
+      "level",
+      "student"
+     ],
+     "hint": "Say what you already know."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for an example",
+     "weight": 2,
+     "terms": [
+      "example",
+      "analogy",
+      "real-world",
+      "case"
+     ],
+     "hint": "Ask for a concrete example."
+    },
+    {
+     "type": "contains_any",
+     "label": "Names the topic",
+     "weight": 1,
+     "terms": [
+      "opportunity cost"
+     ],
+     "hint": "Name the concept."
+    }
+   ],
+   "model_answer_tip": "'You are an economics tutor. I am a first-year with no background. Explain opportunity cost in under 150 words with one everyday example.'",
+   "pass_mark": 70
+  },
+  {
+   "id": "m1e3",
+   "title": "Plan a study week",
+   "scenario": "Exams start in 10 days. You have 4 modules and 2 hours a day.",
+   "task": "Write a prompt that produces a usable revision plan.",
+   "checks": [
+    {
+     "type": "contains_any",
+     "label": "Gives constraints (time)",
+     "weight": 2,
+     "terms": [
+      "10 days",
+      "ten days",
+      "2 hours",
+      "two hours",
+      "per day",
+      "a day",
+      "daily"
+     ],
+     "hint": "Include the days and hours you have."
+    },
+    {
+     "type": "contains_any",
+     "label": "Mentions the modules/subjects",
+     "weight": 1,
+     "terms": [
+      "module",
+      "modules",
+      "subject",
+      "subjects",
+      "4 "
+     ],
+     "hint": "Say how many modules or which ones."
+    },
+    {
+     "type": "contains_any",
+     "label": "Asks for a format",
+     "weight": 2,
+     "terms": [
+      "table",
+      "timetable",
+      "day-by-day",
+      "schedule",
+      "checklist"
+     ],
+     "hint": "Ask for a timetable or table."
+    },
+    {
+     "type": "min_words",
+     "label": "Specific enough",
+     "weight": 1,
+     "n": 20,
+     "hint": "Add detail: at least 20 words."
+    }
+   ],
+   "model_answer_tip": "'Make a day-by-day table for the next 10 days. I have 4 modules and 2 hours a day, and I am weakest in statistics, so give it extra time.'",
+   "pass_mark": 70
+  }
+ ]
+}
