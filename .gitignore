@@ -35,3 +35,7 @@ favorites.json
 data/*.db
 .pytest_cache/
 .ruff_cache/
+.coverage
+promptlab.db
+backups/
+*.db
