@@ -1,6 +1,6 @@
 # Record of processing activities (UK GDPR Art 30) - template filled from the code. Owner to confirm.
 
-Controller: Kyrvyn Ltd, https://kyrvynltd.co.uk, company number 17246800. Contact: info@kyrvynltd.co.uk. DPO: not required [confirm].
+Controller: Kyrvyn Ltd, https://kyrvynltd.co.uk, company number 17246800. Contact: info@kyrvynltd.co.uk. ICO number: [ICO number]. DPO: not required on current scope. [SOLICITOR TO CONFIRM: DPO and ICO registration]
 
 | Activity | Data | People | Purpose and basis | Recipients | Retention | Security |
 |---|---|---|---|---|---|---|
@@ -9,5 +9,5 @@ Controller: Kyrvyn Ltd, https://kyrvynltd.co.uk, company number 17246800. Contac
 | Learning progress | exercise ids, scores, attempts | users | deliver the service (contract) | database provider | until account deleted | per-user scoping |
 | Workspace (Pro) | saved prompts, tags | Pro users | deliver the service (contract) | database provider | until deleted by user | per-user scoping |
 | Payments | customer reference, plan, renewal date | paying users | take payment, tax (contract, legal obligation) | Stripe / Lemon Squeezy / PayPal | per provider, tax rules | signature-verified webhooks |
-| AI feedback (Pro) | prompt text sent, usage count | Pro users | deliver feature (contract) | AI provider [name] | text not stored; count 13 months | capped, off by default |
+| AI feedback (Pro) | prompt text sent, usage count | Pro users | deliver feature (contract) | [AI provider] | text not stored; count 13 months | capped, off by default |
 | Security logging | event, user id, time, hashed identifier | users | security (legitimate interests) | log host | 12 months | no secrets or raw emails |

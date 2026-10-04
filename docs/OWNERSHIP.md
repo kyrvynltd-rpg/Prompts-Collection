@@ -4,7 +4,7 @@ The product, prompts and documentation are presented as owned by **Kyrvyn Ltd** 
 
 ## Important: display is not transfer
 Showing a company name does not move ownership. The work was written by Gabriele Iacopo Langellotto. Copyright passes to the company only by a signed written assignment (or the company being the author under an employment/contract term). Before charging customers:
-1. Sign an assignment of copyright from Gabriele to Kyrvyn Ltd covering this repository, the prompts and the brand (a solicitor can draft it in a short document). Put its date in LICENSE where marked.
+1. Sign an assignment of copyright from Gabriele to Kyrvyn Ltd covering this repository, the prompts and the brand (a solicitor can draft it in a short document). Put its date in LICENSE where marked ([assignment date]).
 2. Move the GitHub repository into a Kyrvyn Ltd GitHub organisation.
 3. Check third-party content, fonts and dependencies for licence terms.
 4. Register the name or logo as a trade mark if wanted. Register with the ICO as a data controller.

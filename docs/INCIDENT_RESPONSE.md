@@ -1,6 +1,6 @@
 # Security incident response
 
-**Owner:** [name, role, phone] (Kyrvyn Ltd). Backup: [name].
+**Owner:** [incident owner] (Kyrvyn Ltd), with a named backup. Contact: info@kyrvynltd.co.uk.
 
 1. **Detect.** Sources: audit log spikes (many `login_fail`, `login_locked`, `webhook_rejected`), provider alerts, user reports to the security mailbox.
 2. **Triage (within 4 hours).** What happened, which data, how many people, is it still going on. Write it down with times.
@@ -9,4 +9,4 @@
 5. **Recover.** Fix the cause, restore from backup if needed (docs/BACKUP_RESTORE.md), watch the audit log.
 6. **Learn.** Within 14 days: short written review, actions with owners, update these docs. Keep a breach log even when no notification is needed.
 
-Contacts: ICO breach line and web form [check current details], payment providers' security contacts, hosting support.
+Contacts: ICO breach reporting (ico.org.uk, report a breach; check the current details at the time), payment providers' security contacts, hosting support.

@@ -1,23 +1,30 @@
-# Monetisation plan (scaffold only, nothing is live)
+# Monetisation plan
 
-## Offer hypotheses (to test, not proven)
-- Free: analyser, Practice mode, 6 Student Success prompts. Purpose: acquisition and trust.
-- Premium (about GBP 1/month idea): 9 premium Student Success prompts plus new content each month.
-- Workshops: facilitated prompt-literacy session using Practice mode, with a workshop access code for attendees.
+Status: code is built and tested with mocks. Nothing is connected to a live payment provider. Figures below are hypotheses to test, not proven demand.
 
-Competitor prices checked 3 Oct 2026: Learn Prompting Plus about USD 21/month billed annually, a Lovable-built prompt library USD 4.99/month, The Prompt Center USD 500/year per campus. A GBP 1 price is well below them. Validate demand with a small paid pilot before building more.
+## Tiers
+| Tier | Price | For |
+|---|---|---|
+| Free | 0 | Acquisition and trust: analyser, Practice, free prompts, module 1 |
+| Plus | 4.99 GBP/month or 39.99 GBP/year | Full library, all Student Success prompts, modules 1-4, saved progress |
+| Pro | 9.99 GBP/month or 99.99 GBP/year | Plus, workspace and templates, AI feedback (monthly cap), advanced track |
+| Workshops | by arrangement | Facilitated prompt-literacy sessions; attendees get a workshop access code (grants Pro) |
 
-## How access works today
-1. You issue a signed code with `scripts/issue_access_code.py` (subject, plan, days).
-2. The student enters it on the Account page. Verification is local, HMAC-SHA256, expiry enforced, fails closed.
+Prices are configuration (`PRICE_<TIER>_<PERIOD>_GBP`) and must match the price set in the payment provider.
 
-## Path to automatic billing (not built)
-1. Pick a provider (a merchant of record such as Paddle or Lemon Squeezy handles UK/EU VAT; Stripe needs you to handle it). Needs an account decision from the owner.
-2. Write a provider adapter implementing `PaymentProvider.parse_webhook`.
-3. Run a small separate web service (Streamlit cannot receive webhooks) that calls `payments.process_webhook`, then issues a code by email or exposes a lookup.
-4. Keep `ENTITLEMENT_SECRET` and `PAYMENT_WEBHOOK_SECRET` in the host's secret store.
+## Competitor reference (checked 3 Oct 2026, re-check before relying on it)
+Learn Prompting Plus about USD 21/month billed annually; a Lovable-built prompt library USD 4.99/month; The Prompt Center USD 500/year per campus. Sources: learnprompting.org/pricing, thepromptcenter.com, aipromptlibary.lovable.app/pricing.
+
+## How access works
+1. A signed-in user pays through the provider's hosted checkout (link carries their user id).
+2. The provider calls the webhook service, which verifies the signature and grants or revokes the tier once per event.
+3. Access codes remain available for workshops and vouchers (`scripts/issue_access_code.py`).
+Details: [PAYMENTS.md](PAYMENTS.md).
 
 ## Before charging anyone
-- Make the repo private or move premium content out of it.
-- Add terms, a privacy notice, and a refund policy; register for data protection if you store student emails.
-- Confirm the company (Kyrvyn Ltd) is the contracting party and that IP is assigned to it.
+- Keep the repository private (premium text is in it).
+- Solicitor review of [TERMS.md](TERMS.md) and [PRIVACY.md](PRIVACY.md); register with the ICO; confirm VAT position.
+- Assign copyright to Kyrvyn Ltd in writing ([OWNERSHIP.md](OWNERSHIP.md)).
+- Create provider products and links, test in the provider's test mode, then switch to live.
+- Choose an email provider so verification and reset emails are delivered.
+- Check the owner-action list in [COMPLIANCE_GAP_REVIEW.md](COMPLIANCE_GAP_REVIEW.md).

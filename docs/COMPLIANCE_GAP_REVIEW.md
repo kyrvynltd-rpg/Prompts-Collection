@@ -7,7 +7,7 @@ Legend: Done = in code/docs on this branch. Partial = built, needs configuration
 ## UK GDPR
 | Requirement | Status | Evidence / gap |
 |---|---|---|
-| Lawful basis, transparency (Arts 5, 6, 13) | Partial | docs/PRIVACY.md draft lists data, purposes, bases, retention, rights. OWNER: solicitor review, fill brackets. |
+| Lawful basis, transparency (Arts 5, 6, 13) | Partial | docs/PRIVACY.md draft lists data, purposes, bases, recipients, transfers, retention, rights and cookies. OWNER: solicitor review, fill brackets. |
 | Consent to terms recorded | Done | `users.terms_accepted_at`, `terms_version` stored at sign-up. |
 | Data minimisation | Done | Only email, optional name, scores, saved prompts. Exercise text is graded, not stored. Card data never touches the app. |
 | Access and portability (Arts 15, 20) | Done | Account page "Download my data" (JSON, includes workspace prompts). |
@@ -20,7 +20,7 @@ Legend: Done = in code/docs on this branch. Partial = built, needs configuration
 | Processors and transfers (Arts 28, 44+) | Open | docs/SUBPROCESSORS.md lists likely processors. OWNER: sign DPAs, confirm transfer safeguards (UK IDTA / UK Addendum). |
 | ICO registration | Open | OWNER: register Kyrvyn Ltd and pay the data protection fee. |
 | DPIA | Not required on current scope | Low-risk processing. Revisit if AI feedback usage or children's data grows. |
-| Children | Open | Terms say 16+ [confirm]. No age gate in code. |
+| Children | Open | Terms say 16+ [SOLICITOR TO CONFIRM: minimum age]. No age gate in code. |
 
 ## ISO 27001 Annex A-style controls (code and operations)
 | Control area | Status | Evidence / gap |

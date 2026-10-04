@@ -1,27 +1,71 @@
-# Privacy Policy (DRAFT - have a UK solicitor review before launch)
+# Privacy Policy
 
-**Controller:** Kyrvyn Ltd, registered in England and Wales, company number 17246800, registered office 15 Exning Road, London, E16 4NB, United Kingdom, https://kyrvynltd.co.uk, contact info@kyrvynltd.co.uk. ICO registration number: [ICO number]. Last updated: [date].
+**Status: DRAFT. Not for publication until a UK solicitor has reviewed it.**
+Version: 2026-10-draft. Last updated: [publication date].
 
-**What we collect:** email address, name (optional), password (stored only as a salted scrypt hash), the exercises you attempt and your scores, favourites, whether you verified a university email and its domain. Payment details are handled by the payment provider (Stripe, Lemon Squeezy or PayPal); we receive only a customer reference, plan and renewal date.
+## 1. Who we are
+Kyrvyn Ltd ("we", "us") is the controller of your personal data.
+Registered in England and Wales, company number 17246800. Registered office: 15 Exning Road, London, E16 4NB, United Kingdom.
+Website: https://kyrvynltd.co.uk. Contact for privacy questions and rights requests: info@kyrvynltd.co.uk.
+ICO registration number: [ICO number].
 
-**Prompts you type in exercises** are graded in the app and are not sent to any third party. They are not stored, only your score. **Pro AI feedback:** if you use it, the prompt text you submit is sent to our AI provider [name] to generate feedback, and is not stored by us. **Pro workspace:** prompts you save are stored until you delete them.
+This policy covers the Prompt Learning Platform (the "Service").
 
-**Why (lawful basis):** to run your account and deliver the service (contract); to prevent abuse and keep the service secure (legitimate interests); to meet tax and accounting duties (legal obligation).
+## 2. What we collect and why
+| Data | Why we use it | Lawful basis (UK GDPR Art 6) |
+|---|---|---|
+| Email address, optional name, password (stored only as a salted scrypt hash) | Create and secure your account, send sign-up, reset and verification emails | Contract |
+| Date you accepted the Terms and the version | Prove what you agreed to | Legitimate interests |
+| University email domain and verification date | Check student eligibility | Contract |
+| Exercise ids, scores, attempts | Show your progress | Contract |
+| Prompts you save in the Pro workspace | Provide the workspace until you delete them | Contract |
+| Plan, renewal date and a customer reference from the payment provider | Give you the plan you paid for | Contract |
+| Payment records (held by the payment provider and in our accounts) | Tax and accounting | Legal obligation |
+| Security log: event type, account id, time, and a one-way tag in place of your email on failed sign-ins | Detect and investigate abuse | Legitimate interests |
+| Count of AI feedback requests per month | Enforce the monthly allowance | Contract |
 
-**Sharing:** hosting provider, database provider, email provider, payment provider. Each acts on our instructions. We do not sell data and do not run advertising trackers.
+We do not collect card details. The payment provider does.
+We do not sell personal data and we do not run advertising or analytics trackers.
+You do not have to give us this data, but we cannot provide an account without an email address.
 
-**Retention:** account data until you delete your account. Payment records for the period required by tax law.
+## 3. Prompts you type
+- In Practice, Learn and the analyser, your text is checked inside the Service. It is not sent to any other company and it is not stored. Only the score is kept (for signed-in users).
+- **Pro AI feedback (only if switched on):** the prompt text you submit is sent to our AI provider ([AI provider]) to produce feedback. We do not store it. Do not include personal data or confidential material.
 
-**Your rights (UK GDPR):** access, correction, erasure, restriction, portability, objection, and complaint to the ICO (ico.org.uk). The Account page lets you download your data and delete your account.
+## 4. Who receives your data
+Service providers acting on our instructions: hosting, database, email delivery, payment processing and (Pro AI feedback only) the AI provider. The current list is in docs/SUBPROCESSORS.md and will be named here at launch: [SOLICITOR TO CONFIRM: final supplier list].
+We may disclose data if the law requires it.
 
-**Age:** the service is for users aged 16 and over [confirm].
+## 5. Transfers outside the UK
+Some providers may process data outside the UK. Where they do, we rely on a UK adequacy regulation or the ICO's International Data Transfer Agreement or UK Addendum: [SOLICITOR TO CONFIRM: safeguard for each supplier].
 
-**International transfers:** where a provider is outside the UK, we rely on UK-approved safeguards [confirm per provider].
+## 6. How long we keep data
+| Data | Kept for |
+|---|---|
+| Account, progress, saved prompts | Until you delete your account |
+| Sign-in sessions | 14 days, or until you sign out |
+| One-time email codes | 24 hours (password reset: 1 hour), deleted once used |
+| Sign-in attempts | 30 days |
+| Security log | 12 months |
+| Payment event ids | 24 months |
+| AI feedback counters | 13 months |
+| Payment records | As required by UK tax law (normally 6 years) |
 
-**Cookies:** only a session cookie needed for the app to work. No analytics or advertising cookies [update if that changes].
+When you delete your account we erase your progress, saved prompts, sessions and codes, and anonymise your email. Copies may remain in encrypted backups for up to [backup retention period] before they expire. Details: docs/DATA_RETENTION.md.
 
-**Security logging:** we keep a security log (event type, account id, time, and a one-way tag instead of your email on failed sign-ins) for 12 months to detect abuse.
+## 7. Your rights
+You can ask us to: access your data, correct it, delete it, restrict or object to its use, and give you a portable copy.
+In the Account page you can download your data and delete your account yourself. For anything else write to info@kyrvynltd.co.uk. We reply within one month.
+You can complain to the Information Commissioner's Office (ico.org.uk, 0303 123 1113). We would like the chance to help first.
 
-**Backups:** deleted accounts may remain in encrypted backups until those backups expire [state period, e.g. 35 days].
+## 8. Age
+The Service is for people aged 16 or over. [SOLICITOR TO CONFIRM: minimum age and any parental-consent wording]
 
-**Complaints:** contact us first at info@kyrvynltd.co.uk, or the ICO at ico.org.uk.
+## 9. Cookies
+We use only the cookies needed to run the Service securely (set by the Streamlit framework, for example a security token). We do not use analytics or advertising cookies. [SOLICITOR TO CONFIRM: cookie wording after deployment testing]
+
+## 10. Security
+We protect data with hashed passwords, access limited to your own account, signed payment webhooks, audit logging and regular deletion of old data. See SECURITY.md. No system is perfectly secure. If a breach puts people at risk we will tell you and the ICO as the law requires.
+
+## 11. Changes
+We will post changes here and, for material changes, tell you before they apply.
