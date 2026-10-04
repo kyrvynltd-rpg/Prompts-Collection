@@ -58,7 +58,7 @@ def remaining(db: Database, user_id: str, now: float | None = None) -> int:
 def _http(url: str, headers: dict, payload: dict) -> dict:  # pragma: no cover - real network call
     req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers=headers, method="POST")
     with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310 - URL comes from operator config
-        return json.loads(resp.read())  # type: ignore[no-any-return]
+        return json.loads(resp.read())
 
 
 def get_feedback(db: Database, user_id: str, prompt: str, transport: Transport | None = None, now: float | None = None) -> str:
