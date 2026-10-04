@@ -1,6 +1,6 @@
 """Owner details shown across the product. One place to change after the transfer to Kyrvyn Ltd.
 
-Bracketed values are placeholders: fill them from Companies House before launch. Override with env vars if you
+Defaults are Kyrvyn Ltd's details as supplied by the owner (verify against Companies House before launch). Override with env vars if you
 prefer not to edit code: OWNER_NAME, COMPANY_NUMBER, REGISTERED_OFFICE, SITE_URL, CONTACT_EMAIL.
 """
 from __future__ import annotations
@@ -24,11 +24,11 @@ def site_url() -> str:
 
 def company_line() -> str:
     return (f"{owner_name()}, registered in England and Wales, company number "
-            f"{_env('COMPANY_NUMBER', '[company number]')}, registered office {_env('REGISTERED_OFFICE', '[registered office address]')}.")
+            f"{_env('COMPANY_NUMBER', '17246800')}, registered office {_env('REGISTERED_OFFICE', 'Office 15 Exning Road, E16 4NB')}.")
 
 
 def contact_email() -> str:
-    return _env("CONTACT_EMAIL", "[contact email]")
+    return _env("CONTACT_EMAIL", "info@kyrvynltd.co.uk")
 
 
 def copyright_line() -> str:

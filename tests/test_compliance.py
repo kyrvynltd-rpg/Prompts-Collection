@@ -193,7 +193,7 @@ def test_backup_creates_a_readable_copy(tmp_path, monkeypatch):
 # ---- brand
 def test_owner_shown_and_overridable(monkeypatch):
     assert "Kyrvyn Ltd" in brand.copyright_line() and "kyrvynltd.co.uk" in brand.site_url()
-    assert "[company number]" in brand.company_line()
+    assert "17246800" in brand.company_line() and "Exning Road" in brand.company_line()
     monkeypatch.setenv("COMPANY_NUMBER", "12345678")
     monkeypatch.setenv("CONTACT_EMAIL", "hi@kyrvynltd.co.uk")
     assert "12345678" in brand.company_line() and brand.contact_email() == "hi@kyrvynltd.co.uk"

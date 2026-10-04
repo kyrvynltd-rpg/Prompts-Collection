@@ -1,6 +1,6 @@
 # Ownership
 
-The product, prompts and documentation are presented as owned by **Kyrvyn Ltd** (https://kyrvynltd.co.uk). Company number and registered office are placeholders in square brackets. Fill them from Companies House (or set `COMPANY_NUMBER` and `REGISTERED_OFFICE`) before launch. They are set in one place: `src/brand.py`, plus the text in LICENSE, README, TERMS, PRIVACY, SECURITY and `landing/index.html`.
+The product, prompts and documentation are presented as owned by **Kyrvyn Ltd** (https://kyrvynltd.co.uk). Company number (17246800), registered office and contact email were supplied by the owner: check them against Companies House before launch. Still placeholders in square brackets: ICO number, security email and assignment date. They are set in one place: `src/brand.py`, plus the text in LICENSE, README, TERMS, PRIVACY, SECURITY and `landing/index.html`.
 
 ## Important: display is not transfer
 Showing a company name does not move ownership. The work was written by Gabriele Iacopo Langellotto. Copyright passes to the company only by a signed written assignment (or the company being the author under an employment/contract term). Before charging customers:

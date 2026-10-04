@@ -2,7 +2,7 @@
 
 A Streamlit app that teaches students to write better AI prompts and gives them a library of study-focused prompts, with a free tier and a premium tier.
 
-**Copyright (c) 2026 Kyrvyn Ltd (kyrvynltd.co.uk), company number [company number]. All rights reserved.** See [LICENSE](LICENSE) and [docs/OWNERSHIP.md](docs/OWNERSHIP.md).
+**Copyright (c) 2026 Kyrvyn Ltd (kyrvynltd.co.uk), company number 17246800. All rights reserved.** See [LICENSE](LICENSE) and [docs/OWNERSHIP.md](docs/OWNERSHIP.md).
 
 ## What it does
 

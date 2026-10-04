@@ -1,6 +1,6 @@
 # Record of processing activities (UK GDPR Art 30) - template filled from the code. Owner to confirm.
 
-Controller: Kyrvyn Ltd, https://kyrvynltd.co.uk, company number [company number]. Contact: [contact email]. DPO: not required [confirm].
+Controller: Kyrvyn Ltd, https://kyrvynltd.co.uk, company number 17246800. Contact: info@kyrvynltd.co.uk. DPO: not required [confirm].
 
 | Activity | Data | People | Purpose and basis | Recipients | Retention | Security |
 |---|---|---|---|---|---|---|
