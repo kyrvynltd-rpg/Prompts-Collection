@@ -1,6 +1,6 @@
 # Privacy Policy (DRAFT - have a UK solicitor review before launch)
 
-**Controller:** Kyrvyn Ltd, registered in England and Wales, company number 17246800, registered office Office 15 Exning Road, E16 4NB, https://kyrvynltd.co.uk, contact info@kyrvynltd.co.uk. ICO registration number: [ICO number]. Last updated: [date].
+**Controller:** Kyrvyn Ltd, registered in England and Wales, company number 17246800, registered office 15 Exning Road, London, E16 4NB, United Kingdom, https://kyrvynltd.co.uk, contact info@kyrvynltd.co.uk. ICO registration number: [ICO number]. Last updated: [date].
 
 **What we collect:** email address, name (optional), password (stored only as a salted scrypt hash), the exercises you attempt and your scores, favourites, whether you verified a university email and its domain. Payment details are handled by the payment provider (Stripe, Lemon Squeezy or PayPal); we receive only a customer reference, plan and renewal date.
 

@@ -24,7 +24,7 @@ def site_url() -> str:
 
 def company_line() -> str:
     return (f"{owner_name()}, registered in England and Wales, company number "
-            f"{_env('COMPANY_NUMBER', '17246800')}, registered office {_env('REGISTERED_OFFICE', 'Office 15 Exning Road, E16 4NB')}.")
+            f"{_env('COMPANY_NUMBER', '17246800')}, registered office {_env('REGISTERED_OFFICE', '15 Exning Road, London, E16 4NB, United Kingdom')}.")
 
 
 def contact_email() -> str:

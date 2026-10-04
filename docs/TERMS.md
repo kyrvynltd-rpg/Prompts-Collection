@@ -1,6 +1,6 @@
 # Terms of Service (DRAFT - have a UK solicitor review before launch)
 
-1. **Who we are:** Kyrvyn Ltd, registered in England and Wales, company number 17246800, registered office Office 15 Exning Road, E16 4NB, website https://kyrvynltd.co.uk, contact info@kyrvynltd.co.uk. These terms apply to your use of the Prompt Learning Platform.
+1. **Who we are:** Kyrvyn Ltd, registered in England and Wales, company number 17246800, registered office 15 Exning Road, London, E16 4NB, United Kingdom, website https://kyrvynltd.co.uk, contact info@kyrvynltd.co.uk. These terms apply to your use of the Prompt Learning Platform.
 2. **The service:** prompt-writing practice, a prompt library and learning modules. Free and Premium content as described in the app.
 3. **Account:** keep your password safe. One account per person. You must be 16 or over [confirm].
 4. **Subscriptions:** price shown at checkout (Plus: £4.99 per month or £39.99 per year. Pro: £9.99 per month or £99.99 per year. Including VAT where it applies). Renews automatically until you cancel in the payment provider. Cancel any time; access continues to the end of the paid period.
