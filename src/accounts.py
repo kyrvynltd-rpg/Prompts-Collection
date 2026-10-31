@@ -52,6 +52,13 @@ class ConsoleMailer:
         self.outbox.append((to, subject, body))
 
 
+def email_delivery_enabled(mailer: Mailer | None = None) -> bool:
+    """True only when a live email transport is configured (not the in-memory ConsoleMailer stub)."""
+    if mailer is not None and not isinstance(mailer, ConsoleMailer):
+        return True
+    return bool(os.getenv("SMTP_HOST") or os.getenv("EMAIL_API_KEY"))
+
+
 @dataclass(frozen=True)
 class User:
     id: str

@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import session  # noqa: E402
 import ui  # noqa: E402
-from tiers import allows  # noqa: E402
+from tiers import allows, feature_tier  # noqa: E402
 from workspace import Workspace, WorkspaceError  # noqa: E402
 
 ui.setup("Workspace", "🗂️")
@@ -19,8 +19,9 @@ user = session.current_user()
 if user is None:
     st.info("Sign in on the Account page first.")
     st.stop()
-if not allows(session.current_tier(), "pro"):
-    st.warning("The workspace and template pack are part of Pro. See plans on the Account page.")
+need = feature_tier("workspace")
+if not allows(session.current_tier(), need):
+    st.warning(f"The workspace and template pack are part of {need.capitalize()}. See plans on the Account page.")
     st.stop()
 
 ws = Workspace(session._db())

@@ -235,11 +235,19 @@ def test_tiers_and_gating():
     assert not can_view({"access": "premium"}, dead)
 
 
-def test_module_tiers():
+def test_module_tiers(monkeypatch):
+    from tiers import feature_tier
     mods = {m["id"]: m for m in learning.load_modules()}
     assert learning.required_tier(mods["m1-foundations"]) == "free"
     assert learning.required_tier(mods["m2-precision"]) == "plus"
     assert learning.required_tier(mods["m5-advanced"]) == "pro"
+    monkeypatch.setenv("MODULE_TIER_M2_PRECISION", "free")
+    assert learning.required_tier(mods["m2-precision"]) == "free"
+    assert feature_tier("workspace") == "pro"
+    monkeypatch.setenv("TIER_WORKSPACE", "plus")
+    assert feature_tier("workspace") == "plus"
+    monkeypatch.setenv("TIER_WORKSPACE", "invalid")
+    assert feature_tier("workspace") == "pro"
 
 
 # ---- workspace

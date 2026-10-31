@@ -7,6 +7,7 @@ cost and no data leaving the app. It rewards structure, not length or luck.
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 from dataclasses import dataclass
@@ -14,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from db import Database
+from tiers import TIERS
 
 MODULES_DIR = Path(__file__).resolve().parent.parent / "data" / "modules"
 MAX_PROMPT_CHARS = 4000
@@ -44,7 +46,11 @@ def load_modules(directory: Path = MODULES_DIR) -> list[dict[str, Any]]:
 
 
 def required_tier(module: dict[str, Any]) -> str:
-    """Tier needed to open a module: explicit `tier`, else plus for premium, else free."""
+    """Tier needed to open a module: env override, else explicit `tier`, else plus for premium, else free."""
+    mod_key = str(module.get("id", "")).upper().replace("-", "_")
+    env_tier = os.getenv(f"MODULE_TIER_{mod_key}", "").strip().lower()
+    if env_tier in TIERS:
+        return env_tier
     return str(module.get("tier") or ("plus" if module.get("access") == "premium" else "free"))
 
 

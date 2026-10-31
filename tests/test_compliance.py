@@ -82,7 +82,19 @@ def test_terms_must_be_accepted_and_are_recorded(svc, db):
     assert row[0] and row[1]
 
 
-def test_email_verification(svc):
+def test_email_verification(svc, monkeypatch):
+    from accounts import email_delivery_enabled
+    monkeypatch.delenv("SMTP_HOST", raising=False)
+    monkeypatch.delenv("EMAIL_API_KEY", raising=False)
+    assert not email_delivery_enabled(svc.mailer)
+    monkeypatch.setenv("SMTP_HOST", "smtp.example.org")
+    assert email_delivery_enabled(svc.mailer)
+
+    class LiveMailer:
+        def send(self, to: str, subject: str, body: str) -> None:
+            pass
+
+    assert email_delivery_enabled(LiveMailer())
     user = svc.register("a@b.co", "a-long-password")
     assert not svc.is_email_verified(user.id)
     with pytest.raises(AccountError):
@@ -168,6 +180,7 @@ def test_purge_removes_old_data_and_keeps_new(db, monkeypatch):
 # ---- backup script
 def test_backup_creates_a_readable_copy(tmp_path, monkeypatch):
     import importlib.util
+    import os
     import sys
     from pathlib import Path
 
@@ -183,7 +196,10 @@ def test_backup_creates_a_readable_copy(tmp_path, monkeypatch):
     spec.loader.exec_module(mod)
     out = mod.backup(str(tmp_path / "b"))
     assert sqlite3.connect(out).execute("SELECT COUNT(*) FROM audit_log").fetchone()[0] == 1
-    assert oct(out.stat().st_mode)[-3:] == "600"
+    if os.name != "nt":
+        assert oct(out.stat().st_mode)[-3:] == "600"
+    else:
+        assert out.exists() and out.stat().st_size > 0
     live.is_postgres = True
     with pytest.raises(SystemExit):
         mod.backup(str(tmp_path / "b2"))

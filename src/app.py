@@ -92,6 +92,11 @@ st.markdown("""
         50% { opacity: 1; }
         100% { opacity: 0.45; }
     }
+    @media (max-width: 640px) {
+        .block-container { padding: 1rem 0.8rem; }
+        .main-header { font-size: 1.75rem; }
+        .sub-header { font-size: 0.95rem; margin-bottom: 1.25rem; }
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -235,7 +240,11 @@ st.markdown('<div class="sub-header">Make your prompts better using our collecti
 _nav1, _nav2, _nav3 = st.columns(3)
 _nav1.page_link("pages/1_Practice.py", label="🎯 Practice mode", use_container_width=True)
 _nav2.page_link("pages/2_Library.py", label="📚 Prompt library", use_container_width=True)
-_nav3.page_link("pages/3_Account.py", label="🔑 Premium access", use_container_width=True)
+_nav3.page_link("pages/3_Account.py", label="🔑 Account & Plans", use_container_width=True)
+_nav4, _nav5, _nav6 = st.columns(3)
+_nav4.page_link("pages/4_Learn.py", label="🎓 Learn modules", use_container_width=True)
+_nav5.page_link("pages/5_Workspace.py", label="🗂️ Pro Workspace", use_container_width=True)
+_nav6.page_link("pages/6_AI_Feedback.py", label="🤖 AI Feedback", use_container_width=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.recommendations:

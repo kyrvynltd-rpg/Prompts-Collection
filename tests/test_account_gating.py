@@ -58,3 +58,11 @@ def test_learn_page_locks_paid_modules_for_free_visitors():
     at = AppTest.from_file(str(SRC / "4_Learn.py"), default_timeout=60).run()
     assert sum("module. Upgrade" in w.value for w in at.warning) == 4  # m2-m4 need Plus, m5 needs Pro; m1 is free
     assert any("🔒" in e.label for e in at.expander)
+
+
+def test_account_page_hides_working_email_claims_when_delivery_unconfigured(monkeypatch):
+    monkeypatch.delenv("SMTP_HOST", raising=False)
+    monkeypatch.delenv("EMAIL_API_KEY", raising=False)
+    at = AppTest.from_file(str(SRC / "3_Account.py"), default_timeout=60).run()
+    assert any("Email delivery is not configured" in i.value for i in at.info)
+    assert not any(b.label == "Send reset code" for b in at.button)

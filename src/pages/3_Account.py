@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import session  # noqa: E402
 import ui  # noqa: E402
-from accounts import AccountError  # noqa: E402
+from accounts import AccountError, email_delivery_enabled  # noqa: E402
 from billing import checkout_url, configured_providers  # noqa: E402
 from entitlements import get_secret, verify_code  # noqa: E402
 from pricing import get_pricing  # noqa: E402
@@ -20,6 +20,7 @@ ui.header("🔑 Account", "Free prompts and Practice are open to everyone. An ac
 svc = session.accounts()
 user = session.current_user()
 price = get_pricing()
+mail_live = email_delivery_enabled(svc.mailer)
 
 if user is None:
     tab_in, tab_up = st.tabs(["Sign in", "Create account"])
@@ -35,20 +36,23 @@ if user is None:
                 except AccountError as exc:
                     st.error(str(exc))
         with st.expander("Forgot your password?"):
-            with st.form("reset_request"):
-                r_email = st.text_input("Account email", key="reset_email")
-                if st.form_submit_button("Send reset code"):
-                    svc.request_password_reset(r_email)
-                    st.success("If that email has an account, a code is on its way.")
-            with st.form("reset_do"):
-                r_code = st.text_input("Reset code")
-                r_pw = st.text_input("New password", type="password")
-                if st.form_submit_button("Set new password"):
-                    try:
-                        svc.reset_password(r_email, r_code, r_pw)
-                        st.success("Password changed. You can sign in now.")
-                    except AccountError as exc:
-                        st.error(str(exc))
+            if not mail_live:
+                st.info("Email delivery is not configured on this deployment yet, so reset codes cannot be emailed.")
+            else:
+                with st.form("reset_request"):
+                    r_email = st.text_input("Account email", key="reset_email")
+                    if st.form_submit_button("Send reset code"):
+                        svc.request_password_reset(r_email)
+                        st.success("If that email has an account, a code is on its way.")
+                with st.form("reset_do"):
+                    r_code = st.text_input("Reset code")
+                    r_pw = st.text_input("New password", type="password")
+                    if st.form_submit_button("Set new password"):
+                        try:
+                            svc.reset_password(r_email, r_code, r_pw)
+                            st.success("Password changed. You can sign in now.")
+                        except AccountError as exc:
+                            st.error(str(exc))
     with tab_up:
         with st.form("register"):
             name = st.text_input("Name (optional)")
@@ -93,19 +97,24 @@ else:
             st.info("Student? Verify your university email below to confirm you are eligible for student pricing.")
 
     if not svc.is_email_verified(user.id):
-        with st.form("verify_email"):
-            st.caption("Confirm your email: we sent a code when you signed up.")
-            v_code = st.text_input("Email confirmation code")
-            if st.form_submit_button("Confirm email"):
-                try:
-                    svc.confirm_email(user.id, v_code)
-                    st.rerun()
-                except AccountError as exc:
-                    st.error(str(exc))
+        if not mail_live:
+            st.caption("Email confirmation is unavailable until an email provider is configured for this deployment.")
+        else:
+            with st.form("verify_email"):
+                st.caption("Confirm your email: we sent a code when you signed up.")
+                v_code = st.text_input("Email confirmation code")
+                if st.form_submit_button("Confirm email"):
+                    try:
+                        svc.confirm_email(user.id, v_code)
+                        st.rerun()
+                    except AccountError as exc:
+                        st.error(str(exc))
 
     st.subheader("Student verification")
     if user.student_verified:
         st.success(f"Verified student ({user.student_domain}).")
+    elif not mail_live:
+        st.info("Student email verification is unavailable until an email provider is configured for this deployment.")
     else:
         with st.form("student"):
             addr = st.text_input("University email (.ac.uk)")

@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import ai_feedback  # noqa: E402
 import session  # noqa: E402
 import ui  # noqa: E402
-from tiers import allows  # noqa: E402
+from tiers import allows, feature_tier  # noqa: E402
 
 ui.setup("AI feedback", "🤖")
 ui.header("🤖 AI feedback", "A coach reviews your prompt. Pro feature with a monthly allowance.")
@@ -18,8 +18,9 @@ user = session.current_user()
 if user is None:
     st.info("Sign in on the Account page first.")
     st.stop()
-if not allows(session.current_tier(), "pro"):
-    st.warning("AI feedback is part of Pro. See plans on the Account page.")
+need = feature_tier("ai_feedback")
+if not allows(session.current_tier(), need):
+    st.warning(f"AI feedback is part of {need.capitalize()}. See plans on the Account page.")
     st.stop()
 if not ai_feedback.enabled():
     st.info("AI feedback is not switched on for this deployment yet.")
