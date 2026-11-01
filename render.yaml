@@ -6,12 +6,14 @@ services:
     env: python
     plan: free
     autoDeploy: false
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt -r requirements-postgres.txt
     startCommand: streamlit run src/app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
     healthCheckPath: /_stcore/health
     envVars:
       - key: ENTITLEMENT_SECRET
         sync: false   # set in the Render dashboard, never in git
+      - key: DATABASE_URL
+        sync: false
   # Payment webhook receiver (stdlib HTTP service). Streamlit cannot receive webhooks, so this runs beside it.
   - type: web
     name: prompts-collection-webhooks
