@@ -115,10 +115,11 @@ def get_feedback(db: Database, user_id: str, prompt: str, transport: Transport |
         raise AIFeedbackError("You have used this month's AI feedback allowance. It resets next month.")
     payload = {"model": active_model(), "max_tokens": 500,
                "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}]}
-    headers = {"Authorization": f"Bearer {active_api_key()}", "Content-Type": "application/json"}
+    headers = {"Authorization": f"Bearer {active_api_key()}", "Content-Type": "application/json", "User-Agent": "Mozilla/5.0"}
     try:
         data = (transport or _http)(active_api_url(), headers, payload)
-        text = str(data["choices"][0]["message"]["content"]).strip()
+        msg = data["choices"][0]["message"]
+        text = str(msg.get("content") or msg.get("reasoning") or "").strip()
     except Exception as exc:  # network, HTTP, or unexpected shape: never leak internals or the key
         raise AIFeedbackError("The AI service did not answer. Try again later. This did not use your allowance.") from exc
     month = month_key(now)  # count only successful answers
