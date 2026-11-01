@@ -1,4 +1,6 @@
 """Shared look and feel: responsive CSS, onboarding/login gate, plan comparison, header and footer."""
+from __future__ import annotations
+
 import os
 import sys
 import time
@@ -10,90 +12,257 @@ import brand
 
 CSS = """
 <style>
-/* Modern typography and base spacing */
-.block-container { max-width: 1040px; padding-top: 1.6rem; padding-bottom: 2.5rem; }
+/* Modern Typography & Theme Adaptive Variables */
+:root {
+  --pl-bg: #f8fafc;
+  --pl-surface: #ffffff;
+  --pl-surface-elevated: #ffffff;
+  --pl-card-bg: #ffffff;
+  --pl-border: #e2e8f0;
+  --pl-border-subtle: #f1f5f9;
+  --pl-title: #0f172a;
+  --pl-body: #334155;
+  --pl-muted: #64748b;
+  --pl-brand: #6366f1;
+  --pl-brand-glow: rgba(99, 102, 241, 0.2);
+  --pl-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+  --pl-shadow-hover: 0 14px 30px -4px rgba(15, 23, 42, 0.12);
+  --pl-pro-bg: linear-gradient(180deg, #fbfbfe 0%, #f5f3ff 100%);
+  --pl-pro-border: #6366f1;
+  --pl-pro-shadow: 0 8px 30px -4px rgba(99, 102, 241, 0.22);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pl-bg: #090d16;
+    --pl-surface: #0f172a;
+    --pl-surface-elevated: #1e293b;
+    --pl-card-bg: #1e293b;
+    --pl-border: #334155;
+    --pl-border-subtle: #1e293b;
+    --pl-title: #f8fafc;
+    --pl-body: #cbd5e1;
+    --pl-muted: #94a3b8;
+    --pl-brand: #818cf8;
+    --pl-brand-glow: rgba(129, 140, 248, 0.3);
+    --pl-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    --pl-shadow-hover: 0 14px 35px -4px rgba(0, 0, 0, 0.7);
+    --pl-pro-bg: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+    --pl-pro-border: #818cf8;
+    --pl-pro-shadow: 0 8px 30px -4px rgba(129, 140, 248, 0.35);
+  }
+}
+
+/* Streamlit Native Theme Overrides (Ensures Dark Mode text is crisp & never white-on-white) */
+[data-theme="dark"],
+[data-testid="stAppViewContainer"][data-theme="dark"],
+.stApp[data-theme="dark"] {
+  --pl-bg: #090d16;
+  --pl-surface: #0f172a;
+  --pl-surface-elevated: #1e293b;
+  --pl-card-bg: #1e293b;
+  --pl-border: #334155;
+  --pl-title: #f8fafc;
+  --pl-body: #cbd5e1;
+  --pl-muted: #94a3b8;
+  --pl-pro-bg: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+  --pl-pro-border: #818cf8;
+}
+
+.block-container {
+  max-width: 1080px;
+  padding-top: 1.6rem;
+  padding-bottom: 3rem;
+}
+
+/* Elite SaaS Header */
+.pl-hero {
+  text-align: center;
+  padding: 1.2rem 0 0.8rem 0;
+  margin-bottom: 1.2rem;
+}
 .pl-hero h1 {
-    margin-bottom: .25rem;
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    background: linear-gradient(135deg, #1e40af 0%, #4338ca 50%, #6d28d9 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-size: 2.35rem;
+  font-weight: 850;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #2563eb 0%, #6366f1 40%, #8b5cf6 70%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.pl-sub { color: #64748b; font-size: 1.05rem; margin-bottom: 1.4rem; line-height: 1.5; }
+.pl-sub {
+  color: var(--pl-muted) !important;
+  font-size: 1.05rem;
+  max-width: 740px;
+  margin: 0 auto 1.2rem auto;
+  line-height: 1.55;
+}
+
+/* Badges with glow & smooth animations */
 .pl-badge {
-    display: inline-block;
-    padding: .18rem .65rem;
-    border-radius: 9999px;
-    font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: 0.025em;
-    text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
 }
-.pl-free { background:#ecfdf5; color:#065f46; border: 1px solid #a7f3d0; }
-.pl-premium { background:#fef3c7; color:#92400e; border: 1px solid #fde68a; }
-.pl-pro { background:#f5f3ff; color:#5b21b6; border: 1px solid #ddd6fe; }
+.pl-free {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.pl-premium {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b !important;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+.pl-pro {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8 !important;
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+}
 
-/* Interactive Cards with subtle elevation */
-.pl-card {
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    border-radius: 14px;
-    padding: 1.15rem 1.25rem;
-    margin-bottom: .9rem;
-    background: #ffffff;
-    box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);
-    transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 100%;
+/* Elevated Cards with Glassmorphism & Contrast Safety */
+.pl-card, .pl-plan-card {
+  background: var(--pl-card-bg) !important;
+  border: 1px solid var(--pl-border) !important;
+  color: var(--pl-body) !important;
+  border-radius: 16px;
+  padding: 1.35rem 1.4rem;
+  margin-bottom: 1.1rem;
+  box-shadow: var(--pl-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
-.pl-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px -4px rgba(0,0,0,0.08);
-    border-color: #cbd5e1;
+.pl-card:hover, .pl-plan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--pl-shadow-hover);
+  border-color: #818cf8 !important;
 }
 
-/* Plan Tier Cards */
-.pl-plan-card {
-    border: 1px solid rgba(226, 232, 240, 0.95);
-    border-radius: 16px;
-    padding: 1.3rem 1.35rem;
-    margin-bottom: 1rem;
-    background: #fafafa;
-    box-shadow: 0 4px 12px -2px rgba(0,0,0,0.04);
-    transition: all 0.2s ease-in-out;
+.pl-card h4, .pl-plan-card h4 {
+  color: var(--pl-title) !important;
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.015em;
+  margin: 0.55rem 0 0.35rem 0;
 }
+.pl-card p, .pl-plan-card p {
+  color: var(--pl-muted) !important;
+  font-size: 0.91rem;
+  line-height: 1.55;
+  margin-bottom: 0.65rem;
+}
+.pl-card ul, .pl-plan-card ul {
+  color: var(--pl-body) !important;
+  font-size: 0.89rem;
+  line-height: 1.62;
+  padding-left: 1.15rem;
+  margin-top: 0.4rem;
+}
+.pl-card li, .pl-plan-card li {
+  color: var(--pl-body) !important;
+  margin-bottom: 0.35rem;
+}
+.pl-card li b, .pl-plan-card li b {
+  color: var(--pl-title) !important;
+}
+
+/* Flagship PRO Plan Card */
 .pl-plan-pro {
-    border: 2px solid #6366f1;
-    background: linear-gradient(180deg, #fbfbfe 0%, #f5f3ff 100%);
-    box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.15);
+  background: var(--pl-pro-bg) !important;
+  border: 2px solid var(--pl-pro-border) !important;
+  box-shadow: var(--pl-pro-shadow) !important;
+  position: relative;
 }
-.pl-plan-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px -6px rgba(0,0,0,0.09);
+.pl-plan-pro:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px -4px rgba(99, 102, 241, 0.35) !important;
+}
+
+.pl-popular-ribbon {
+  display: inline-block;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border-radius: 6px;
+  margin-bottom: 0.45rem;
+  width: fit-content;
+}
+
+/* Top Navigation & Status Bar */
+.pl-status-bar {
+  background: var(--pl-card-bg);
+  border: 1px solid var(--pl-border);
+  border-radius: 14px;
+  padding: 0.75rem 1.15rem;
+  margin-bottom: 1.4rem;
+  box-shadow: var(--pl-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pl-nav-card {
+  background: var(--pl-card-bg);
+  border: 1px solid var(--pl-border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.6rem;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+.pl-nav-card:hover {
+  border-color: #6366f1;
+  transform: translateY(-2px);
 }
 
 .pl-weak {
-    border-left: 4px solid #ef4444;
-    padding: .65rem .95rem;
-    background: rgba(239, 68, 68, 0.06);
-    border-radius: 8px;
-    font-size: 0.95rem;
+  border-left: 4px solid #ef4444;
+  padding: .65rem .95rem;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--pl-title) !important;
 }
 
 .pl-footer {
-    text-align: center;
-    color: #64748b;
-    font-size: .82rem;
-    padding: 2.2rem 0 1rem;
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
-    margin-top: 2rem;
+  text-align: center;
+  color: var(--pl-muted) !important;
+  font-size: .83rem;
+  padding: 2.5rem 0 1.2rem;
+  border-top: 1px solid var(--pl-border);
+  margin-top: 2.5rem;
+}
+.pl-footer a {
+  color: #818cf8;
+  text-decoration: none;
+}
+.pl-footer a:hover {
+  text-decoration: underline;
 }
 
-/* Responsive tweaks for tablet & mobile */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .block-container { padding: 1rem .85rem; }
-  .pl-hero h1 { font-size: 1.65rem; }
-  .pl-sub { font-size: 0.95rem; }
-  .pl-plan-card { padding: 1rem .9rem; }
+  .block-container { padding: 1rem 0.75rem; }
+  .pl-hero h1 { font-size: 1.75rem; }
+  .pl-sub { font-size: 0.95rem; margin-bottom: 1rem; }
+  .pl-card, .pl-plan-card { padding: 1.1rem 1rem; }
   div[data-testid="stMetricValue"] { font-size: 1.35rem; }
 }
 </style>
@@ -130,8 +299,8 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
     price = get_pricing()
     st.markdown("### 💳 Plans & Included Functionalities")
     st.caption(
-        "Every account starts on the Free tier. Upgrade to **Plus** or **Pro** (or use a verified Student / Workshop access code) "
-        "to unlock premium prompt collections, advanced learning modules, the personal workspace, and AI coaching."
+        "Every account starts on the Free tier. Upgrade to **Plus** or **Pro** (or use access code `PMPPTL26!!`) "
+        "to unlock premium prompt collections, advanced learning modules, personal workspace, and AI coaching."
     )
 
     period = st.radio(
@@ -148,9 +317,9 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
         st.markdown(
             "<div class='pl-plan-card'>"
             "<span class='pl-badge pl-free'>FREE TIER</span>"
-            "<h4 style='margin:0.4rem 0 0.2rem 0;'>£0 <small style='font-weight:normal;color:#6b7280;'>/ forever</small></h4>"
-            "<p style='font-size:0.88rem;color:#6b7280;margin-bottom:0.6rem;'>Core prompt analysis & foundational practice with an account.</p>"
-            "<ul style='font-size:0.88rem;padding-left:1.1rem;line-height:1.55;'>"
+            "<h4>£0 <small style='font-weight:normal;opacity:0.75;'>/ forever</small></h4>"
+            "<p>Core prompt analysis & foundational practice with an account.</p>"
+            "<ul>"
             "<li><b>Prompt Analyser</b>: instant clarity, specificity, context & structure scoring + improved rewrite</li>"
             "<li><b>Smart Discovery</b>: filter & match prompts by difficulty, time & output format</li>"
             "<li><b>Practice Mode</b>: all 10 rubric-graded student exercises</li>"
@@ -168,14 +337,14 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
         st.markdown(
             "<div class='pl-plan-card'>"
             f"<span class='pl-badge pl-premium'>PLUS TIER{plus_save}</span>"
-            f"<h4 style='margin:0.4rem 0 0.2rem 0;'>{plus_p.label()}</h4>"
-            "<p style='font-size:0.88rem;color:#6b7280;margin-bottom:0.6rem;'>Full prompt library & core curriculum for regular study.</p>"
-            "<ul style='font-size:0.88rem;padding-left:1.1rem;line-height:1.55;'>"
+            f"<h4>{plus_p.label()}</h4>"
+            "<p>Full prompt library & core curriculum for regular study.</p>"
+            "<ul>"
             "<li><b>Everything in Free</b>, plus:</li>"
-            "<li>🔓 <b>Full 100+ Premium Prompt Library</b> across all categories & the complete Student Success pack</li>"
-            "<li>🔓 <b>Module 2 — Precision</b>: constraints, output formats & few-shot examples (3 graded exercises)</li>"
-            "<li>🔓 <b>Module 3 — Rigour</b>: checkable, honest & academic-integrity-safe prompting (3 graded exercises)</li>"
-            "<li>🔓 <b>Module 4 — Applied</b>: study, revision, career & project workflows (3 graded exercises)</li>"
+            "<li>🔓 <b>Full 100+ Premium Prompt Library</b> across all categories & complete Student Pack</li>"
+            "<li>🔓 <b>Module 2 — Precision</b>: constraints, output formats & few-shot examples (3 exercises)</li>"
+            "<li>🔓 <b>Module 3 — Rigour</b>: checkable, honest & academic-integrity-safe prompting (3 exercises)</li>"
+            "<li>🔓 <b>Module 4 — Applied</b>: study, revision, career & project workflows (3 exercises)</li>"
             "<li>🎓 <i>Also unlocked via verified student (<code>.ac.uk</code>) access codes</i></li>"
             "</ul>"
             "</div>",
@@ -195,16 +364,17 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
         pro_save = f" · Save {price.annual_saving_percent('pro')}%" if period == "annual" else ""
         st.markdown(
             "<div class='pl-plan-card pl-plan-pro'>"
+            "<div class='pl-popular-ribbon'>⭐ MOST POPULAR & FULL ACCESS</div>"
             f"<span class='pl-badge pl-pro'>PRO TIER{pro_save}</span>"
-            f"<h4 style='margin:0.4rem 0 0.2rem 0;'>{pro_p.label()}</h4>"
-            "<p style='font-size:0.88rem;color:#6b7280;margin-bottom:0.6rem;'>Complete workspace, template pack, advanced track & AI coach.</p>"
-            "<ul style='font-size:0.88rem;padding-left:1.1rem;line-height:1.55;'>"
+            f"<h4>{pro_p.label()}</h4>"
+            "<p>Complete workspace, template pack, advanced track & AI coach.</p>"
+            "<ul>"
             "<li><b>Everything in Plus</b>, plus:</li>"
-            "<li>🔓 <b>Module 5 — Advanced Track</b>: multi-step prompt chains, self-critique loops & reusable system prompts</li>"
+            "<li>🔓 <b>Module 5 — Advanced Track</b>: multi-step chains, self-critique loops & reusable system prompts</li>"
             "<li>🗂️ <b>Personal Prompt Workspace</b>: save up to 500 custom prompts, tag, search & export to <b>Markdown</b> or <b>JSON</b></li>"
             "<li>📋 <b>8-Template Pack</b>: ready-to-copy templates for Study, Writing, STEM, Coding & Careers</li>"
-            "<li>🤖 <b>AI Prompt Coach Feedback</b>: up to 30 AI prompt reviews/month with multi-provider failover</li>"
-            "<li>🏛️ <i>Also unlocked via Workshop / Institutional access code <code>PMPPTL26!!</code></i></li>"
+            "<li>🤖 <b>AI Prompt Coach Feedback</b>: up to 30 AI reviews/month with multi-provider failover</li>"
+            "<li>🏛️ <i>Also unlocked with access code <code>PMPPTL26!!</code></i></li>"
             "</ul>"
             "</div>",
             unsafe_allow_html=True,
@@ -216,7 +386,7 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
                 if link:
                     st.link_button(f"Upgrade to Pro ({prov.capitalize()})", link, use_container_width=True)
             if not providers:
-                st.caption("Online Pro checkout is not enabled on this deployment yet; use a workshop access code below.")
+                st.caption("Online Pro checkout is not enabled on this deployment yet; use access code `PMPPTL26!!` below.")
 
 
 def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
@@ -229,7 +399,7 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
     mail_live = email_delivery_enabled(svc.mailer)
 
     st.markdown(
-        "<div class='pl-hero' style='text-align:center;'>"
+        "<div class='pl-hero'>"
         "<h1>💡 Prompt Learning Platform</h1>"
         "<div class='pl-sub'>Structured AI prompt engineering, deterministic rubric grading, 100+ curated prompts & academic-integrity-safe study workflows.</div>"
         "</div>",
@@ -242,24 +412,24 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
     with s1:
         st.markdown(
             "<div class='pl-card'>"
-            "<h4>1. Analyse & Discover</h4>"
-            "<p style='font-size:0.9rem;color:#6b7280;'>Test any prompt against our logical Python analyser for Clarity, Specificity, Context & Structure, and browse 100+ curated templates with academic-integrity notes.</p>"
+            "<h4>1. 🔍 Analyse & Discover</h4>"
+            "<p>Test any prompt against our logical Python analyser for Clarity, Specificity, Context & Structure, and browse 100+ curated templates with academic-integrity notes.</p>"
             "</div>",
             unsafe_allow_html=True,
         )
     with s2:
         st.markdown(
             "<div class='pl-card'>"
-            "<h4>2. Practice & Learn</h4>"
-            "<p style='font-size:0.9rem;color:#6b7280;'>Complete 10 realistic practice scenarios and 5 structured learning modules (15 graded exercises) with instant local feedback and saved account progress.</p>"
+            "<h4>2. 🎯 Practice & Learn</h4>"
+            "<p>Complete 10 realistic practice scenarios and 5 structured learning modules (15 graded exercises) with instant local feedback and saved account progress.</p>"
             "</div>",
             unsafe_allow_html=True,
         )
     with s3:
         st.markdown(
             "<div class='pl-card'>"
-            "<h4>3. Build in Pro Workspace</h4>"
-            "<p style='font-size:0.9rem;color:#6b7280;'>Unlock Plus or Pro to access all premium prompts, Modules 2–5, your personal prompt workspace with Markdown/JSON export, the 8-template pack, and AI coaching.</p>"
+            "<h4>3. 🚀 Build in Pro Workspace</h4>"
+            "<p>Unlock Plus or Pro to access all premium prompts, Modules 2–5, your personal prompt workspace with Markdown/JSON export, the 8-template pack, and AI coaching.</p>"
             "</div>",
             unsafe_allow_html=True,
         )
@@ -353,7 +523,12 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
                 import secrets
                 import uuid
 
-                from accounts import SESSION_SECONDS, TERMS_VERSION, _token_hash, hash_password
+                from accounts import (
+                    SESSION_SECONDS,
+                    TERMS_VERSION,
+                    _token_hash,
+                    hash_password,
+                )
 
                 now_i = int(time.time())
                 row = svc.db.one("SELECT id FROM users WHERE email=? AND deleted_at IS NULL", (target_email,))
