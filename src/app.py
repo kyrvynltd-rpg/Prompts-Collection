@@ -237,14 +237,20 @@ render_centered_logo(92)
 st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
 
+def _page_ref(rel: str) -> str:
+    from streamlit.runtime.scriptrunner import get_script_run_ctx
+    ctx = get_script_run_ctx()
+    main_script = getattr(ctx, "main_script_path", "") if ctx else ""
+    return f"src/{rel}" if Path(main_script).name == "main.py" else rel
+
 _nav1, _nav2, _nav3 = st.columns(3)
-_nav1.page_link("pages/1_Practice.py", label="🎯 Practice mode", use_container_width=True)
-_nav2.page_link("pages/2_Library.py", label="📚 Prompt library", use_container_width=True)
-_nav3.page_link("pages/3_Account.py", label="🔑 Account & Plans", use_container_width=True)
+_nav1.page_link(_page_ref("pages/1_Practice.py"), label="🎯 Practice mode", use_container_width=True)
+_nav2.page_link(_page_ref("pages/2_Library.py"), label="📚 Prompt library", use_container_width=True)
+_nav3.page_link(_page_ref("pages/3_Account.py"), label="🔑 Account & Plans", use_container_width=True)
 _nav4, _nav5, _nav6 = st.columns(3)
-_nav4.page_link("pages/4_Learn.py", label="🎓 Learn modules", use_container_width=True)
-_nav5.page_link("pages/5_Workspace.py", label="🗂️ Pro Workspace", use_container_width=True)
-_nav6.page_link("pages/6_AI_Feedback.py", label="🤖 AI Feedback", use_container_width=True)
+_nav4.page_link(_page_ref("pages/4_Learn.py"), label="🎓 Learn modules", use_container_width=True)
+_nav5.page_link(_page_ref("pages/5_Workspace.py"), label="🗂️ Pro Workspace", use_container_width=True)
+_nav6.page_link(_page_ref("pages/6_AI_Feedback.py"), label="🤖 AI Feedback", use_container_width=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.recommendations:
