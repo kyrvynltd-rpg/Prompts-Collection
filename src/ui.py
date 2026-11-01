@@ -1,6 +1,7 @@
 """Shared look and feel: responsive CSS, onboarding/login gate, plan comparison, header and footer."""
 import os
 import sys
+import time
 from pathlib import Path
 
 import streamlit as st
@@ -187,7 +188,7 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
                 if link:
                     st.link_button(f"Upgrade to Plus ({prov.capitalize()})", link, use_container_width=True)
             if not providers:
-                st.caption("Online Plus checkout is not enabled on this deployment yet; use an access code below.")
+                st.caption("Online Plus checkout is not enabled on this deployment yet; verify your `.ac.uk` student email on Account.")
 
     with c_pro:
         pro_p = price.get("pro", period)
@@ -202,8 +203,8 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
             "<li>🔓 <b>Module 5 — Advanced Track</b>: multi-step prompt chains, self-critique loops & reusable system prompts</li>"
             "<li>🗂️ <b>Personal Prompt Workspace</b>: save up to 500 custom prompts, tag, search & export to <b>Markdown</b> or <b>JSON</b></li>"
             "<li>📋 <b>8-Template Pack</b>: ready-to-copy templates for Study, Writing, STEM, Coding & Careers</li>"
-            "<li>🤖 <b>AI Prompt Coach Feedback</b>: up to 30 AI prompt reviews/month (when enabled by operator)</li>"
-            "<li>🏛️ <i>Also unlocked via Workshop / Institutional access codes</i></li>"
+            "<li>🤖 <b>AI Prompt Coach Feedback</b>: up to 30 AI prompt reviews/month with multi-provider failover</li>"
+            "<li>🏛️ <i>Also unlocked via Workshop / Institutional access code <code>PMPPTL26!!</code></i></li>"
             "</ul>"
             "</div>",
             unsafe_allow_html=True,
@@ -267,7 +268,7 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
 
     # 2. Sign In / Create Account / Access Code Gate
     st.markdown("### 🔐 Sign In or Create Your Account to Enter")
-    st.caption("Sign in with your account, register a free account in seconds, or unlock directly with a workshop/student access code.")
+    st.caption("Sign in with your email and password, register a free account in seconds, or enter your email and access code (e.g. `PMPPTL26!!`).")
 
     tab_in, tab_up, tab_code = st.tabs(["🔑 Sign in", "✨ Create free account", "🎟️ Use an access code"])
 
@@ -323,23 +324,59 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
                         st.error(str(exc))
 
     with tab_code:
-        st.caption("Have a signed workshop (`Pro`) or student (`Plus`) voucher code? Enter it below to unlock access.")
+        st.caption("Enter your email address and access code (e.g. `PMPPTL26!!` or voucher) to sign in and unlock full Pro access.")
+        email_in = st.text_input(
+            "Your email address (required to link account)",
+            key=f"{key_prefix}_code_email",
+            placeholder="you@example.com",
+        )
         code_in = st.text_input(
             "Access code",
             type="password",
             key="access_code",
-            placeholder="PL1....",
+            placeholder="PMPPTL26!! or PL1....",
+        )
+        pw_in = st.text_input(
+            "Password (10+ characters, optional if you have an account or set for a new account)",
+            type="password",
+            key=f"{key_prefix}_code_pw",
         )
         if st.button("Unlock with code", key=f"{key_prefix}_unlock_btn", type="primary"):
-            if not get_secret():
-                st.error("Access codes are not configured on this deployment yet.")
+            clean_email = (email_in or "").strip().lower()
+            found = verify_code(get_secret(), code_in, subject=clean_email)
+            if not found:
+                st.error("That code is not valid or has expired.")
+            elif not clean_email and (not found.subject or "@" not in found.subject or found.subject == "member@kyrvynltd.co.uk"):
+                st.error("Please enter a valid email address to link and unlock your access code.")
             else:
-                found = verify_code(get_secret(), code_in)
-                if found:
-                    st.session_state["entitlement"] = found
-                    st.rerun()
+                target_email = clean_email if (clean_email and "@" in clean_email) else found.subject
+                import secrets
+                import uuid
+
+                from accounts import SESSION_SECONDS, TERMS_VERSION, _token_hash, hash_password
+
+                now_i = int(time.time())
+                row = svc.db.one("SELECT id FROM users WHERE email=? AND deleted_at IS NULL", (target_email,))
+                if row:
+                    user_id = row[0]
                 else:
-                    st.error("That code is not valid or has expired.")
+                    user_id = uuid.uuid4().hex
+                    chosen_pw = pw_in if (pw_in and len(pw_in) >= 10) else secrets.token_urlsafe(16)
+                    svc.db.execute(
+                        "INSERT INTO users (id, email, pw_hash, display_name, created_at, terms_accepted_at, terms_version) VALUES (?,?,?,?,?,?,?)",
+                        (user_id, target_email, hash_password(chosen_pw), target_email.split("@")[0][:60], now_i, now_i, TERMS_VERSION),
+                    )
+                token = secrets.token_urlsafe(32)
+                svc.db.execute(
+                    "INSERT INTO sessions (token_hash, user_id, created_at, expires_at) VALUES (?,?,?,?)",
+                    (_token_hash(token), user_id, now_i, now_i + SESSION_SECONDS),
+                )
+                svc.db.commit()
+                session.entitlements().grant(user_id, found.plan, found.expires_at)
+                session.sign_in(token)
+                st.session_state["entitlement"] = found
+                st.success(f"Welcome, {target_email}! {found.plan.capitalize()} access unlocked.")
+                st.rerun()
         st.caption("We never ask for card details on this page.")
 
     st.markdown("---")

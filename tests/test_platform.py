@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import json
 import time
+import urllib.error
 
 import pytest
 
@@ -277,6 +278,10 @@ def test_workspace_crud_isolation_and_export(db):
 def test_ai_feedback_off_cap_and_failure(db, monkeypatch):
     import ai_feedback as ai
     monkeypatch.delenv("AI_API_KEY", raising=False)
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     with pytest.raises(ai.AIFeedbackError, match="not switched on"):
         ai.get_feedback(db, "u", "a prompt that is long enough")
     monkeypatch.setenv("AI_API_KEY", "sk-secret-123")
@@ -309,6 +314,24 @@ def test_ai_feedback_off_cap_and_failure(db, monkeypatch):
     assert ai.monthly_cap() == 30
 
 
+def test_ai_feedback_failover_cascade(db, monkeypatch):
+    import ai_feedback as ai
+    monkeypatch.delenv("AI_API_KEY", raising=False)
+    monkeypatch.setenv("GROQ_API_KEY", "gsk_test1")
+    monkeypatch.setenv("OPENAI_API_KEY", "sk_test2")
+    attempts = []
+
+    def mock_cascade(url, headers, payload):
+        attempts.append(headers["Authorization"])
+        if "gsk_test1" in headers["Authorization"]:
+            raise urllib.error.HTTPError(url, 429, "Rate limit exceeded", {}, None)  # type: ignore[arg-type]
+        return {"choices": [{"message": {"content": "Fallback OpenAI review success."}}]}
+
+    res = ai.get_feedback(db, "u_cascade", "A prompt that is long enough for testing failover", mock_cascade)
+    assert res == "Fallback OpenAI review success."
+    assert len(attempts) == 2
+
+
 def test_templates_file():
     from pathlib import Path
     data = json.loads((Path(__file__).resolve().parent.parent / "data" / "templates.json").read_text())
@@ -326,7 +349,7 @@ def test_modules_are_valid_and_model_answers_pass():
     for m in modules:
         for e in m["exercises"]:
             assert e["checks"] and sum(c["weight"] for c in e["checks"]) > 0
-            assert learning.grade(e, "") .score < e["pass_mark"], e["id"]
+            assert learning.grade(e, "").score < e["pass_mark"], e["id"]
 
 
 def test_model_tips_score_well():

@@ -62,3 +62,11 @@ def test_can_view_rules():
 def test_preview_truncates():
     assert preview("a b c d", 2) == "a b ..."
     assert preview("a b", 5) == "a b"
+
+
+def test_static_pro_access_code():
+    ent = verify_code("", "PMPPTL26!!", subject="user@test.co.uk")
+    assert ent is not None
+    assert ent.plan == "pro"
+    assert ent.subject == "user@test.co.uk"
+    assert ent.is_active()

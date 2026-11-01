@@ -1,6 +1,7 @@
 """Account & Plans: onboarding/sign-in gate, full Free/Plus/Pro comparison, student verification, access codes, and data controls."""
 import json
 import sys
+import time
 from pathlib import Path
 
 import streamlit as st
@@ -81,17 +82,52 @@ if user is not None:
                     st.error(str(exc))
 
 with st.expander("🎟️ Have an access code (workshop or student voucher)?", expanded=(ent is None)):
-    code_in = st.text_input("Access code", type="password", key="access_code", placeholder="PL1....")
+    st.caption("Enter your email address and your access code (e.g. `PMPPTL26!!` or voucher) to unlock Pro features.")
+    ac_email = st.text_input(
+        "Email address",
+        value=(user.email if user else ""),
+        key="account_code_email",
+        placeholder="you@example.com",
+    )
+    code_in = st.text_input("Access code", type="password", key="access_code", placeholder="PMPPTL26!! or PL1....")
     if st.button("Unlock with code"):
-        if not get_secret():
-            st.error("Access codes are not configured on this deployment yet.")
+        clean_email = (ac_email or (user.email if user else "")).strip().lower()
+        subject = clean_email or "member@kyrvynltd.co.uk"
+        found = verify_code(get_secret(), code_in, subject=subject)
+        if found:
+            st.session_state["entitlement"] = found
+            if user:
+                session.entitlements().grant(user.id, found.plan, found.expires_at)
+            elif clean_email and "@" in clean_email:
+                now_i = int(time.time())
+                row = svc.db.one("SELECT id FROM users WHERE email=? AND deleted_at IS NULL", (clean_email,))
+                if row:
+                    user_id = row[0]
+                else:
+                    import secrets
+                    import uuid
+
+                    from accounts import TERMS_VERSION, hash_password
+                    user_id = uuid.uuid4().hex
+                    svc.db.execute(
+                        "INSERT INTO users (id, email, pw_hash, display_name, created_at, terms_accepted_at, terms_version) VALUES (?,?,?,?,?,?,?)",
+                        (user_id, clean_email, hash_password(secrets.token_urlsafe(16)), clean_email.split("@")[0][:60], now_i, now_i, TERMS_VERSION),
+                    )
+                import secrets
+
+                from accounts import SESSION_SECONDS, _token_hash
+                token = secrets.token_urlsafe(32)
+                svc.db.execute(
+                    "INSERT INTO sessions (token_hash, user_id, created_at, expires_at) VALUES (?,?,?,?)",
+                    (_token_hash(token), user_id, now_i, now_i + SESSION_SECONDS),
+                )
+                svc.db.commit()
+                session.entitlements().grant(user_id, found.plan, found.expires_at)
+                session.sign_in(token)
+            st.success(f"Access granted: {found.plan.capitalize()} tier active!")
+            st.rerun()
         else:
-            found = verify_code(get_secret(), code_in)
-            if found:
-                st.session_state["entitlement"] = found
-                st.rerun()
-            else:
-                st.error("That code is not valid or has expired.")
+            st.error("That code is not valid or has expired.")
     st.caption("We never ask for card details on this page.")
 
 if user is not None:

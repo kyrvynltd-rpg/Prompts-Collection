@@ -1,4 +1,4 @@
-"""Pro: AI feedback on a prompt, capped per month. Connects to OpenAI, Groq, Gemini, or OpenRouter."""
+"""Pro: AI feedback on a prompt, capped per month. Automated failover across Groq, OpenAI, and Gemini."""
 import sys
 from pathlib import Path
 
@@ -27,13 +27,15 @@ if not allows(session.current_tier(), need):
 
 db = session._db()
 is_live = ai_feedback.enabled()
+cascade = ai_feedback.get_provider_cascade()
 
 # Header status card
 col_stat1, col_stat2 = st.columns([3, 2])
 with col_stat1:
-    if is_live:
+    if is_live and cascade:
+        prov_summary = " ➔ ".join(c.name for c in cascade)
         st.markdown(
-            f"**Status:** <span class='pl-badge' style='background:#e0f2fe;color:#0369a1;'>🟢 LIVE AI ACTIVE ({ai_feedback.active_model()})</span>",
+            f"**Cascade Failover:** <span class='pl-badge' style='background:#e0f2fe;color:#0369a1;'>🟢 {prov_summary}</span>",
             unsafe_allow_html=True,
         )
     else:
@@ -44,32 +46,32 @@ with col_stat1:
 with col_stat2:
     st.markdown(f"**Monthly Allowance:** `{ai_feedback.remaining(db, user.id)} / {ai_feedback.monthly_cap()}` reviews left this month")
 
-# Expandable connection manager for API keys
-with st.expander("⚡ Connect an AI Provider (Groq, OpenAI, Gemini, OpenRouter)", expanded=not is_live):
+# Expandable connection manager for API keys & fallback cascade
+with st.expander("⚡ Multi-Provider Automated Fallback Cascade (Groq, OpenAI, Google Gemini)", expanded=not is_live):
     st.markdown(
-        "You can connect any OpenAI-compatible API key. "
-        "Keys can be added permanently to **Streamlit Cloud Secrets** / `.env` (`AI_API_KEY=...`), or entered below for this session:"
+        "The platform automatically runs an **Automated Multi-Provider Failover Cascade**:\n"
+        "1. **Groq** (Primary: ultra-fast inference with `openai/gpt-oss-120b` or `qwen/qwen3.8-27b`)\n"
+        "2. **OpenAI** (Fallback 1: if Groq is rate-limited or out of tokens)\n"
+        "3. **Google Gemini** (Fallback 2: if OpenAI is rate-limited or exhausted)\n\n"
+        "Add API keys permanently in **Streamlit Cloud Secrets** or enter below for this browser session:"
     )
     c_prov, c_model = st.columns(2)
     with c_prov:
         prov = st.selectbox(
             "Provider",
-            ["Groq (Fast & Free Key)", "OpenAI (GPT-4o-mini)", "Google Gemini (Free tier via OpenAI URL)", "OpenRouter", "Custom Endpoint"],
+            ["Groq (Fastest)", "OpenAI (GPT-4o-mini)", "Google Gemini (Free tier)", "Custom Endpoint"],
             key="ai_provider_select",
         )
     with c_model:
         if "Groq" in prov:
             default_url = "https://api.groq.com/openai/v1/chat/completions"
-            default_mod = "llama-3.3-70b-versatile"
+            default_mod = "openai/gpt-oss-120b"
         elif "OpenAI" in prov:
             default_url = "https://api.openai.com/v1/chat/completions"
             default_mod = "gpt-4o-mini"
         elif "Gemini" in prov:
             default_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
             default_mod = "gemini-1.5-flash"
-        elif "OpenRouter" in prov:
-            default_url = "https://openrouter.ai/api/v1/chat/completions"
-            default_mod = "anthropic/claude-3.5-haiku"
         else:
             default_url = ai_feedback.active_api_url()
             default_mod = ai_feedback.active_model()
@@ -131,13 +133,17 @@ if run_btn:
     if not text.strip() or len(text.strip()) < 10:
         st.warning("Please enter a prompt of at least 10 characters.")
     else:
-        with st.spinner("Analyzing prompt structure and consulting AI coach..."):
+        with st.spinner("Analyzing prompt structure and consulting AI coach with automatic fallback..."):
             if is_live:
                 try:
                     result = ai_feedback.get_feedback(db, user.id, text)
-                    st.success("✅ Live AI Review Generated!")
+                    st.success("✅ AI Coach Review Generated!")
                     st.markdown("### 🧠 AI Coach Evaluation")
                     st.markdown(result)
+                    if st.button("💾 Save Rewrite to My Workspace"):
+                        ws = Workspace(db)
+                        ws.save(user.id, "AI Coach Engineered Rewrite", result, "ai-coach, improved")
+                        st.success("Saved to your Workspace!")
                 except ai_feedback.AIFeedbackError as exc:
                     st.error(str(exc))
             else:
@@ -156,7 +162,6 @@ if run_btn:
                 st.markdown("#### 🚀 Engineered Production Rewrite (TRACE Framework)")
                 st.code(critique["rewrite"], language=None)
 
-                # Option to save directly to Workspace
                 if st.button("💾 Save Rewrite to My Workspace"):
                     ws = Workspace(db)
                     ws.save(user.id, "AI Coach Engineered Rewrite", critique["rewrite"], "ai-coach, improved")
