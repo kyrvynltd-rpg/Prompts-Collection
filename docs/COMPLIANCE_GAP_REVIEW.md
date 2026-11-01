@@ -38,7 +38,7 @@ Legend: Done = in code/docs on this branch. Partial = built, needs configuration
 | Business continuity | Partial | Backups and restore doc. Free-tier hosting has no uptime guarantee. |
 | Asset and risk management, ISMS, internal audit, management review | Open | Organisational. OWNER, outside code. Needed for any certification. |
 | HR, physical and endpoint security | Open | Organisational. |
-| Vulnerability disclosure | Done | SECURITY.md. OWNER: set a real security mailbox. |
+| Vulnerability disclosure | Done | SECURITY.md (info@kyrvynltd.co.uk). |
 
 ## Known technical limits
 - Streamlit keeps the sign-in in the browser session only. A refresh signs the user out.

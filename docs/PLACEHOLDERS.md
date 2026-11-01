@@ -9,7 +9,6 @@ Anything in square brackets in the legal and policy documents is deliberately un
 | [VAT status and number] | TERMS | Owner / accountant |
 | [AI provider] | PRIVACY, ROPA, SUBPROCESSORS | Owner: choose a provider, or remove the paragraph if AI feedback stays off |
 | [backup retention period] | PRIVACY, BACKUP_RESTORE | Owner: from the database provider's backup plan |
-| [security email] | SECURITY | Owner: create a monitored mailbox |
 | [assignment date] | LICENSE | Owner: date of the signed copyright assignment |
 | [incident owner] | INCIDENT_RESPONSE | Owner: name the responsible person and a backup |
 | [SOLICITOR TO CONFIRM: ...] | PRIVACY, TERMS, ROPA, COMPLIANCE_GAP_REVIEW, SUBPROCESSORS | Solicitor review items. Each states what to confirm |
