@@ -9,6 +9,8 @@ from pathlib import Path
 import streamlit as st
 
 import brand
+import session
+import ui
 from prompt_loader import get_all_prompts, get_category_folders
 
 # Page configuration
@@ -23,6 +25,8 @@ st.set_page_config(
 )
 
 # Custom CSS for better styling
+ui.sync_runtime_env()
+st.markdown(ui.CSS, unsafe_allow_html=True)
 st.markdown("""
     <style>
     .main-header {
@@ -143,6 +147,13 @@ from analysis import (  # noqa: E402
     build_learning_paths,
     recommend_prompts,
 )
+
+if session.current_user() is None and session.current_entitlement() is None:
+    render_centered_logo(92)
+    ui.render_onboarding_and_auth_gate(key_prefix="home_gate")
+    st.stop()
+
+ui.render_status_bar()
 
 # Sidebar (keeping as requested)
 with st.sidebar:
