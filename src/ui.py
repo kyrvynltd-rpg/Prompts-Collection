@@ -1,4 +1,8 @@
 """Shared look and feel: responsive CSS, header and footer for all pages."""
+import os
+import sys
+from pathlib import Path
+
 import streamlit as st
 
 import brand
@@ -23,7 +27,30 @@ CSS = """
 """
 
 
+def sync_runtime_env() -> None:
+    """Populate os.environ from Streamlit Cloud st.secrets or local .env outside pytest."""
+    if "pytest" in sys.modules or "PYTEST_CURRENT_TEST" in os.environ:
+        return
+    try:
+        for k, v in st.secrets.items():
+            if isinstance(v, (str, int, float)) and str(v).strip() and "[YOUR-PASSWORD]" not in str(v):
+                os.environ.setdefault(str(k), str(v).strip())
+    except Exception:
+        pass
+    env_file = Path(__file__).resolve().parent.parent / ".env"
+    if env_file.is_file():
+        for line in env_file.read_text(encoding="utf-8", errors="ignore").splitlines():
+            s = line.strip()
+            if not s or s.startswith("#") or "=" not in s:
+                continue
+            k, v = s.split("=", 1)
+            val = v.strip().strip("\"'")
+            if k.strip() and val and "[YOUR-PASSWORD]" not in val:
+                os.environ.setdefault(k.strip(), val)
+
+
 def setup(title: str, icon: str = "💡") -> None:
+    sync_runtime_env()
     st.set_page_config(page_title=f"{title} | Prompt Learning Platform", page_icon=icon, layout="wide",
                        initial_sidebar_state="collapsed")
     st.markdown(CSS, unsafe_allow_html=True)
