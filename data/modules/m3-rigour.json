@@ -6,12 +6,12 @@
  "summary": "Get answers you can check, and use AI in ways your university will accept.",
  "lessons": [
   {
-   "title": "Make answers checkable",
-   "body": "Ask for sources you can verify, for the model to flag uncertainty, and for step-by-step working. Then check them. Models can invent references."
+   "title": "Mitigating Confabulation & Enforcing Epistemic Humility",
+   "body": "Language models do not possess a ground-truth database; they generate tokens based on statistical plausibility. Consequently, when asked for citations, statistics, or niche facts, models frequently **confabulate** (hallucinate plausible-sounding author names, journal titles, DOIs, and page numbers).\n\n**Engineering Checkable Prompt Patterns:**\n* **Uncertainty Calibration**: Instruct the model: *'If you are not 100% confident based on established peer-reviewed consensus, explicitly state \"Unverified\" rather than guessing.'*\n* **Verification Mandates**: Ask the model to quote direct passages from supplied text rather than summarizing from memory.\n* **External Verification Rule**: Always treat model citations as search queries to verify independently in your university library catalogue or PubMed/Google Scholar\u2014never paste unverified citations into assessed coursework."
   },
   {
-   "title": "Academic integrity",
-   "body": "Use AI to learn and to give feedback on your own work, not to submit its writing as yours. Read your institution's policy and declare use where required."
+   "title": "Academic Integrity & Ethical Co-Piloting",
+   "body": "UK universities (under QAA and Russell Group guidance) distinguish between **legitimate generative AI co-piloting** and **academic misconduct (plagiarism / contract cheating)**.\n\n* **Legitimate Pedagogical Use**: Using AI as a Socratic sparring partner, brainstorming counter-arguments to your thesis, checking paragraph transition flow, generating practice exam questions, and debugging software code.\n* **Prohibited Misconduct**: Prompting an AI to write your essay, generating sections of assessed text, or submitting AI-synthesized prose as your own work.\n* **Best Practice**: Keep an audit trail of your research notes and prompts. If required by your department, declare your AI usage transparently (specifying the model, the date, and how the tool was applied)."
   }
  ],
  "exercises": [

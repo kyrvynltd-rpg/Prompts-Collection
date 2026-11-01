@@ -9,22 +9,91 @@ import brand
 
 CSS = """
 <style>
-.block-container { max-width: 1000px; padding-top: 1.5rem; }
-.pl-hero h1 { margin-bottom: .2rem; }
-.pl-sub { color: #6b7280; margin-bottom: 1.2rem; }
-.pl-badge { display:inline-block; padding: .15rem .6rem; border-radius: 999px; font-size: .75rem; font-weight: 600; }
-.pl-free { background:#e8f5ec; color:#146c2e; }
-.pl-premium { background:#fff3d6; color:#8a5a00; }
-.pl-pro { background:#ede9fe; color:#5b21b6; }
-.pl-card { border:1px solid rgba(128,128,128,.25); border-radius:12px; padding:1rem 1.1rem; margin-bottom:.8rem; height: 100%; }
-.pl-plan-card { border:1px solid rgba(128,128,128,.3); border-radius:14px; padding:1.1rem 1.2rem; margin-bottom:.8rem; background: rgba(128,128,128,.04); }
-.pl-plan-pro { border:2px solid #4f46e5; background: rgba(79,70,229,.05); }
-.pl-weak { border-left: 4px solid #d9534f; padding:.5rem .8rem; background: rgba(217,83,79,.08); border-radius:6px; }
-.pl-footer { text-align:center; color:#6b7280; font-size:.8rem; padding:1.5rem 0 .5rem; }
-@media (max-width: 640px) {
-  .block-container { padding: 1rem .8rem; }
-  .pl-hero h1 { font-size: 1.5rem; }
-  div[data-testid="stMetricValue"] { font-size: 1.4rem; }
+/* Modern typography and base spacing */
+.block-container { max-width: 1040px; padding-top: 1.6rem; padding-bottom: 2.5rem; }
+.pl-hero h1 {
+    margin-bottom: .25rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, #1e40af 0%, #4338ca 50%, #6d28d9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.pl-sub { color: #64748b; font-size: 1.05rem; margin-bottom: 1.4rem; line-height: 1.5; }
+.pl-badge {
+    display: inline-block;
+    padding: .18rem .65rem;
+    border-radius: 9999px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+}
+.pl-free { background:#ecfdf5; color:#065f46; border: 1px solid #a7f3d0; }
+.pl-premium { background:#fef3c7; color:#92400e; border: 1px solid #fde68a; }
+.pl-pro { background:#f5f3ff; color:#5b21b6; border: 1px solid #ddd6fe; }
+
+/* Interactive Cards with subtle elevation */
+.pl-card {
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 14px;
+    padding: 1.15rem 1.25rem;
+    margin-bottom: .9rem;
+    background: #ffffff;
+    box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);
+    transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+}
+.pl-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -4px rgba(0,0,0,0.08);
+    border-color: #cbd5e1;
+}
+
+/* Plan Tier Cards */
+.pl-plan-card {
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 16px;
+    padding: 1.3rem 1.35rem;
+    margin-bottom: 1rem;
+    background: #fafafa;
+    box-shadow: 0 4px 12px -2px rgba(0,0,0,0.04);
+    transition: all 0.2s ease-in-out;
+}
+.pl-plan-pro {
+    border: 2px solid #6366f1;
+    background: linear-gradient(180deg, #fbfbfe 0%, #f5f3ff 100%);
+    box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.15);
+}
+.pl-plan-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -6px rgba(0,0,0,0.09);
+}
+
+.pl-weak {
+    border-left: 4px solid #ef4444;
+    padding: .65rem .95rem;
+    background: rgba(239, 68, 68, 0.06);
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.pl-footer {
+    text-align: center;
+    color: #64748b;
+    font-size: .82rem;
+    padding: 2.2rem 0 1rem;
+    border-top: 1px solid rgba(226, 232, 240, 0.8);
+    margin-top: 2rem;
+}
+
+/* Responsive tweaks for tablet & mobile */
+@media (max-width: 768px) {
+  .block-container { padding: 1rem .85rem; }
+  .pl-hero h1 { font-size: 1.65rem; }
+  .pl-sub { font-size: 0.95rem; }
+  .pl-plan-card { padding: 1rem .9rem; }
+  div[data-testid="stMetricValue"] { font-size: 1.35rem; }
 }
 </style>
 """

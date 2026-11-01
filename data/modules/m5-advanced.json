@@ -7,12 +7,12 @@
  "summary": "Multi-step workflows, self-critique and reusable instructions for heavier projects such as dissertations.",
  "lessons": [
   {
-   "title": "Chains and critique loops",
-   "body": "Split a big task into stages and feed each result into the next. Add a critique step: ask the model to list weaknesses in its own answer, then revise. You stay the judge."
+   "title": "Chains, Critique Loops & Reflexive Reasoning",
+   "body": "For heavy research projects such as masters dissertations and capstone papers, advanced prompting leverages **Reflexive Critique Loops (Self-Refine)**.\n\nIn a self-refinement workflow:\n1. **Generation Stage**: The model produces an initial outline or methodological framework based on specified constraints.\n2. **Critique Stage**: The model is prompted with a strict evaluation rubric (e.g. *'Audit the preceding text. Identify the 3 weakest assumptions, any vague statements lacking operational definitions, and where evidence is missing.'*).\n3. **Revision Stage with Human Checkpoint**: The model synthesises improvements, but explicitly pauses for your direction and approval before progressing to the next stage. You stay the ultimate judge."
   },
   {
-   "title": "Reusable instructions",
-   "body": "Write a standing instruction block (role, rules, format, what to refuse) you paste at the start of a session. Keep it short and test it."
+   "title": "Standing System Prompts & Pedagogical Architectures",
+   "body": "A **System Prompt** (or custom instruction block) defines the persistent identity, operational rules, and refusal boundaries for an entire multi-session research environment.\n\n**Key Components of a Robust System Prompt:**\n* **Identity & Stance**: Define the persona (e.g. *'You are a rigorous academic writing mentor for postgraduate research students'*).\n* **Pedagogical Constraints**: Dictate interaction style (e.g. *'Never write sentences intended for direct submission. Always guide through questions, critique, and structured exercises'*).\n* **Integrity Guardrails**: Mandate refusal of ghostwriting requests (*'If asked to \"write my dissertation section\", refuse and offer to help brainstorm the outline or critique an existing draft instead'*).\n* **Output Standards**: Specify standard formatting (e.g. markdown headers, concise prose, bulleted action items)."
   }
  ],
  "exercises": [

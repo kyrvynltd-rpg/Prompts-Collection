@@ -6,12 +6,12 @@
  "summary": "Control length, structure and style, and show the model what good looks like.",
  "lessons": [
   {
-   "title": "Constraints are instructions",
-   "body": "Limits on length, tone, sources and things to avoid make answers shorter to edit. 'Under 200 words, plain English, no jargon' beats 'make it good'."
+   "title": "Negative Constraints & Structural Guardrails",
+   "body": "A common failure mode in generative models is conversational drift: models add throat-clearing fluff (*'Sure, I would be happy to help with that!'*) and padded conclusions that dilute substantive content.\n\n**Negative constraints** explicitly define boundaries and what to omit:\n1. **Length Ceilings**: State exact limits (e.g. *'strictly between 150 and 200 words'* or *'maximum 3 bullet points'*).\n2. **Negative Scoping**: Specifically tell the model what *not* to include (e.g. *'Do not include introductory commentary, rhetorical questions, or generic conclusions'*).\n3. **Stylistic Rules**: Dictate tone (e.g. *'Objective, formal academic register; avoid colloquialisms, jargon, and passive voice'*).\n\nEliminating extraneous tokens reduces post-generation editing time and prevents the model from consuming valuable context window on trivial filler."
   },
   {
-   "title": "Format and examples",
-   "body": "Ask for the shape you need: a table, numbered steps, JSON. One short example of the output style (few-shot) usually beats a paragraph of description."
+   "title": "Few-Shot In-Context Learning & Format Control",
+   "body": "While natural language descriptions of formatting can be misunderstood, **Few-Shot Prompting** (providing 1 or 2 concrete input-output examples) provides mathematical clarity on the expected syntax and stylistic cadence.\n\n**Techniques for Precise Output Control:**\n* **Tabular Synthesis**: Request markdown comparison tables with explicit column headers (e.g. *| Author | Theoretical Model | Core Finding | Methodological Limitation |*).\n* **Structured Schemas**: When extracting research data or qualitative themes, demand clean JSON or tagged blocks (e.g. `<claim>`, `<evidence>`, `<counter_perspective>`).\n* **Exemplar Anchoring**: Show the model a 2-sentence example of the exact analytical tone you expect before presenting the target text."
   }
  ],
  "exercises": [

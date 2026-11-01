@@ -8,6 +8,7 @@ from pathlib import Path
 
 import streamlit as st
 
+import ai_feedback
 import brand
 import session
 import ui
@@ -371,6 +372,43 @@ if st.session_state.last_analyzed:
     st.divider()
     st.markdown("### ✨ Suggested Improved Prompt")
     st.code(analysis['improved'], language=None)
+
+    # AI Coach Deep Review & Production Rewrite
+    st.divider()
+    st.markdown("### 🤖 AI Prompt Coach Deep Review & Rewrite")
+    st.caption("Generate a structured academic critique (Strengths, Critical Gaps, and Engineered TRACE Rewrite) for this prompt.")
+
+    c_ai1, c_ai2 = st.columns([2, 3])
+    with c_ai1:
+        request_ai = st.button("✨ Consult AI Prompt Coach", type="secondary", key="home_consult_ai_btn", use_container_width=True)
+
+    cache_key = f"ai_coach_{hash(analysis['original'])}"
+    if request_ai or st.session_state.get(cache_key):
+        st.session_state[cache_key] = True
+        with st.spinner("Consulting AI coach..."):
+            if ai_feedback.enabled():
+                try:
+                    user_ref = session.current_user().id if session.current_user() else "guest"
+                    ai_text = ai_feedback.get_feedback(session._db(), user_ref, analysis["original"])
+                    st.success("✅ AI Coach Review (Live API):")
+                    st.markdown(ai_text)
+                except Exception as exc:
+                    st.warning(f"Live provider note: {exc}. Showing pedagogical analysis:")
+                    c_data = ai_feedback.get_pedagogical_coach_critique(analysis["original"])
+                    st.markdown(f"**🌟 Strengths:**\n{c_data['strengths']}\n\n**⚠️ Gaps:**\n{c_data['gaps']}\n\n**🚀 Production Rewrite:**\n```\n{c_data['rewrite']}\n```")
+            else:
+                c_data = ai_feedback.get_pedagogical_coach_critique(analysis["original"])
+                st.info("💡 **AI Coach Analysis & Refinement** (Connect an API key in AI Feedback for dynamic LLM responses):")
+                col_s1, col_s2 = st.columns(2)
+                with col_s1:
+                    st.markdown("#### 🌟 Strengths")
+                    st.markdown(c_data["strengths"])
+                with col_s2:
+                    st.markdown("#### ⚠️ Critical Gaps")
+                    st.markdown(c_data["gaps"])
+                st.markdown("#### 🚀 Engineered Production Rewrite")
+                st.code(c_data["rewrite"], language=None)
+
 
     col1, col2 = st.columns(2)
     with col1:
