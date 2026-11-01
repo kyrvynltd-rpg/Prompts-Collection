@@ -27,6 +27,7 @@ def _running_inside_streamlit() -> bool:
 
 if _running_inside_streamlit():
     import streamlit as st
+
     import ui
 
     ui.sync_runtime_env()
