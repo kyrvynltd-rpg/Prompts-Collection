@@ -1,4 +1,4 @@
-"""Shared look and feel: responsive CSS, onboarding/login gate, plan comparison, header and footer."""
+"""Shared look and feel: executive design system, onboarding gate, plan comparison, and header/footer."""
 from __future__ import annotations
 
 import os
@@ -12,56 +12,58 @@ import brand
 
 CSS = """
 <style>
-/* Modern Typography & Theme Adaptive Variables */
+/* ==========================================================================
+   KYRVYN DESIGN SYSTEM - Modern High-Tech SaaS
+   ========================================================================== */
+
 :root {
-  --pl-bg: #f8fafc;
-  --pl-surface: #ffffff;
-  --pl-surface-elevated: #ffffff;
-  --pl-card-bg: #ffffff;
-  --pl-border: #e2e8f0;
-  --pl-border-subtle: #f1f5f9;
-  --pl-title: #0f172a;
-  --pl-body: #334155;
-  --pl-muted: #64748b;
+  --pl-bg: #090d16;
+  --pl-surface: #0f172a;
+  --pl-card-bg: #141e33;
+  --pl-card-bg-hover: #19253f;
+  --pl-border: rgba(148, 163, 184, 0.15);
+  --pl-border-hover: rgba(99, 102, 241, 0.6);
+  --pl-title: #f8fafc;
+  --pl-body: #cbd5e1;
+  --pl-muted: #94a3b8;
   --pl-brand: #6366f1;
-  --pl-brand-glow: rgba(99, 102, 241, 0.2);
-  --pl-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
-  --pl-shadow-hover: 0 14px 30px -4px rgba(15, 23, 42, 0.12);
-  --pl-pro-bg: linear-gradient(180deg, #fbfbfe 0%, #f5f3ff 100%);
-  --pl-pro-border: #6366f1;
-  --pl-pro-shadow: 0 8px 30px -4px rgba(99, 102, 241, 0.22);
+  --pl-brand-gradient: linear-gradient(135deg, #3b82f6 0%, #6366f1 45%, #8b5cf6 80%, #d946ef 100%);
+  --pl-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.45);
+  --pl-shadow-hover: 0 16px 40px -6px rgba(0, 0, 0, 0.65);
+  --pl-pro-bg: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+  --pl-pro-border: #818cf8;
+  --pl-pro-glow: 0 10px 40px -6px rgba(99, 102, 241, 0.45);
 }
 
-@media (prefers-color-scheme: dark) {
+/* Light Theme Adaptability */
+@media (prefers-color-scheme: light) {
   :root {
-    --pl-bg: #090d16;
-    --pl-surface: #0f172a;
-    --pl-surface-elevated: #1e293b;
-    --pl-card-bg: #1e293b;
-    --pl-border: #334155;
-    --pl-border-subtle: #1e293b;
-    --pl-title: #f8fafc;
-    --pl-body: #cbd5e1;
-    --pl-muted: #94a3b8;
-    --pl-brand: #818cf8;
-    --pl-brand-glow: rgba(129, 140, 248, 0.3);
-    --pl-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-    --pl-shadow-hover: 0 14px 35px -4px rgba(0, 0, 0, 0.7);
-    --pl-pro-bg: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
-    --pl-pro-border: #818cf8;
-    --pl-pro-shadow: 0 8px 30px -4px rgba(129, 140, 248, 0.35);
+    --pl-bg: #f8fafc;
+    --pl-surface: #ffffff;
+    --pl-card-bg: #ffffff;
+    --pl-card-bg-hover: #fcfdfe;
+    --pl-border: #e2e8f0;
+    --pl-border-hover: #818cf8;
+    --pl-title: #0f172a;
+    --pl-body: #334155;
+    --pl-muted: #64748b;
+    --pl-shadow: 0 6px 24px -4px rgba(15, 23, 42, 0.08);
+    --pl-shadow-hover: 0 16px 36px -6px rgba(15, 23, 42, 0.14);
+    --pl-pro-bg: linear-gradient(180deg, #faf5ff 0%, #ffffff 100%);
+    --pl-pro-border: #6366f1;
+    --pl-pro-glow: 0 10px 32px -4px rgba(99, 102, 241, 0.22);
   }
 }
 
-/* Streamlit Native Theme Overrides (Ensures Dark Mode text is crisp & never white-on-white) */
+/* Force dark theme overrides when Streamlit runs in dark theme */
 [data-theme="dark"],
 [data-testid="stAppViewContainer"][data-theme="dark"],
 .stApp[data-theme="dark"] {
   --pl-bg: #090d16;
   --pl-surface: #0f172a;
-  --pl-surface-elevated: #1e293b;
-  --pl-card-bg: #1e293b;
-  --pl-border: #334155;
+  --pl-card-bg: #141e33;
+  --pl-card-bg-hover: #19253f;
+  --pl-border: rgba(148, 163, 184, 0.15);
   --pl-title: #f8fafc;
   --pl-body: #cbd5e1;
   --pl-muted: #94a3b8;
@@ -69,173 +71,198 @@ CSS = """
   --pl-pro-border: #818cf8;
 }
 
-.block-container {
-  max-width: 1080px;
-  padding-top: 1.6rem;
-  padding-bottom: 3rem;
+/* Fix Streamlit Header Toolbar Collision & Breathing Room */
+header[data-testid="stHeader"] {
+  background: rgba(9, 13, 22, 0.8) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid var(--pl-border) !important;
+  z-index: 99 !important;
 }
 
-/* Elite SaaS Header */
+.block-container {
+  max-width: 1140px !important;
+  padding-top: 4.8rem !important; /* Critical: offsets below Streamlit top header */
+  padding-bottom: 4rem !important;
+}
+
+/* Modern Typography & Header */
 .pl-hero {
   text-align: center;
-  padding: 1.2rem 0 0.8rem 0;
-  margin-bottom: 1.2rem;
+  padding: 1rem 0 1.25rem 0;
+  margin-bottom: 1.5rem;
 }
 .pl-hero h1 {
-  font-size: 2.35rem;
-  font-weight: 850;
-  letter-spacing: -0.035em;
-  line-height: 1.15;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #2563eb 0%, #6366f1 40%, #8b5cf6 70%, #ec4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 2.5rem !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 1.15 !important;
+  margin-bottom: 0.6rem !important;
+  background: var(--pl-brand-gradient) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
 }
 .pl-sub {
   color: var(--pl-muted) !important;
-  font-size: 1.05rem;
-  max-width: 740px;
+  font-size: 1.1rem !important;
+  max-width: 760px;
   margin: 0 auto 1.2rem auto;
-  line-height: 1.55;
+  line-height: 1.6;
+}
+
+/* Executive Navigation Bar */
+.pl-nav-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+}
+.pl-brand-tag {
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  color: var(--pl-brand) !important;
+  background: rgba(99, 102, 241, 0.14);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+.pl-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  margin-right: 0.35rem;
+  animation: pl-pulse-dot 2s infinite ease-in-out;
+}
+@keyframes pl-pulse-dot {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.85); opacity: 0.6; }
 }
 
 /* Badges with glow & smooth animations */
 .pl-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
   padding: 0.22rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 750;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  transition: all 0.2s ease;
 }
 .pl-free {
-  background: rgba(16, 185, 129, 0.12);
+  background: rgba(16, 185, 129, 0.14);
   color: #10b981 !important;
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(16, 185, 129, 0.4);
 }
 .pl-premium {
-  background: rgba(245, 158, 11, 0.12);
+  background: rgba(245, 158, 11, 0.14);
   color: #f59e0b !important;
   border: 1px solid rgba(245, 158, 11, 0.4);
 }
 .pl-pro {
-  background: rgba(99, 102, 241, 0.15);
-  color: #818cf8 !important;
-  border: 1px solid rgba(99, 102, 241, 0.45);
-  box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc !important;
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.25);
 }
 
-/* Elevated Cards with Glassmorphism & Contrast Safety */
+/* Elevated Cards with Glassmorphism & High Contrast */
 .pl-card, .pl-plan-card {
   background: var(--pl-card-bg) !important;
   border: 1px solid var(--pl-border) !important;
   color: var(--pl-body) !important;
-  border-radius: 16px;
-  padding: 1.35rem 1.4rem;
-  margin-bottom: 1.1rem;
+  border-radius: 18px;
+  padding: 1.5rem 1.6rem;
+  margin-bottom: 1.25rem;
   box-shadow: var(--pl-shadow);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 .pl-card:hover, .pl-plan-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   box-shadow: var(--pl-shadow-hover);
-  border-color: #818cf8 !important;
+  border-color: var(--pl-border-hover) !important;
 }
 
 .pl-card h4, .pl-plan-card h4 {
   color: var(--pl-title) !important;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 750;
-  letter-spacing: -0.015em;
-  margin: 0.55rem 0 0.35rem 0;
+  letter-spacing: -0.02em;
+  margin: 0.65rem 0 0.4rem 0;
 }
 .pl-card p, .pl-plan-card p {
   color: var(--pl-muted) !important;
-  font-size: 0.91rem;
-  line-height: 1.55;
-  margin-bottom: 0.65rem;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
 }
 .pl-card ul, .pl-plan-card ul {
   color: var(--pl-body) !important;
-  font-size: 0.89rem;
-  line-height: 1.62;
+  font-size: 0.91rem;
+  line-height: 1.7;
   padding-left: 1.15rem;
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
+  list-style-type: none;
 }
 .pl-card li, .pl-plan-card li {
   color: var(--pl-body) !important;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.55rem;
+  position: relative;
+  padding-left: 1.4rem;
+}
+.pl-card li::before, .pl-plan-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: 800;
+  font-size: 0.95rem;
 }
 .pl-card li b, .pl-plan-card li b {
   color: var(--pl-title) !important;
 }
 
-/* Flagship PRO Plan Card */
+/* Flagship PRO Card */
 .pl-plan-pro {
   background: var(--pl-pro-bg) !important;
   border: 2px solid var(--pl-pro-border) !important;
-  box-shadow: var(--pl-pro-shadow) !important;
+  box-shadow: var(--pl-pro-glow) !important;
   position: relative;
 }
 .pl-plan-pro:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px -4px rgba(99, 102, 241, 0.35) !important;
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px -8px rgba(99, 102, 241, 0.45) !important;
 }
-
 .pl-popular-ribbon {
   display: inline-block;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #ffffff !important;
   font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+  font-weight: 850;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.2rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 6px;
-  margin-bottom: 0.45rem;
-  width: fit-content;
-}
-
-/* Top Navigation & Status Bar */
-.pl-status-bar {
-  background: var(--pl-card-bg);
-  border: 1px solid var(--pl-border);
-  border-radius: 14px;
-  padding: 0.75rem 1.15rem;
-  margin-bottom: 1.4rem;
-  box-shadow: var(--pl-shadow);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.pl-nav-card {
-  background: var(--pl-card-bg);
-  border: 1px solid var(--pl-border);
-  border-radius: 12px;
-  padding: 0.85rem 1rem;
   margin-bottom: 0.6rem;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-.pl-nav-card:hover {
-  border-color: #6366f1;
-  transform: translateY(-2px);
+  width: fit-content;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
 }
 
 .pl-weak {
   border-left: 4px solid #ef4444;
-  padding: .65rem .95rem;
-  background: rgba(239, 68, 68, 0.08);
+  padding: .75rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
   border-radius: 8px;
   font-size: 0.95rem;
   color: var(--pl-title) !important;
@@ -244,10 +271,10 @@ CSS = """
 .pl-footer {
   text-align: center;
   color: var(--pl-muted) !important;
-  font-size: .83rem;
-  padding: 2.5rem 0 1.2rem;
+  font-size: .84rem;
+  padding: 3rem 0 1.5rem;
   border-top: 1px solid var(--pl-border);
-  margin-top: 2.5rem;
+  margin-top: 3rem;
 }
 .pl-footer a {
   color: #818cf8;
@@ -259,10 +286,10 @@ CSS = """
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .block-container { padding: 1rem 0.75rem; }
-  .pl-hero h1 { font-size: 1.75rem; }
-  .pl-sub { font-size: 0.95rem; margin-bottom: 1rem; }
-  .pl-card, .pl-plan-card { padding: 1.1rem 1rem; }
+  .block-container { padding-top: 4.2rem !important; padding-left: 0.9rem !important; padding-right: 0.9rem !important; }
+  .pl-hero h1 { font-size: 1.85rem !important; }
+  .pl-sub { font-size: 0.98rem !important; margin-bottom: 1.1rem; }
+  .pl-card, .pl-plan-card { padding: 1.2rem 1.1rem; }
   div[data-testid="stMetricValue"] { font-size: 1.35rem; }
 }
 </style>
@@ -299,8 +326,8 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
     price = get_pricing()
     st.markdown("### 💳 Plans & Included Functionalities")
     st.caption(
-        "Every account starts on the Free tier. Upgrade to **Plus** or **Pro** (or use access code `PMPPTL26!!`) "
-        "to unlock premium prompt collections, advanced learning modules, personal workspace, and AI coaching."
+        "Every account starts on the Free tier. Upgrade to **Plus** or **Pro** (or enter a verified institutional voucher code) "
+        "to unlock premium prompt collections, advanced learning tracks, the personal workspace, and AI coaching."
     )
 
     period = st.radio(
@@ -341,11 +368,11 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
             "<p>Full prompt library & core curriculum for regular study.</p>"
             "<ul>"
             "<li><b>Everything in Free</b>, plus:</li>"
-            "<li>🔓 <b>Full 100+ Premium Prompt Library</b> across all categories & complete Student Pack</li>"
-            "<li>🔓 <b>Module 2 — Precision</b>: constraints, output formats & few-shot examples (3 exercises)</li>"
-            "<li>🔓 <b>Module 3 — Rigour</b>: checkable, honest & academic-integrity-safe prompting (3 exercises)</li>"
-            "<li>🔓 <b>Module 4 — Applied</b>: study, revision, career & project workflows (3 exercises)</li>"
-            "<li>🎓 <i>Also unlocked via verified student (<code>.ac.uk</code>) access codes</i></li>"
+            "<li><b>Full 100+ Premium Prompt Library</b> across all categories & complete Student Pack</li>"
+            "<li><b>Module 2 — Precision</b>: constraints, output formats & few-shot examples (3 exercises)</li>"
+            "<li><b>Module 3 — Rigour</b>: checkable, honest & academic-integrity-safe prompting (3 exercises)</li>"
+            "<li><b>Module 4 — Applied</b>: study, revision, career & project workflows (3 exercises)</li>"
+            "<li><i>Unlocked also via verified student (<code>.ac.uk</code>) access codes</i></li>"
             "</ul>"
             "</div>",
             unsafe_allow_html=True,
@@ -364,17 +391,17 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
         pro_save = f" · Save {price.annual_saving_percent('pro')}%" if period == "annual" else ""
         st.markdown(
             "<div class='pl-plan-card pl-plan-pro'>"
-            "<div class='pl-popular-ribbon'>⭐ MOST POPULAR & FULL ACCESS</div>"
+            "<div class='pl-popular-ribbon'>⭐ RECOMMENDED · FULL PRO ACCESS</div>"
             f"<span class='pl-badge pl-pro'>PRO TIER{pro_save}</span>"
             f"<h4>{pro_p.label()}</h4>"
             "<p>Complete workspace, template pack, advanced track & AI coach.</p>"
             "<ul>"
             "<li><b>Everything in Plus</b>, plus:</li>"
-            "<li>🔓 <b>Module 5 — Advanced Track</b>: multi-step chains, self-critique loops & reusable system prompts</li>"
-            "<li>🗂️ <b>Personal Prompt Workspace</b>: save up to 500 custom prompts, tag, search & export to <b>Markdown</b> or <b>JSON</b></li>"
-            "<li>📋 <b>8-Template Pack</b>: ready-to-copy templates for Study, Writing, STEM, Coding & Careers</li>"
-            "<li>🤖 <b>AI Prompt Coach Feedback</b>: up to 30 AI reviews/month with multi-provider failover</li>"
-            "<li>🏛️ <i>Also unlocked with access code <code>PMPPTL26!!</code></i></li>"
+            "<li><b>Module 5 — Advanced Track</b>: multi-step chains, self-critique loops & reusable system prompts</li>"
+            "<li><b>Personal Prompt Workspace</b>: save up to 500 custom prompts, tag, search & export to <b>Markdown</b> or <b>JSON</b></li>"
+            "<li><b>8-Template Pack</b>: ready-to-copy templates for Study, Writing, STEM, Coding & Careers</li>"
+            "<li><b>AI Prompt Coach Feedback</b>: up to 30 AI reviews/month with multi-provider failover</li>"
+            "<li><i>Unlocked also via verified Institutional / Workshop vouchers</i></li>"
             "</ul>"
             "</div>",
             unsafe_allow_html=True,
@@ -386,7 +413,7 @@ def render_plans_comparison(user=None, key_prefix: str = "plans") -> None:
                 if link:
                     st.link_button(f"Upgrade to Pro ({prov.capitalize()})", link, use_container_width=True)
             if not providers:
-                st.caption("Online Pro checkout is not enabled on this deployment yet; use access code `PMPPTL26!!` below.")
+                st.caption("Online Pro checkout is not enabled on this deployment yet; enter your voucher access code below.")
 
 
 def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
@@ -401,13 +428,13 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
     st.markdown(
         "<div class='pl-hero'>"
         "<h1>💡 Prompt Learning Platform</h1>"
-        "<div class='pl-sub'>Structured AI prompt engineering, deterministic rubric grading, 100+ curated prompts & academic-integrity-safe study workflows.</div>"
+        "<div class='pl-sub'>Structured prompt engineering, deterministic rubric grading, 100+ curated prompts & academic-integrity-safe study workflows.</div>"
         "</div>",
         unsafe_allow_html=True,
     )
 
     # 1. Onboarding 3-Step Overview
-    st.markdown("### 🚀 How the Platform Works")
+    st.markdown("### 🚀 Platform Overview")
     s1, s2, s3 = st.columns(3)
     with s1:
         st.markdown(
@@ -438,7 +465,7 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
 
     # 2. Sign In / Create Account / Access Code Gate
     st.markdown("### 🔐 Sign In or Create Your Account to Enter")
-    st.caption("Sign in with your email and password, register a free account in seconds, or enter your email and access code (e.g. `PMPPTL26!!`).")
+    st.caption("Sign in with your email and password, register a free account in seconds, or enter your email and voucher access code.")
 
     tab_in, tab_up, tab_code = st.tabs(["🔑 Sign in", "✨ Create free account", "🎟️ Use an access code"])
 
@@ -494,7 +521,7 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
                         st.error(str(exc))
 
     with tab_code:
-        st.caption("Enter your email address and access code (e.g. `PMPPTL26!!` or voucher) to sign in and unlock full Pro access.")
+        st.caption("Enter your email address and your voucher access code to sign in and unlock full Pro access.")
         email_in = st.text_input(
             "Your email address (required to link account)",
             key=f"{key_prefix}_code_email",
@@ -504,7 +531,7 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
             "Access code",
             type="password",
             key="access_code",
-            placeholder="PMPPTL26!! or PL1....",
+            placeholder="Enter your voucher or institutional code",
         )
         pw_in = st.text_input(
             "Password (10+ characters, optional if you have an account or set for a new account)",
@@ -560,7 +587,7 @@ def render_onboarding_and_auth_gate(key_prefix: str = "gate") -> None:
 
 
 def render_status_bar() -> None:
-    """Render a compact account & tier status bar at the top of the platform for authenticated users."""
+    """Render an executive, minimal floating top navbar for authenticated users."""
     import session
 
     user = session.current_user()
@@ -569,25 +596,24 @@ def render_status_bar() -> None:
         return
     tier = session.current_tier().upper()
     badge_cls = "pl-pro" if tier == "PRO" else ("pl-premium" if tier == "PLUS" else "pl-free")
-    who = user.email if user else f"Access code ({ent.subject})" if ent else "Guest"
-    c1, c2, c3 = st.columns([5, 3, 2])
-    with c1:
+    who = user.email if user else f"Voucher ({ent.subject})" if ent else "Member"
+
+    c_left, c_right = st.columns([6, 2])
+    with c_left:
         st.markdown(
-            f"👤 **{who}** &nbsp;·&nbsp; Active Plan: <span class='pl-badge {badge_cls}'>{tier}</span>",
+            f"<div class='pl-nav-header'>"
+            f"<span class='pl-brand-tag'>KYRVYN</span> "
+            f"<span style='color:var(--pl-muted);margin:0 0.35rem;'>·</span> "
+            f"<span style='font-size:0.88rem;color:var(--pl-title);font-weight:600;'>{who}</span> "
+            f"<span class='pl-badge {badge_cls}' style='margin-left:0.5rem;'><span class='pl-dot'></span>{tier} TIER</span>"
+            f"</div>",
             unsafe_allow_html=True,
         )
-    with c2:
-        if tier == "FREE":
-            st.caption("🔓 Upgrade to **Plus** or **Pro** on **Account & Plans** for full access.")
-        elif ent:
-            st.caption(f"✅ {tier.capitalize()} active ({session.days_left(ent)} days remaining).")
-    with c3:
+    with c_right:
         if st.button("Sign out", key="top_bar_signout", use_container_width=True):
             session.sign_out()
             st.session_state.pop("entitlement", None)
             st.rerun()
-    with st.expander("📊 View Plans & Functionalities (Free · Plus £4.99/m · Pro £9.99/m)"):
-        render_plans_comparison(user=user, key_prefix="topbar_plans")
 
 
 def setup(title: str, icon: str = "💡", require_auth: bool = True) -> None:
@@ -613,7 +639,7 @@ def footer() -> None:
     st.markdown(
         f"<div class='pl-footer'>{brand.copyright_line()} {brand.company_line()} "
         f"<a href='{brand.site_url()}'>{brand.site_url().split('//')[-1]}</a><br>"
-        "AI can be wrong: verify facts and follow your institution's AI policy.</div>",
+        "Enterprise-grade prompt engineering platform. AI can make mistakes: independently verify critical outputs.</div>",
         unsafe_allow_html=True,
     )
 
