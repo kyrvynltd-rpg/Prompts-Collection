@@ -82,7 +82,7 @@ header[data-testid="stHeader"] {
 
 .block-container {
   max-width: 1140px !important;
-  padding-top: 4.8rem !important; /* Critical: offsets below Streamlit top header */
+  padding-top: 5.6rem !important; /* Critical: offsets below Streamlit top header */
   padding-bottom: 4rem !important;
 }
 
@@ -286,12 +286,183 @@ header[data-testid="stHeader"] {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .block-container { padding-top: 4.2rem !important; padding-left: 0.9rem !important; padding-right: 0.9rem !important; }
+  .block-container { padding-top: 5.0rem !important; padding-left: 0.9rem !important; padding-right: 0.9rem !important; }
   .pl-hero h1 { font-size: 1.85rem !important; }
   .pl-sub { font-size: 0.98rem !important; margin-bottom: 1.1rem; }
   .pl-card, .pl-plan-card { padding: 1.2rem 1.1rem; }
   div[data-testid="stMetricValue"] { font-size: 1.35rem; }
 }
+
+/* Circular Health Gauge & Telemetry */
+.pl-gauge-card {
+  background: var(--pl-card-bg);
+  border: 1px solid var(--pl-border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: var(--pl-shadow);
+  margin-bottom: 1.5rem;
+}
+.pl-gauge-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.8rem;
+}
+.pl-gauge-circle-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pl-gauge-svg {
+  width: 140px;
+  height: 140px;
+  transform: rotate(-90deg);
+}
+.pl-gauge-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 9;
+}
+.pl-gauge-bar {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pl-gauge-inner {
+  position: absolute;
+  text-align: center;
+}
+.pl-gauge-score {
+  font-size: 2.1rem;
+  font-weight: 850;
+  line-height: 1;
+  color: var(--pl-title);
+  letter-spacing: -0.04em;
+}
+.pl-gauge-caption {
+  font-size: 0.68rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--pl-muted);
+  margin-top: 0.2rem;
+}
+
+/* Practice Dimension Progress Bars */
+.pl-dim-list {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.pl-dim-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.86rem;
+  color: var(--pl-body);
+}
+.pl-dim-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+.pl-dim-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+/* Visual Diff Viewer */
+.pl-diff-card {
+  background: var(--pl-card-bg);
+  border: 1px solid var(--pl-border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.91rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--pl-body);
+}
+.pl-diff-del {
+  background: rgba(239, 68, 68, 0.22);
+  color: #fca5a5;
+  text-decoration: line-through;
+  padding: 0.12rem 0.35rem;
+  border-radius: 4px;
+  margin: 0 0.15rem;
+}
+.pl-diff-add {
+  background: rgba(16, 185, 129, 0.25);
+  color: #6ee7b7;
+  font-weight: 600;
+  padding: 0.12rem 0.35rem;
+  border-radius: 4px;
+  margin: 0 0.15rem;
+}
+
+/* Variable Chips */
+.pl-chip {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: monospace;
+  margin: 0.2rem 0.25rem;
+}
+
+/* AI Pipeline Telemetry */
+.pl-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: var(--pl-card-bg);
+  border: 1px solid var(--pl-border);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+}
+.pl-pipeline-node {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--pl-muted);
+}
+.pl-pipeline-node.active {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #a5b4fc;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+}
+.pl-pipeline-arrow {
+  color: var(--pl-muted);
+  font-size: 0.85rem;
+}
+
 </style>
 """
 
@@ -648,3 +819,142 @@ def badge(access: str) -> str:
     cls = "pl-free" if access == "free" else "pl-premium"
     label = "Free" if access == "free" else "Premium"
     return f"<span class='pl-badge {cls}'>{label}</span>"
+
+
+def render_health_gauge(score: float, practices: dict[str, bool]) -> None:
+    """Render an animated circular SVG health gauge with 5 dimension progress bars."""
+    import html
+
+    pct = max(0, min(100, int(score)))
+    circumference = 339.29
+    offset = circumference * (1.0 - (pct / 100.0))
+    if pct >= 80:
+        stroke = "#10b981"
+        badge = "OPTIMAL PUBLICATION GRADE"
+        badge_cls = "pl-free"
+    elif pct >= 50:
+        stroke = "#f59e0b"
+        badge = "REFINEMENT RECOMMENDED"
+        badge_cls = "pl-premium"
+    else:
+        stroke = "#f43f5e"
+        badge = "CRITICAL GAPS DETECTED"
+        badge_cls = "pl-weak"
+
+    dim_labels = {
+        "role_definition": "🎭 Role Definition",
+        "specific_instructions": "🎯 Specific Instructions",
+        "output_format": "📋 Output Format",
+        "quality_markers": "💎 Quality Markers",
+        "constraints": "🛡️ Constraints & Bounds",
+    }
+
+    dim_rows = []
+    for key, label in dim_labels.items():
+        found = practices.get(key, False)
+        width = "100%" if found else "15%"
+        bar_color = "#10b981" if found else "#f43f5e"
+        status_txt = "✓ Pass" if found else "✗ Missing"
+        dim_rows.append(
+            f"<div style='margin-bottom:0.45rem;'>"
+            f"  <div class='pl-dim-row'>"
+            f"    <span>{html.escape(label)}</span>"
+            f"    <span style='font-weight:700;color:{bar_color};font-size:0.78rem;'>{status_txt}</span>"
+            f"  </div>"
+            f"  <div class='pl-dim-bar-bg'><div class='pl-dim-bar-fill' style='width:{width};background:{bar_color};'></div></div>"
+            f"</div>"
+        )
+
+    html_code = (
+        f"<div class='pl-gauge-card'>"
+        f"  <div class='pl-gauge-layout'>"
+        f"    <div class='pl-gauge-circle-wrap'>"
+        f"      <svg class='pl-gauge-svg' viewBox='0 0 120 120'>"
+        f"        <circle class='pl-gauge-bg' cx='60' cy='60' r='54' />"
+        f"        <circle class='pl-gauge-bar' cx='60' cy='60' r='54' stroke='{stroke}' stroke-dasharray='{circumference}' stroke-dashoffset='{offset}' />"
+        f"      </svg>"
+        f"      <div class='pl-gauge-inner'>"
+        f"        <div class='pl-gauge-score'>{pct}%</div>"
+        f"        <div class='pl-gauge-caption'>Health</div>"
+        f"      </div>"
+        f"    </div>"
+        f"    <div class='pl-dim-list'>"
+        f"      <div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;'>"
+        f"        <span style='font-weight:750;font-size:0.88rem;color:var(--pl-title);'>TRACE Framework Evaluation</span>"
+        f"        <span class='pl-badge {badge_cls}' style='font-size:0.68rem;'>{badge}</span>"
+        f"      </div>"
+        f"      {''.join(dim_rows)}"
+        f"    </div>"
+        f"  </div>"
+        f"</div>"
+    )
+    st.markdown(html_code, unsafe_allow_html=True)
+
+
+def render_diff_view(original: str, improved: str) -> None:
+    """Render an inline color-coded diff comparison between original and improved prompts."""
+    import difflib
+    import html
+
+    orig_words = original.split()
+    imp_words = improved.split()
+    diff = difflib.ndiff(orig_words, imp_words)
+    tokens = []
+    for item in diff:
+        code = item[:2]
+        word = html.escape(item[2:])
+        if code == "+ ":
+            tokens.append(f"<span class='pl-diff-add'>{word}</span>")
+        elif code == "- ":
+            tokens.append(f"<span class='pl-diff-del'>{word}</span>")
+        elif code == "  ":
+            tokens.append(word)
+    body = " ".join(tokens)
+    st.markdown(f"<div class='pl-diff-card'>{body}</div>", unsafe_allow_html=True)
+
+
+def extract_variables(prompt_text: str) -> list[str]:
+    """Extract unique {variable_name} placeholders from a prompt string."""
+    import re
+
+    found = re.findall(r"\{([a-zA-Z0-9_]+)\}", prompt_text)
+    seen = set()
+    result = []
+    for item in found:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+
+
+def apply_modifier(prompt_text: str, modifier_type: str) -> str:
+    """Quickly apply a production architectural modifier to a prompt."""
+    text = prompt_text.strip()
+    if modifier_type == "concise":
+        return text + "\n\nConstraint: Be concise, direct, and eliminate all conversational preamble and unnecessary filler words."
+    elif modifier_type == "cot":
+        return text + "\n\nReasoning: Think step-by-step before answering. Break down your analysis into numbered, logical stages."
+    elif modifier_type == "json":
+        return text + "\n\nOutput Format: Return the final output strictly as a valid JSON object matching the schema. Do not enclose in markdown fences or conversational text."
+    elif modifier_type == "guardrails":
+        return text + "\n\nGuardrails: If required context is ambiguous or absent, state what is missing rather than guessing. Follow factual accuracy and cite reasoning."
+    return text
+
+
+def render_model_pipeline(active_provider: str = "groq") -> None:
+    """Render the visual multi-model cascade pipeline."""
+    act = active_provider.lower()
+    groq_cls = "active" if act == "groq" else ""
+    openai_cls = "active" if act == "openai" else ""
+    gemini_cls = "active" if act in ("gemini", "google") else ""
+    st.markdown(
+        f"<div class='pl-pipeline'>"
+        f"  <span style='font-size:0.74rem;font-weight:750;color:var(--pl-muted);text-transform:uppercase;'>Failover Cascade:</span>"
+        f"  <span class='pl-pipeline-node {groq_cls}'>⚡ Groq LLaMA-3.3 (Primary)</span>"
+        f"  <span class='pl-pipeline-arrow'>➔</span>"
+        f"  <span class='pl-pipeline-node {openai_cls}'>🧠 OpenAI GPT-4o (Fallback 1)</span>"
+        f"  <span class='pl-pipeline-arrow'>➔</span>"
+        f"  <span class='pl-pipeline-node {gemini_cls}'>✨ Google Gemini (Fallback 2)</span>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )

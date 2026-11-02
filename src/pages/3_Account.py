@@ -82,14 +82,14 @@ if user is not None:
                     st.error(str(exc))
 
 with st.expander("🎟️ Have an access code (workshop or student voucher)?", expanded=(ent is None)):
-    st.caption("Enter your email address and your access code (e.g. `PMPPTL26!!` or voucher) to unlock Pro features.")
+    st.caption("Enter your email address and your access code to unlock Pro features.")
     ac_email = st.text_input(
         "Email address",
         value=(user.email if user else ""),
         key="account_code_email",
         placeholder="you@example.com",
     )
-    code_in = st.text_input("Access code", type="password", key="access_code", placeholder="PMPPTL26!! or PL1....")
+    code_in = st.text_input("Access code", type="password", key="access_code", placeholder="Enter your voucher or institutional code")
     if st.button("Unlock with code"):
         clean_email = (ac_email or (user.email if user else "")).strip().lower()
         subject = clean_email or "member@kyrvynltd.co.uk"

@@ -41,13 +41,26 @@ with tab_mine:
     items = ws.list(user.id, st.text_input("Search my prompts", key="ws_search"))
     st.caption(f"{len(items)} saved")
     for item in items:
-        with st.expander(item["title"]):
+        with st.expander(f"📄 {item['title']}"):
             st.code(item["body"], language=None)
             if item["tags"]:
-                st.caption("Tags: " + ", ".join(item["tags"]))
-            if st.button("Delete", key=f"del_{item['id']}"):
-                ws.delete(user.id, item["id"])
-                st.rerun()
+                tag_chips = " ".join([f"<span class='pl-chip'>{t}</span>" for t in item["tags"]])
+                st.markdown(f"**Tags:** {tag_chips}", unsafe_allow_html=True)
+            b1, b2 = st.columns([1, 1])
+            with b1:
+                if st.button("💡 Test in Analyser", key=f"test_{item['id']}", use_container_width=True):
+                    st.session_state["prompt_input"] = item["body"]
+                    try:
+                        st.switch_page("src/app.py")
+                    except Exception:
+                        try:
+                            st.switch_page("app.py")
+                        except Exception:
+                            st.success("Prompt loaded! Navigate to Prompt Analyser to run.")
+            with b2:
+                if st.button("🗑️ Delete Prompt", key=f"del_{item['id']}", use_container_width=True):
+                    ws.delete(user.id, item["id"])
+                    st.rerun()
     if items:
         c1, c2 = st.columns(2)
         c1.download_button("Export Markdown", ws.export_markdown(user.id), "my-prompts.md", "text/markdown")
@@ -56,10 +69,23 @@ with tab_mine:
 with tab_tpl:
     path = Path(__file__).resolve().parent.parent.parent / "data" / "templates.json"
     for t in json.loads(path.read_text(encoding="utf-8"))["templates"]:
-        with st.expander(f"{t['title']}  ·  {t['category']}"):
+        with st.expander(f"📦 {t['title']}  ·  {t['category']}"):
             st.code(t["body"], language=None)
-            if st.button("Copy to my workspace", key=f"cp_{t['id']}"):
-                ws.save(user.id, t["title"], t["body"], t["category"])
-                st.success("Saved to your prompts.")
+            tb1, tb2 = st.columns([1, 1])
+            with tb1:
+                if st.button("📥 Save to Workspace", key=f"cp_{t['id']}", use_container_width=True):
+                    ws.save(user.id, t["title"], t["body"], t["category"])
+                    st.success("Saved to your prompts.")
+                    st.rerun()
+            with tb2:
+                if st.button("🚀 Test in Analyser", key=f"tpl_test_{t['id']}", use_container_width=True):
+                    st.session_state["prompt_input"] = t["body"]
+                    try:
+                        st.switch_page("src/app.py")
+                    except Exception:
+                        try:
+                            st.switch_page("app.py")
+                        except Exception:
+                            st.success("Prompt loaded! Navigate to Prompt Analyser to run.")
 
 ui.footer()
