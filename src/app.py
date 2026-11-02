@@ -215,14 +215,68 @@ def _safe_page_link(col, path: str, label: str) -> None:
             col.button(label, use_container_width=True)
 
 
-_nav1, _nav2, _nav3 = st.columns(3)
-_safe_page_link(_nav1, "pages/1_Practice.py", "🎯 Practice Mode (10 Scenarios)")
-_safe_page_link(_nav2, "pages/2_Library.py", "📚 100+ Prompt Library")
-_safe_page_link(_nav3, "pages/3_Account.py", "🔑 Account & Plans")
-_nav4, _nav5, _nav6 = st.columns(3)
-_safe_page_link(_nav4, "pages/4_Learn.py", "🎓 Learn Modules (5 Modules)")
-_safe_page_link(_nav5, "pages/5_Workspace.py", "🗂️ Pro Workspace")
-_safe_page_link(_nav6, "pages/6_AI_Feedback.py", "🤖 AI Coach & Failover")
+# Executive Studio Hub Grid
+_c1, _c2, _c3 = st.columns(3)
+with _c1:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🎯 Practice Arena</div>"
+        "<div class='pl-hub-desc'>10 realistic student challenges with instant TRACE heuristic grading.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c1, "pages/1_Practice.py", "Launch Arena ➔")
+
+with _c2:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>📚 Prompt Vault</div>"
+        "<div class='pl-hub-desc'>100+ curated prompts, few-shot patterns & academic integrity guides.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c2, "pages/2_Library.py", "Browse Vault ➔")
+
+with _c3:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🤖 Neural AI Coach</div>"
+        "<div class='pl-hub-desc'>Multi-model automated failover cascade (Groq ➔ OpenAI ➔ Gemini).</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c3, "pages/6_AI_Feedback.py", "Open AI Coach ➔")
+
+_c4, _c5, _c6 = st.columns(3)
+with _c4:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🎓 Learn Curriculum</div>"
+        "<div class='pl-hub-desc'>5 structured modules from foundational directives to advanced system prompts.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c4, "pages/4_Learn.py", "Start Curriculum ➔")
+
+with _c5:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🗂️ Pro Workspace</div>"
+        "<div class='pl-hub-desc'>Personal prompt library, tag filtering, templates & instant export.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c5, "pages/5_Workspace.py", "Open Workspace ➔")
+
+with _c6:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🔑 Account & Plans</div>"
+        "<div class='pl-hub-desc'>Manage Pro tier, redeem institutional vouchers & export GDPR data.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c6, "pages/3_Account.py", "View Account ➔")
 
 st.markdown("---")
 
@@ -252,6 +306,37 @@ if st.session_state.recommendations:
 # Main input area - Studio Workbench
 st.markdown("### 📝 Prompt Engineering Workbench")
 st.caption("Apply 1-click architectural modifiers, detect dynamic `{variables}`, or analyze against publication-grade TRACE standards.")
+
+# 🧪 One-Click Showcase Prompts
+st.markdown("<div style='font-size:0.82rem;font-weight:750;letter-spacing:0.05em;color:var(--pl-muted);text-transform:uppercase;margin-bottom:0.35rem;'>⚡ Load Tested Industry Showcase Prompts:</div>", unsafe_allow_html=True)
+d1, d2, d3, d4 = st.columns(4)
+if d1.button("🔬 Literature Review", use_container_width=True, help="Load academic systematic review prompt"):
+    st.session_state["prompt_input"] = (
+        "You are an academic research mentor. Review my literature review on renewable energy microgrids in 200 words. "
+        "Format as a structured markdown table with columns: Research Stage, Methodological Risk, Recommended Mitigation. "
+        "Do not include conversational preamble. Verify citations and follow peer-reviewed rigor."
+    )
+    st.rerun()
+if d2.button("💻 Python Architecture", use_container_width=True, help="Load software architecture prompt"):
+    st.session_state["prompt_input"] = (
+        "You are a Principal Software Architect. Design an asynchronous event-driven pipeline in Python using asyncio and PostgreSQL. "
+        "Specify data contracts, error-handling retry strategies with exponential backoff, and idempotency guarantees. "
+        "Output code strictly as tested snippets."
+    )
+    st.rerun()
+if d3.button("📊 Executive Strategy", use_container_width=True, help="Load financial & SaaS metrics prompt"):
+    st.session_state["prompt_input"] = (
+        "You are a CFO and strategic advisor. Analyze this Q3 SaaS metrics report for Kyrvyn Ltd. "
+        "Highlight CAC payback velocity, Net Revenue Retention (NRR), and runway sensitivity under a 15% churn stress test. "
+        "Provide 3 prioritized executive action items."
+    )
+    st.rerun()
+if d4.button("🛡️ AI Security Guardrails", use_container_width=True, help="Load prompt security audit"):
+    st.session_state["prompt_input"] = (
+        "You are an AI Security and Red-Teaming Specialist. Audit this user-facing customer service prompt for prompt injection vulnerabilities, "
+        "data leakage vectors, and jailbreak susceptibility. Provide a hardened system prompt with explicit negative constraints."
+    )
+    st.rerun()
 
 # Quick Action Modifier Pills
 m1, m2, m3, m4 = st.columns(4)

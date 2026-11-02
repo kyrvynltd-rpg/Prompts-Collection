@@ -644,6 +644,79 @@ header[data-testid="stHeader"] {
   font-size: 0.85rem;
 }
 
+
+
+.pl-top-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 14px;
+  padding: 0.55rem 1rem;
+  margin-bottom: 1.25rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+.pl-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+.pl-nav-sep {
+  color: var(--pl-muted);
+  font-size: 0.85rem;
+}
+.pl-user-email {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--pl-title);
+}
+.pl-telemetry-pill {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.pl-hub-card {
+  background: rgba(20, 30, 51, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 16px;
+  padding: 1.25rem 1.35rem;
+  backdrop-filter: blur(14px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.pl-hub-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.7);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.25);
+}
+.pl-hub-title {
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+.pl-hub-desc {
+  font-size: 0.86rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 0.85rem;
+}
+
 </style>
 """
 
@@ -1162,7 +1235,7 @@ def render_neural_hero(title: str, subtitle: str, badge: str = "🟢 KYRVYN NEUR
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: #f8fafc;
-    height: 180px;
+    height: 230px;
     position: relative;
     user-select: none;
   }}
@@ -1181,7 +1254,7 @@ def render_neural_hero(title: str, subtitle: str, badge: str = "🟢 KYRVYN NEUR
     justify-content: center;
     text-align: center;
     pointer-events: none;
-    padding: 0.5rem 1rem;
+    padding: 1.2rem 1rem 0.6rem 1rem;
   }}
   .telemetry-chip {{
     display: inline-flex;
@@ -1221,6 +1294,7 @@ def render_neural_hero(title: str, subtitle: str, badge: str = "🟢 KYRVYN NEUR
     0% {{ background-position: 0% center; }}
     100% {{ background-position: 200% center; }}
   }}
+
 </style>
 </head>
 <body>
@@ -1318,7 +1392,7 @@ def render_neural_hero(title: str, subtitle: str, badge: str = "🟢 KYRVYN NEUR
 </script>
 </body>
 </html>"""
-    components.html(canvas_html, height=185, scrolling=False)
+    components.html(canvas_html, height=235, scrolling=False)
 
 
 def render_confetti() -> None:
