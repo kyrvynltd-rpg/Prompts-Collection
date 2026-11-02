@@ -197,10 +197,11 @@ with st.sidebar:
     """)
 
 # Main content area
-render_centered_logo(92)
-ui.header(
-    "💡 Prompt Learning Platform",
-    "Engineer publication-grade AI prompts using logical Python analysis, TRACE heuristics & AI coaching.",
+render_centered_logo(80)
+ui.render_neural_hero(
+    "KYRVYN PROMPT STUDIO",
+    "Engineer publication-grade AI prompts with TRACE heuristics, multi-model neural cascades & dynamic optimization.",
+    badge="🟢 KYRVYN NEURAL ENGINE v4.2 · ACTIVE · 3 MODELS ONLINE",
 )
 
 
@@ -332,6 +333,8 @@ if st.session_state.last_analyzed:
     score = (practices_count / total_practices) * 100
     word_count = len(analysis["original"].split())
 
+    if score >= 80:
+        ui.render_confetti()
     ui.render_health_gauge(score, analysis["best_practices"])
 
     c_meta1, c_meta2, c_meta3 = st.columns(3)

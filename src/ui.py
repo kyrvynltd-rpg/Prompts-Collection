@@ -17,22 +17,203 @@ CSS = """
    ========================================================================== */
 
 :root {
-  --pl-bg: #090d16;
+  --pl-bg: #070b14;
   --pl-surface: #0f172a;
-  --pl-card-bg: #141e33;
-  --pl-card-bg-hover: #19253f;
-  --pl-border: rgba(148, 163, 184, 0.15);
-  --pl-border-hover: rgba(99, 102, 241, 0.6);
+  --pl-card-bg: rgba(20, 30, 51, 0.7);
+  --pl-card-bg-hover: rgba(26, 38, 64, 0.85);
+  --pl-border: rgba(148, 163, 184, 0.16);
+  --pl-border-hover: rgba(99, 102, 241, 0.7);
   --pl-title: #f8fafc;
   --pl-body: #cbd5e1;
   --pl-muted: #94a3b8;
   --pl-brand: #6366f1;
-  --pl-brand-gradient: linear-gradient(135deg, #3b82f6 0%, #6366f1 45%, #8b5cf6 80%, #d946ef 100%);
-  --pl-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.45);
-  --pl-shadow-hover: 0 16px 40px -6px rgba(0, 0, 0, 0.65);
+  --pl-brand-gradient: linear-gradient(135deg, #38bdf8 0%, #6366f1 40%, #a855f7 75%, #ec4899 100%);
+  --pl-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.55);
+  --pl-shadow-hover: 0 18px 45px -6px rgba(99, 102, 241, 0.35);
   --pl-pro-bg: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
   --pl-pro-border: #818cf8;
-  --pl-pro-glow: 0 10px 40px -6px rgba(99, 102, 241, 0.45);
+  --pl-pro-glow: 0 10px 40px -4px rgba(99, 102, 241, 0.55);
+}
+
+/* ==========================================================================
+   LIVING AURORA ATMOSPHERE & CYBERPUNK DOT MATRIX
+   ========================================================================== */
+.stApp {
+  background:
+    radial-gradient(circle at 10% 12%, rgba(99, 102, 241, 0.24) 0%, transparent 45%),
+    radial-gradient(circle at 90% 15%, rgba(168, 85, 247, 0.20) 0%, transparent 42%),
+    radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 80% 85%, rgba(56, 189, 248, 0.18) 0%, transparent 45%),
+    #070b14 !important;
+  background-attachment: fixed !important;
+}
+
+.stApp::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Holographic Shimmer Header */
+.pl-shimmer-title {
+  font-size: 2.7rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.04em !important;
+  background: linear-gradient(90deg, #ffffff 0%, #c7d2fe 25%, #818cf8 50%, #e879f9 75%, #ffffff 100%) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: pl-shimmer-sweep 7s linear infinite !important;
+}
+@keyframes pl-shimmer-sweep {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ==========================================================================
+   DEEP WIDGET RESKINNING (GLASSMORPHIC & NEON HALOS)
+   ========================================================================== */
+
+/* Streamlit Inputs & Textareas */
+div[data-testid="stTextArea"] textarea,
+div[data-testid="stTextInput"] input {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border: 1.5px solid rgba(148, 163, 184, 0.22) !important;
+  border-radius: 14px !important;
+  color: #f8fafc !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  transition: all 0.22s ease !important;
+}
+div[data-testid="stTextArea"] textarea:focus,
+div[data-testid="stTextInput"] input:focus {
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35), 0 0 24px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Primary Action Buttons with Electric Gradient & Sheen */
+button[kind="primary"] {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #d946ef 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 12px !important;
+  font-weight: 750 !important;
+  letter-spacing: 0.02em !important;
+  padding: 0.55rem 1.4rem !important;
+  box-shadow: 0 6px 22px -2px rgba(99, 102, 241, 0.5) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+button[kind="primary"]:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 32px -2px rgba(99, 102, 241, 0.75) !important;
+}
+button[kind="secondary"] {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  border-radius: 12px !important;
+  font-weight: 650 !important;
+  transition: all 0.2s ease !important;
+  backdrop-filter: blur(10px) !important;
+}
+button[kind="secondary"]:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(99, 102, 241, 0.5) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Glassmorphic Tabs Bar */
+div[data-baseweb="tab-list"] {
+  background: rgba(15, 23, 42, 0.75) !important;
+  padding: 0.35rem 0.45rem !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, 0.16) !important;
+  backdrop-filter: blur(16px) !important;
+  gap: 0.5rem !important;
+}
+div[data-baseweb="tab"] {
+  border-radius: 10px !important;
+  padding: 0.4rem 1rem !important;
+  font-weight: 650 !important;
+  color: var(--pl-muted) !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+}
+div[data-baseweb="tab"][aria-selected="true"] {
+  background: rgba(99, 102, 241, 0.28) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.35) !important;
+}
+div[data-baseweb="tab-highlight"] {
+  display: none !important;
+}
+
+/* Executive KPI Metric Cards */
+div[data-testid="stMetric"] {
+  background: rgba(20, 30, 51, 0.75) !important;
+  border: 1px solid rgba(148, 163, 184, 0.16) !important;
+  border-radius: 14px !important;
+  padding: 0.9rem 1.15rem !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(14px) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+div[data-testid="stMetric"]::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--pl-brand-gradient);
+}
+div[data-testid="stMetricValue"] {
+  font-size: 1.65rem !important;
+  font-weight: 850 !important;
+  color: #f8fafc !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* Expanders with Frosted Acrylic */
+div[data-testid="stExpander"] {
+  background: rgba(20, 30, 51, 0.65) !important;
+  border: 1px solid rgba(148, 163, 184, 0.16) !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(14px) !important;
+  transition: all 0.22s ease !important;
+}
+div[data-testid="stExpander"]:hover {
+  border-color: rgba(99, 102, 241, 0.5) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Cyberpunk Scanline Laser Animation */
+.pl-scanner-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+}
+.pl-scanline {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #38bdf8, #818cf8, #d946ef, transparent);
+  box-shadow: 0 0 14px #818cf8, 0 0 28px #d946ef;
+  animation: pl-scan-down 2.2s ease-in-out infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+@keyframes pl-scan-down {
+  0% { top: 0%; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
 }
 
 /* Light Theme Adaptability */
@@ -958,3 +1139,243 @@ def render_model_pipeline(active_provider: str = "groq") -> None:
         f"</div>",
         unsafe_allow_html=True,
     )
+
+
+def render_neural_hero(title: str, subtitle: str, badge: str = "🟢 KYRVYN NEURAL ENGINE v4.2 · ACTIVE") -> None:
+    """Render an interactive HTML5 neural particle constellation canvas in the hero banner."""
+    import html
+
+    import streamlit.components.v1 as components
+
+    clean_title = html.escape(title)
+    clean_sub = html.escape(subtitle)
+    clean_badge = html.escape(badge)
+
+    canvas_html = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  body {{
+    background: transparent;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #f8fafc;
+    height: 180px;
+    position: relative;
+    user-select: none;
+  }}
+  #c {{
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+  }}
+  .hero-overlay {{
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+    padding: 0.5rem 1rem;
+  }}
+  .telemetry-chip {{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 14px rgba(99, 102, 241, 0.3);
+  }}
+  .hero-title {{
+    font-size: 2.15rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    background: linear-gradient(90deg, #ffffff 0%, #c7d2fe 25%, #818cf8 50%, #e879f9 75%, #ffffff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sweep 7s linear infinite;
+    line-height: 1.15;
+    margin-bottom: 0.35rem;
+  }}
+  .hero-sub {{
+    font-size: 0.95rem;
+    color: #94a3b8;
+    max-width: 680px;
+    line-height: 1.5;
+  }}
+  @keyframes sweep {{
+    0% {{ background-position: 0% center; }}
+    100% {{ background-position: 200% center; }}
+  }}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="hero-overlay">
+  <div class="telemetry-chip">{clean_badge}</div>
+  <h1 class="hero-title">{clean_title}</h1>
+  <p class="hero-sub">{clean_sub}</p>
+</div>
+<script>
+(function() {{
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = window.innerWidth;
+  let h = canvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {{
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }});
+
+  const mouse = {{ x: null, y: null, radius: 120 }};
+  window.addEventListener('mousemove', (e) => {{
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  }});
+  window.addEventListener('mouseleave', () => {{
+    mouse.x = null;
+    mouse.y = null;
+  }});
+
+  const nodes = [];
+  const COUNT = Math.min(45, Math.floor(w / 20));
+  for (let i = 0; i < COUNT; i++) {{
+    nodes.push({{
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.9,
+      vy: (Math.random() - 0.5) * 0.9,
+      radius: Math.random() * 2 + 1.2,
+      color: Math.random() > 0.5 ? 'rgba(99, 102, 241, ' : 'rgba(168, 85, 247, '
+    }});
+  }}
+
+  function animate() {{
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = 0; i < nodes.length; i++) {{
+      const n = nodes[i];
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < 0 || n.x > w) n.vx *= -1;
+      if (n.y < 0 || n.y > h) n.vy *= -1;
+
+      // Mouse attraction
+      if (mouse.x !== null) {{
+        const dx = mouse.x - n.x;
+        const dy = mouse.y - n.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.radius) {{
+          n.x += dx * 0.02;
+          n.y += dy * 0.02;
+        }}
+      }}
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+      ctx.fillStyle = n.color + '0.85)';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#6366f1';
+      ctx.fill();
+
+      // Connect lines
+      for (let j = i + 1; j < nodes.length; j++) {{
+        const n2 = nodes[j];
+        const dx = n.x - n2.x;
+        const dy = n.y - n2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 85) {{
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(n2.x, n2.y);
+          const alpha = (1 - dist / 85) * 0.35;
+          ctx.strokeStyle = 'rgba(99, 102, 241, ' + alpha + ')';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }}
+      }}
+    }}
+    requestAnimationFrame(animate);
+  }}
+  animate();
+}})();
+</script>
+</body>
+</html>"""
+    components.html(canvas_html, height=185, scrolling=False)
+
+
+def render_confetti() -> None:
+    """Render a lightweight celebration particle burst for optimal scores."""
+    import streamlit.components.v1 as components
+
+    confetti_html = """<!DOCTYPE html>
+<html>
+<body style="margin:0;overflow:hidden;background:transparent;">
+<canvas id="cf" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></canvas>
+<script>
+(function() {
+  const c = document.getElementById('cf');
+  const ctx = c.getContext('2d');
+  c.width = window.innerWidth;
+  c.height = 120;
+  const p = [];
+  const colors = ['#6366f1', '#a855f7', '#ec4899', '#10b981', '#38bdf8', '#f59e0b'];
+  for (let i = 0; i < 70; i++) {
+    p.push({
+      x: c.width / 2 + (Math.random() - 0.5) * 120,
+      y: 30,
+      vx: (Math.random() - 0.5) * 12,
+      vy: (Math.random() - 0.5) * 8 - 4,
+      size: Math.random() * 5 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 1,
+      rotation: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 10
+    });
+  }
+  function frame() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    let alive = false;
+    for (let i = 0; i < p.length; i++) {
+      const it = p[i];
+      it.x += it.vx;
+      it.y += it.vy;
+      it.vy += 0.25;
+      it.rotation += it.vRot;
+      it.alpha -= 0.015;
+      if (it.alpha > 0) {
+        alive = true;
+        ctx.save();
+        ctx.translate(it.x, it.y);
+        ctx.rotate((it.rotation * Math.PI) / 180);
+        ctx.fillStyle = it.color;
+        ctx.globalAlpha = Math.max(0, it.alpha);
+        ctx.fillRect(-it.size / 2, -it.size / 2, it.size, it.size);
+        ctx.restore();
+      }
+    }
+    if (alive) requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>"""
+    components.html(confetti_html, height=120, scrolling=False)

@@ -14,3 +14,4 @@ showErrorDetails = false
 headless = true
 enableCORS = false
 enableXsrfProtection = true
+

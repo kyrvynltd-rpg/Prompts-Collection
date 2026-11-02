@@ -54,6 +54,8 @@ if st.button("Check my prompt", type="primary", use_container_width=True, key=f"
 
 res = st.session_state.get(f"result_{ex_id}")
 if res:
+    if res.score >= 70:
+        ui.render_confetti()
     ui.render_health_gauge(res.score, res.checks)
     col_a, col_b = st.columns([1, 2])
     col_a.metric("Practice Mastery Score", f"{res.score}%", res.level)
