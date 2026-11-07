@@ -6,12 +6,12 @@
  "summary": "Put it together on real student tasks: essays, code, CVs, group work.",
  "lessons": [
   {
-   "title": "Chain the steps",
-   "body": "Break big jobs into steps: plan, draft, critique, revise. One prompt per step is easier to check than one giant prompt."
+   "title": "Task Decomposition & Stepwise Scaffolding",
+   "body": "Complex intellectual projects\u2014such as a 4,000-word research essay, a statistical experiment write-up, or a graduate CV overhaul\u2014fail when attempted in a single monolithic prompt. Models run out of context, compress arguments, and gloss over critical nuance.\n\n**The Stepwise Decomposition Pipeline:**\n1. **Phase 1: Exploratory Mapping**: Prompt for 5 divergent angles or thematic lenses on your research question.\n2. **Phase 2: Argument Outline**: Prompt for a hierarchical section outline establishing claims, evidence requirements, and anticipated counter-arguments.\n3. **Phase 3: Critical Review**: Prompt the AI to act as a harsh reviewer scrutinising the outline for logical fallacies or unsupported assumptions.\n4. **Phase 4: Synthesis**: Work paragraph by paragraph using your outline, retaining full authorial ownership of drafting."
   },
   {
-   "title": "Iterate",
-   "body": "Treat the first answer as a draft. Say what is wrong and what to keep."
+   "title": "Iterative Human-in-the-Loop Refinement",
+   "body": "Prompting is not a one-shot query; it is an iterative collaborative dialogue. Treat every model output as a 'first draft' to be steered and refined.\n\n* **Targeted Feedback Loops**: Rather than re-running the entire prompt when an answer falls short, provide surgical corrections: *'The analysis of argument B is too superficial. Expand specifically on how author X challenges author Y's quantitative dataset.'*\n* **Role Inversion (Socratic Questioning)**: Turn the tables on the AI: *'Do not give me the answer. Ask me 3 probing conceptual questions about my methodology to test whether I have considered potential sampling biases.'*"
   }
  ],
  "exercises": [

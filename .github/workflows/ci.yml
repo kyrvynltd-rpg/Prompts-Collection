@@ -11,8 +11,8 @@ jobs:
       matrix:
         python-version: ["3.10", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -24,7 +24,7 @@ jobs:
   secrets-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Block obvious committed secrets
         run: |
           if grep -rEn --exclude-dir=.git --exclude=ci.yml '(sk_live_|rk_live_|whsec_[A-Za-z0-9]{16,}|-----BEGIN (RSA |EC )?PRIVATE KEY)' .; then
@@ -32,8 +32,8 @@ jobs:
   dependency-audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install pip-audit && pip-audit -r requirements.txt

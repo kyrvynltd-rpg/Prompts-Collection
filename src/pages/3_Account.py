@@ -1,5 +1,7 @@
-"""Account: sign up, sign in, student verification, upgrade, access code, and data controls."""
+"""Account & Plans: onboarding/sign-in gate, full Free/Plus/Pro comparison, student verification, access codes, and data controls."""
+import json
 import sys
+import time
 from pathlib import Path
 
 import streamlit as st
@@ -9,108 +11,54 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import session  # noqa: E402
 import ui  # noqa: E402
 from accounts import AccountError, email_delivery_enabled  # noqa: E402
-from billing import checkout_url, configured_providers  # noqa: E402
 from entitlements import get_secret, verify_code  # noqa: E402
-from pricing import get_pricing  # noqa: E402
-from tiers import PRO_FEATURES  # noqa: E402
 
-ui.setup("Account", "🔑")
-ui.header("🔑 Account", "Free prompts and Practice are open to everyone. An account saves your progress and unlocks Premium.")
+ui.setup("Account & Plans", "🔑", require_auth=False)
 
 svc = session.accounts()
 user = session.current_user()
-price = get_pricing()
+ent = session.current_entitlement()
 mail_live = email_delivery_enabled(svc.mailer)
 
-if user is None:
-    tab_in, tab_up = st.tabs(["Sign in", "Create account"])
-    with tab_in:
-        with st.form("login"):
-            email = st.text_input("Email")
-            password = st.text_input("Password", type="password")
-            if st.form_submit_button("Sign in", type="primary"):
+if user is None and ent is None:
+    ui.render_onboarding_and_auth_gate(key_prefix="account_gate")
+    st.stop()
+
+ui.header(
+    "🔑 Account & Plans",
+    "Manage your account, compare Free, Plus & Pro functionalities, verify student eligibility, or export your data.",
+)
+
+if user is not None:
+    st.success(f"Signed in as **{user.email}**  ·  Active tier: **{session.current_tier().upper()}**")
+elif ent is not None:
+    st.success(f"Access code active (**{session.current_tier().upper()}**, about {session.days_left(ent)} days remaining).")
+
+if ent is not None:
+    st.info(f"✅ Your **{session.current_tier().capitalize()}** entitlement is active ({session.days_left(ent)} days left).")
+
+# Always show the full 3-tier comparison & upgrade options so users can see every feature and tier
+ui.render_plans_comparison(user=user, key_prefix="account_plans")
+
+if user is not None and not user.student_verified:
+    st.info("🎓 **Student?** Verify your university `.ac.uk` email below to confirm student status.")
+
+if user is not None and not svc.is_email_verified(user.id):
+    if not mail_live:
+        st.caption("Email confirmation is unavailable until an email provider is configured for this deployment.")
+    else:
+        with st.form("verify_email"):
+            st.caption("Confirm your email: we sent a code when you signed up.")
+            v_code = st.text_input("Email confirmation code")
+            if st.form_submit_button("Confirm email"):
                 try:
-                    _, token = svc.login(email, password)
-                    session.sign_in(token)
+                    svc.confirm_email(user.id, v_code)
                     st.rerun()
                 except AccountError as exc:
                     st.error(str(exc))
-        with st.expander("Forgot your password?"):
-            if not mail_live:
-                st.info("Email delivery is not configured on this deployment yet, so reset codes cannot be emailed.")
-            else:
-                with st.form("reset_request"):
-                    r_email = st.text_input("Account email", key="reset_email")
-                    if st.form_submit_button("Send reset code"):
-                        svc.request_password_reset(r_email)
-                        st.success("If that email has an account, a code is on its way.")
-                with st.form("reset_do"):
-                    r_code = st.text_input("Reset code")
-                    r_pw = st.text_input("New password", type="password")
-                    if st.form_submit_button("Set new password"):
-                        try:
-                            svc.reset_password(r_email, r_code, r_pw)
-                            st.success("Password changed. You can sign in now.")
-                        except AccountError as exc:
-                            st.error(str(exc))
-    with tab_up:
-        with st.form("register"):
-            name = st.text_input("Name (optional)")
-            email = st.text_input("Email", key="reg_email")
-            password = st.text_input("Password (10+ characters)", type="password", key="reg_pw")
-            agreed = st.checkbox("I agree to the Terms and Privacy Policy (see docs/TERMS.md and docs/PRIVACY.md)")
-            if st.form_submit_button("Create account", type="primary"):
-                if not agreed:
-                    st.error("Please accept the Terms and Privacy Policy.")
-                else:
-                    try:
-                        svc.register(email, password, name)
-                        _, token = svc.login(email, password)
-                        session.sign_in(token)
-                        st.rerun()
-                    except AccountError as exc:
-                        st.error(str(exc))
-else:
-    st.success(f"Signed in as {user.email}")
-    ent = session.current_entitlement()
-    if ent:
-        st.success(f"{session.current_tier().capitalize()} active. About {session.days_left(ent)} days left.")
-    else:
-        st.subheader("Choose a plan")
-        period = st.radio("Billing", ["monthly", "annual"], horizontal=True, format_func=str.capitalize)
-        cols = st.columns(2)
-        for col, tier_name, blurb in ((cols[0], "plus", "All Premium prompts and modules, saved progress."),
-                                      (cols[1], "pro", "Plus, and: " + "; ".join(PRO_FEATURES).lower() + ".")):
-            with col:
-                st.markdown(f"**{tier_name.capitalize()}**  \n{price.get(tier_name, period).label()}"
-                            + (f" (save {price.annual_saving_percent(tier_name)}%)" if period == "annual" else ""))
-                st.caption(blurb)
-                providers = configured_providers(tier_name, period)
-                for p in providers:
-                    link = checkout_url(p, user.id, user.email, tier_name, period)
-                    if link:
-                        st.link_button(f"{tier_name.capitalize()} with {p.capitalize()}", link, use_container_width=True)
-                if not providers:
-                    st.caption("Online payment is not switched on yet.")
-        st.caption("Free tier: free prompts, Practice and the first module. Cancel any time.")
-        if not user.student_verified:
-            st.info("Student? Verify your university email below to confirm you are eligible for student pricing.")
 
-    if not svc.is_email_verified(user.id):
-        if not mail_live:
-            st.caption("Email confirmation is unavailable until an email provider is configured for this deployment.")
-        else:
-            with st.form("verify_email"):
-                st.caption("Confirm your email: we sent a code when you signed up.")
-                v_code = st.text_input("Email confirmation code")
-                if st.form_submit_button("Confirm email"):
-                    try:
-                        svc.confirm_email(user.id, v_code)
-                        st.rerun()
-                    except AccountError as exc:
-                        st.error(str(exc))
-
-    st.subheader("Student verification")
+if user is not None:
+    st.subheader("🎓 Student verification")
     if user.student_verified:
         st.success(f"Verified student ({user.student_domain}).")
     elif not mail_live:
@@ -133,9 +81,63 @@ else:
                 except AccountError as exc:
                     st.error(str(exc))
 
-    with st.expander("Your data"):
-        st.download_button("Download my data (JSON)", __import__("json").dumps(svc.export_data(user.id), indent=2),
-                           file_name="my-data.json", mime="application/json")
+with st.expander("🎟️ Have an access code (workshop or student voucher)?", expanded=(ent is None)):
+    st.caption("Enter your email address and your access code to unlock Pro features.")
+    ac_email = st.text_input(
+        "Email address",
+        value=(user.email if user else ""),
+        key="account_code_email",
+        placeholder="you@example.com",
+    )
+    code_in = st.text_input("Access code", type="password", key="access_code", placeholder="Enter your voucher or institutional code")
+    if st.button("Unlock with code"):
+        clean_email = (ac_email or (user.email if user else "")).strip().lower()
+        subject = clean_email or "member@kyrvynltd.co.uk"
+        found = verify_code(get_secret(), code_in, subject=subject)
+        if found:
+            st.session_state["entitlement"] = found
+            if user:
+                session.entitlements().grant(user.id, found.plan, found.expires_at)
+            elif clean_email and "@" in clean_email:
+                now_i = int(time.time())
+                row = svc.db.one("SELECT id FROM users WHERE email=? AND deleted_at IS NULL", (clean_email,))
+                if row:
+                    user_id = row[0]
+                else:
+                    import secrets
+                    import uuid
+
+                    from accounts import TERMS_VERSION, hash_password
+                    user_id = uuid.uuid4().hex
+                    svc.db.execute(
+                        "INSERT INTO users (id, email, pw_hash, display_name, created_at, terms_accepted_at, terms_version) VALUES (?,?,?,?,?,?,?)",
+                        (user_id, clean_email, hash_password(secrets.token_urlsafe(16)), clean_email.split("@")[0][:60], now_i, now_i, TERMS_VERSION),
+                    )
+                import secrets
+
+                from accounts import SESSION_SECONDS, _token_hash
+                token = secrets.token_urlsafe(32)
+                svc.db.execute(
+                    "INSERT INTO sessions (token_hash, user_id, created_at, expires_at) VALUES (?,?,?,?)",
+                    (_token_hash(token), user_id, now_i, now_i + SESSION_SECONDS),
+                )
+                svc.db.commit()
+                session.entitlements().grant(user_id, found.plan, found.expires_at)
+                session.sign_in(token)
+            st.success(f"Access granted: {found.plan.capitalize()} tier active!")
+            st.rerun()
+        else:
+            st.error("That code is not valid or has expired.")
+    st.caption("We never ask for card details on this page.")
+
+if user is not None:
+    with st.expander("🗂️ Your data & account controls (GDPR Export / Delete)"):
+        st.download_button(
+            "Download my data (JSON)",
+            json.dumps(svc.export_data(user.id), indent=2),
+            file_name="my-data.json",
+            mime="application/json",
+        )
         if st.checkbox("I understand deleting my account cannot be undone"):
             if st.button("Delete my account"):
                 svc.delete_account(user.id)
@@ -143,20 +145,7 @@ else:
                 st.rerun()
     if st.button("Sign out"):
         session.sign_out()
+        st.session_state.pop("entitlement", None)
         st.rerun()
-
-with st.expander("Have an access code (workshop or voucher)?"):
-    code_in = st.text_input("Access code", type="password", key="access_code", placeholder="PL1....")
-    if st.button("Unlock with code"):
-        if not get_secret():
-            st.error("Access codes are not configured on this deployment yet.")
-        else:
-            found = verify_code(get_secret(), code_in)
-            if found:
-                st.session_state["entitlement"] = found
-                st.rerun()
-            else:
-                st.error("That code is not valid or has expired.")
-    st.caption("We never ask for card details on this page.")
 
 ui.footer()

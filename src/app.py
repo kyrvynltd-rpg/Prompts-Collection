@@ -1,14 +1,20 @@
-"""
-Streamlit Prompts Collection Platform
+"""Streamlit Prompts Collection Platform
 A platform for improving AI prompts based on best practices
 """
+from __future__ import annotations
 
 import base64
 from pathlib import Path
 
 import streamlit as st
 
-import brand
+import ai_feedback
+import session
+import ui
+from analysis import (
+    analyze_prompt,
+    recommend_prompts,
+)
 from prompt_loader import get_all_prompts, get_category_folders
 
 # Page configuration
@@ -19,92 +25,20 @@ st.set_page_config(
     page_title="Prompt Learning Platform",
     page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else "💡",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
 # Custom CSS for better styling
-st.markdown("""
-    <style>
-    .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1f77b4;
-        text-align: center;
-        margin-bottom: 0.5rem;
-    }
-    .sub-header {
-        font-size: 1.1rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .center-shell {
-        max-width: 980px;
-        margin: 0 auto;
-    }
-    .brand-block {
-        text-align: center;
-    }
-    .prompt-title {
-        text-align: center;
-        margin-bottom: 0.75rem;
-    }
-    .welcome-wrap {
-        max-width: 820px;
-        margin: 0 auto;
-        text-align: center;
-    }
-    .logo-center {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto 0.9rem auto;
-    }
-    .logo-center img {
-        display: block;
-        margin: 0 auto;
-    }
-    .welcome-lead {
-        font-size: 1.05rem;
-        color: #7b8794;
-        margin-bottom: 1rem;
-    }
-    .welcome-list {
-        display: inline-block;
-        margin: 0.75rem auto 1rem auto;
-        text-align: left;
-        max-width: 700px;
-        color: #b8c2cc;
-        line-height: 1.6;
-        padding-left: 1.1rem;
-    }
-    .welcome-note {
-        color: #93a1b0;
-        margin-top: 0.8rem;
-    }
-    .pulse {
-        display: inline-block;
-        animation: pulse 1.4s ease-in-out infinite;
-    }
-    @keyframes pulse {
-        0% { opacity: 0.45; }
-        50% { opacity: 1; }
-        100% { opacity: 0.45; }
-    }
-    @media (max-width: 640px) {
-        .block-container { padding: 1rem 0.8rem; }
-        .main-header { font-size: 1.75rem; }
-        .sub-header { font-size: 0.95rem; margin-bottom: 1.25rem; }
-    }
-    </style>
-""", unsafe_allow_html=True)
+ui.sync_runtime_env()
+st.markdown(ui.CSS, unsafe_allow_html=True)
+
 
 # Load all example prompts
 @st.cache_data
 def load_example_prompts():
     """Load all example prompts for analysis"""
     return get_all_prompts()
+
 
 @st.cache_data
 def get_logo_data_uri():
@@ -114,75 +48,109 @@ def get_logo_data_uri():
     encoded = base64.b64encode(LOGO_PATH.read_bytes()).decode("ascii")
     return f"data:image/svg+xml;base64,{encoded}"
 
+
 def render_centered_logo(width_px=96):
     """Render the logo fully centered regardless of Streamlit widget layout behavior."""
     logo_uri = get_logo_data_uri()
     if not logo_uri:
         return
     st.markdown(
-        f'<div class="logo-center"><img src="{logo_uri}" alt="Prompt Learning Platform logo" width="{width_px}" /></div>',
+        f'<div style="text-align:center;margin:0.5rem auto 1rem auto;"><img src="{logo_uri}" alt="Prompt Learning Platform logo" width="{width_px}" /></div>',
         unsafe_allow_html=True,
     )
 
-# (The timed splash screen was removed: it delayed every visit by 7 seconds.)
 
 # Initialize session state
-if 'favorites' not in st.session_state:
+if "favorites" not in st.session_state:
     st.session_state.favorites = []
-if 'last_analyzed' not in st.session_state:
+if "last_analyzed" not in st.session_state:
     st.session_state.last_analyzed = None
-if 'recommendations' not in st.session_state:
+if "recommendations" not in st.session_state:
     st.session_state.recommendations = []
-if 'last_recommendation_query' not in st.session_state:
+if "last_recommendation_query" not in st.session_state:
     st.session_state.last_recommendation_query = ""
-if 'last_recommendation_filters' not in st.session_state:
+if "last_recommendation_filters" not in st.session_state:
     st.session_state.last_recommendation_filters = {}
 
-from analysis import (  # noqa: E402
-    analyze_prompt,
-    build_learning_paths,
-    recommend_prompts,
-)
+# Enforce onboarding / login gate for unauthenticated visitors
+if session.current_user() is None and session.current_entitlement() is None:
+    render_centered_logo(92)
+    ui.render_onboarding_and_auth_gate(key_prefix="home_gate")
+    st.stop()
 
-# Sidebar (keeping as requested)
+ui.render_status_bar()
+
+# Sidebar for navigation and settings
 with st.sidebar:
-    st.header("🎯 Smart Discovery")
+    st.title("Settings & Info")
 
-    all_prompts = load_example_prompts()
-    recommendation_query = st.text_area(
-        "What do you need right now?",
-        placeholder="Example: I need a quick prompt to analyze customer churn trends and produce actionable recommendations.",
-        height=90,
-        key="recommendation_query"
-    )
+    # Dark mode toggle
+    dark_mode = st.checkbox("Dark Mode", value=False)
+    if dark_mode:
+        st.markdown(
+            """
+            <style>
+            .stApp {
+                background-color: #1E1E1E;
+                color: #FFFFFF;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    rec_col1, rec_col2 = st.columns(2)
-    with rec_col1:
-        rec_difficulty = st.selectbox("Difficulty", ["Any", "beginner", "intermediate", "expert"], key="rec_difficulty")
-    with rec_col2:
-        rec_time = st.selectbox("Time", ["Any", "quick", "moderate", "thorough"], key="rec_time")
-    rec_output = st.selectbox("Output format", ["Any", "text", "markdown", "code", "json", "structured"], key="rec_output")
-
-    if st.button("🎯 Recommend Best Prompts", type="primary", use_container_width=True):
-        filters = {
-            'difficulty': rec_difficulty,
-            'time': rec_time,
-            'output_format': rec_output,
-        }
-        st.session_state.recommendations = recommend_prompts(recommendation_query.strip(), all_prompts, filters)
-        st.session_state.last_recommendation_query = recommendation_query.strip()
-        st.session_state.last_recommendation_filters = filters
-
-    paths = build_learning_paths(all_prompts)
-    selected_path_category = st.selectbox("Learning path", ["None"] + sorted(paths.keys()), key="learning_path_category")
-    if selected_path_category != "None" and selected_path_category in paths:
-        st.caption(f"Suggested progression in {selected_path_category}")
-        for i, prompt in enumerate(paths[selected_path_category][:4], 1):
-            level = prompt.get('difficulty_level', 'intermediate')
-            st.write(f"{i}. {prompt.get('title', 'Untitled')} ({level})")
+    # Export/Import favorites
+    st.header("Manage Favorites")
+    if st.session_state.favorites:
+        favorites_text = "\n\n".join(
+            [f"Title: {f['title']}\nCategory: {f['category']}\nPrompt: {f['prompt']}" for f in st.session_state.favorites]
+        )
+        st.download_button("Export Favorites", favorites_text, file_name="favorite_prompts.txt", mime="text/plain")
 
     st.divider()
 
+    # Intelligent Recommendations Section
+    st.header("🎯 Prompt Matcher")
+    st.caption("Tell us what you want to achieve and get matching prompts")
+
+    rec_intent = st.text_input("Your goal / task", placeholder="e.g., summarize lecture notes, review code")
+
+    all_prompts = load_example_prompts()
+    all_difficulties = sorted(list(set(p.get("difficulty_level", "intermediate") for p in all_prompts)))
+    all_formats = sorted(list(set(p.get("output_format", "text") for p in all_prompts)))
+
+    col_d, col_f = st.columns(2)
+    with col_d:
+        rec_diff = st.selectbox("Difficulty", ["Any"] + all_difficulties)
+    with col_f:
+        rec_format = st.selectbox("Format", ["Any"] + all_formats)
+
+    rec_time = st.select_slider("Available time", options=["Any", "quick", "moderate", "deep"], value="Any")
+
+    if st.button("Find Matching Prompts", use_container_width=True):
+        filters = {}
+        if rec_diff != "Any":
+            filters["difficulty_level"] = rec_diff
+        if rec_format != "Any":
+            filters["output_format"] = rec_format
+        if rec_time != "Any":
+            filters["time_estimate"] = rec_time
+
+        recs = recommend_prompts(
+            query=rec_intent,
+            all_prompts=all_prompts,
+            user_filters=filters if filters else None,
+            user_history=[f["title"] for f in st.session_state.favorites],
+            top_k=3,
+        )
+        st.session_state.recommendations = recs
+        st.session_state.last_recommendation_query = rec_intent
+        st.session_state.last_recommendation_filters = filters
+        st.rerun()
+
+    st.divider()
+
+    # Search and Filter
     st.header("🔍 Search & Filter")
 
     # Search
@@ -193,12 +161,10 @@ with st.sidebar:
     categories = ["All Categories"] + sorted(category_folders)
     selected_category = st.selectbox("Filter by Category", categories)
 
-    # Load prompts for sidebar
-
     # Tag filter
     all_tags = set()
     for prompt in all_prompts:
-        all_tags.update(prompt.get('tags', []))
+        all_tags.update(prompt.get("tags", []))
     all_tags = sorted(list(all_tags))
 
     selected_tags = st.multiselect("Filter by Tags", all_tags)
@@ -231,21 +197,88 @@ with st.sidebar:
     """)
 
 # Main content area
-st.markdown('<div class="center-shell">', unsafe_allow_html=True)
-st.markdown('<div class="brand-block">', unsafe_allow_html=True)
-render_centered_logo(92)
-st.markdown('<div class="main-header">Prompt Learning Platform</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Make your prompts better using our collection and logical Python analysis</div>', unsafe_allow_html=True)
+render_centered_logo(80)
+ui.render_neural_hero(
+    "KYRVYN PROMPT STUDIO",
+    "Engineer publication-grade AI prompts with TRACE heuristics, multi-model neural cascades & dynamic optimization.",
+    badge="🟢 KYRVYN NEURAL ENGINE v4.2 · ACTIVE · 3 MODELS ONLINE",
+)
 
-_nav1, _nav2, _nav3 = st.columns(3)
-_nav1.page_link("pages/1_Practice.py", label="🎯 Practice mode", use_container_width=True)
-_nav2.page_link("pages/2_Library.py", label="📚 Prompt library", use_container_width=True)
-_nav3.page_link("pages/3_Account.py", label="🔑 Account & Plans", use_container_width=True)
-_nav4, _nav5, _nav6 = st.columns(3)
-_nav4.page_link("pages/4_Learn.py", label="🎓 Learn modules", use_container_width=True)
-_nav5.page_link("pages/5_Workspace.py", label="🗂️ Pro Workspace", use_container_width=True)
-_nav6.page_link("pages/6_AI_Feedback.py", label="🤖 AI Feedback", use_container_width=True)
-st.markdown('</div>', unsafe_allow_html=True)
+
+def _safe_page_link(col, path: str, label: str) -> None:
+    try:
+        col.page_link(path, label=label, use_container_width=True)
+    except Exception:
+        try:
+            col.page_link(f"src/{path}", label=label, use_container_width=True)
+        except Exception:
+            col.button(label, use_container_width=True)
+
+
+# Executive Studio Hub Grid
+_c1, _c2, _c3 = st.columns(3)
+with _c1:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🎯 Practice Arena</div>"
+        "<div class='pl-hub-desc'>10 realistic student challenges with instant TRACE heuristic grading.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c1, "pages/1_Practice.py", "Launch Arena ➔")
+
+with _c2:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>📚 Prompt Vault</div>"
+        "<div class='pl-hub-desc'>100+ curated prompts, few-shot patterns & academic integrity guides.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c2, "pages/2_Library.py", "Browse Vault ➔")
+
+with _c3:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🤖 Neural AI Coach</div>"
+        "<div class='pl-hub-desc'>Multi-model automated failover cascade (Groq ➔ OpenAI ➔ Gemini).</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c3, "pages/6_AI_Feedback.py", "Open AI Coach ➔")
+
+_c4, _c5, _c6 = st.columns(3)
+with _c4:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🎓 Learn Curriculum</div>"
+        "<div class='pl-hub-desc'>5 structured modules from foundational directives to advanced system prompts.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c4, "pages/4_Learn.py", "Start Curriculum ➔")
+
+with _c5:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🗂️ Pro Workspace</div>"
+        "<div class='pl-hub-desc'>Personal prompt library, tag filtering, templates & instant export.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c5, "pages/5_Workspace.py", "Open Workspace ➔")
+
+with _c6:
+    st.markdown(
+        "<div class='pl-hub-card'>"
+        "<div class='pl-hub-title'>🔑 Account & Plans</div>"
+        "<div class='pl-hub-desc'>Manage Pro tier, redeem institutional vouchers & export GDPR data.</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _safe_page_link(_c6, "pages/3_Account.py", "View Account ➔")
+
+st.markdown("---")
 
 if st.session_state.recommendations:
     st.markdown("### 🧠 Intelligent Recommendations")
@@ -253,51 +286,122 @@ if st.session_state.recommendations:
     st.caption(f"Query: {query_label}")
 
     for i, rec in enumerate(st.session_state.recommendations, 1):
-        prompt = rec['prompt']
-        score_pct = int(rec['score'] * 100)
-        title = prompt.get('title', 'Untitled')
-        category = prompt.get('category', 'Unknown')
-        difficulty = prompt.get('difficulty_level', 'intermediate')
-        time_est = prompt.get('time_estimate', 'moderate')
-        output_fmt = prompt.get('output_format', 'text')
+        prompt = rec["prompt"]
+        score_pct = int(rec["score"] * 100)
+        title = prompt.get("title", "Untitled")
+        category = prompt.get("category", "Unknown")
+        difficulty = prompt.get("difficulty_level", "intermediate")
+        time_est = prompt.get("time_estimate", "moderate")
+        output_fmt = prompt.get("output_format", "text")
 
         with st.expander(f"{i}. {title} ({score_pct}% match)", expanded=(i == 1)):
             st.markdown(f"**Category:** {category}")
             st.markdown(f"**Profile:** {difficulty} | {time_est} | {output_fmt}")
             st.markdown(f"**Why this was selected:** {', '.join(rec['reasons'])}")
             st.markdown(f"**Description:** {prompt.get('description', '')}")
-            st.code(prompt.get('prompt', ''), language=None)
+            st.code(prompt.get("prompt", ""), language=None)
 
     st.divider()
 
-# Main input area
-st.markdown('<h3 class="prompt-title">Enter Your Prompt</h3>', unsafe_allow_html=True)
+# Main input area - Studio Workbench
+st.markdown("### 📝 Prompt Engineering Workbench")
+st.caption("Apply 1-click architectural modifiers, detect dynamic `{variables}`, or analyze against publication-grade TRACE standards.")
+
+# 🧪 One-Click Showcase Prompts
+st.markdown("<div style='font-size:0.82rem;font-weight:750;letter-spacing:0.05em;color:var(--pl-muted);text-transform:uppercase;margin-bottom:0.35rem;'>⚡ Load Tested Industry Showcase Prompts:</div>", unsafe_allow_html=True)
+d1, d2, d3, d4 = st.columns(4)
+if d1.button("🔬 Literature Review", use_container_width=True, help="Load academic systematic review prompt"):
+    st.session_state["prompt_input"] = (
+        "You are an academic research mentor. Review my literature review on renewable energy microgrids in 200 words. "
+        "Format as a structured markdown table with columns: Research Stage, Methodological Risk, Recommended Mitigation. "
+        "Do not include conversational preamble. Verify citations and follow peer-reviewed rigor."
+    )
+    st.rerun()
+if d2.button("💻 Python Architecture", use_container_width=True, help="Load software architecture prompt"):
+    st.session_state["prompt_input"] = (
+        "You are a Principal Software Architect. Design an asynchronous event-driven pipeline in Python using asyncio and PostgreSQL. "
+        "Specify data contracts, error-handling retry strategies with exponential backoff, and idempotency guarantees. "
+        "Output code strictly as tested snippets."
+    )
+    st.rerun()
+if d3.button("📊 Executive Strategy", use_container_width=True, help="Load financial & SaaS metrics prompt"):
+    st.session_state["prompt_input"] = (
+        "You are a CFO and strategic advisor. Analyze this Q3 SaaS metrics report for Kyrvyn Ltd. "
+        "Highlight CAC payback velocity, Net Revenue Retention (NRR), and runway sensitivity under a 15% churn stress test. "
+        "Provide 3 prioritized executive action items."
+    )
+    st.rerun()
+if d4.button("🛡️ AI Security Guardrails", use_container_width=True, help="Load prompt security audit"):
+    st.session_state["prompt_input"] = (
+        "You are an AI Security and Red-Teaming Specialist. Audit this user-facing customer service prompt for prompt injection vulnerabilities, "
+        "data leakage vectors, and jailbreak susceptibility. Provide a hardened system prompt with explicit negative constraints."
+    )
+    st.rerun()
+
+# Quick Action Modifier Pills
+m1, m2, m3, m4 = st.columns(4)
+curr_p = st.session_state.get("prompt_input", "")
+if m1.button("⚡ Make Concise", use_container_width=True, help="Eliminate fluff & conversational preamble"):
+    if curr_p:
+        st.session_state["prompt_input"] = ui.apply_modifier(curr_p, "concise")
+        st.rerun()
+if m2.button("🧠 Chain-of-Thought", use_container_width=True, help="Inject step-by-step reasoning scaffold"):
+    if curr_p:
+        st.session_state["prompt_input"] = ui.apply_modifier(curr_p, "cot")
+        st.rerun()
+if m3.button("🎯 JSON Schema", use_container_width=True, help="Enforce strict structured output"):
+    if curr_p:
+        st.session_state["prompt_input"] = ui.apply_modifier(curr_p, "json")
+        st.rerun()
+if m4.button("🛡️ Guardrails", use_container_width=True, help="Prevent hallucinations & verify facts"):
+    if curr_p:
+        st.session_state["prompt_input"] = ui.apply_modifier(curr_p, "guardrails")
+        st.rerun()
+
+# Dynamic Variable Extraction
+if curr_p:
+    detected_vars = ui.extract_variables(curr_p)
+    if detected_vars:
+        with st.expander(f"🧩 Dynamic Variables Detected ({len(detected_vars)})", expanded=True):
+            st.caption("Fill in variables to live-preview your interpolated prompt:")
+            var_cols = st.columns(min(len(detected_vars), 3))
+            var_map = {}
+            for idx, v_name in enumerate(detected_vars):
+                with var_cols[idx % len(var_cols)]:
+                    var_map[v_name] = st.text_input(f"{{{v_name}}}", key=f"var_chip_{v_name}")
+            if any(var_map.values()):
+                rendered_preview = curr_p
+                for vk, vv in var_map.items():
+                    if vv:
+                        rendered_preview = rendered_preview.replace(f"{{{vk}}}", vv)
+                st.markdown("**Live Interpolated Prompt:**")
+                st.code(rendered_preview, language=None)
+
 with st.form("analyze_form", clear_on_submit=False):
     user_prompt = st.text_area(
         "Type or paste your prompt here",
-        placeholder="Example: Write a blog post about AI...",
+        placeholder="Example: You are an academic writing mentor. Review this draft literature review outline on renewable energy policy...",
         height=150,
         key="prompt_input",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
     )
-    # Inside Streamlit forms, Ctrl+Enter submits text areas.
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         analyze_button = st.form_submit_button("🔍 Analyze & Improve Prompt", type="primary", use_container_width=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # Process analysis
 if analyze_button and user_prompt.strip():
     with st.spinner("Analyzing your prompt and comparing with our collection..."):
         example_prompts = load_example_prompts()
-        recommendations, improved_suggestion, best_practices, similar_examples = analyze_prompt(user_prompt, example_prompts)
+        recommendations, improved_suggestion, best_practices, similar_examples = analyze_prompt(
+            user_prompt, example_prompts
+        )
         st.session_state.last_analyzed = {
-            'original': user_prompt,
-            'recommendations': recommendations,
-            'improved': improved_suggestion,
-            'best_practices': best_practices,
-            'similar_examples': similar_examples
+            "original": user_prompt,
+            "recommendations": recommendations,
+            "improved": improved_suggestion,
+            "best_practices": best_practices,
+            "similar_examples": similar_examples,
         }
         st.rerun()
 
@@ -308,57 +412,98 @@ if st.session_state.last_analyzed:
     st.divider()
     st.markdown("### 📊 Analysis Results")
 
-    # Show best practices score with detailed breakdown
-    practices_count = sum(analysis['best_practices'].values())
-    total_practices = len(analysis['best_practices'])
+    # Interactive Circular Health Gauge & Telemetry
+    practices_count = sum(analysis["best_practices"].values())
+    total_practices = len(analysis["best_practices"])
     score = (practices_count / total_practices) * 100
+    word_count = len(analysis["original"].split())
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Best Practices Score", f"{score:.0f}%", f"{practices_count}/{total_practices} practices found")
-    with col2:
-        st.metric("Recommendations", len(analysis['recommendations']))
-    with col3:
-        word_count = len(analysis['original'].split())
-        st.metric("Word Count", word_count, "Optimal: 20-50 words" if word_count < 20 or word_count > 50 else "✓")
+    if score >= 80:
+        ui.render_confetti()
+    ui.render_health_gauge(score, analysis["best_practices"])
 
-    # Detailed breakdown of best practices
-    with st.expander("📋 Detailed Best Practices Breakdown"):
-        practice_names = {
-            'role_definition': 'Role Definition',
-            'specific_instructions': 'Specific Instructions',
-            'output_format': 'Output Format',
-            'quality_markers': 'Quality Markers',
-            'constraints': 'Constraints/Standards'
-        }
-        for practice, name in practice_names.items():
-            status = "✅" if analysis['best_practices'].get(practice, False) else "❌"
-            st.write(f"{status} **{name}**: {'Found' if analysis['best_practices'].get(practice, False) else 'Missing'}")
+    c_meta1, c_meta2, c_meta3 = st.columns(3)
+    with c_meta1:
+        st.metric("Token / Word Count", f"{word_count} words", "Optimal: 20-50 words" if word_count < 20 or word_count > 50 else "✓ Balanced")
+    with c_meta2:
+        st.metric("Identified Recommendations", len(analysis["recommendations"]))
+    with c_meta3:
+        st.metric("TRACE Dimension Score", f"{practices_count}/{total_practices} Passed")
 
     # Display recommendations using Streamlit native components
-    if analysis['recommendations']:
+    if analysis["recommendations"]:
         st.markdown("### 💡 Recommendations for Improvement")
-        for i, rec in enumerate(analysis['recommendations'], 1):
-            priority_icon = "🔴" if rec.get('priority') == 'high' else "🟡" if rec.get('priority') == 'medium' else "🟢"
-            with st.expander(f"{priority_icon} {i}. {rec['title']}", expanded=(rec.get('priority') == 'high')):
+        for i, rec in enumerate(analysis["recommendations"], 1):
+            priority_icon = "🔴" if rec.get("priority") == "high" else "🟡" if rec.get("priority") == "medium" else "🟢"
+            with st.expander(f"{priority_icon} {i}. {rec['title']}", expanded=(rec.get("priority") == "high")):
                 st.markdown(f"**{rec['description']}**")
-                if 'suggestion' in rec:
+                if "suggestion" in rec:
                     st.info(f"💡 {rec['suggestion']}")
-                if rec.get('similar_example'):
+                if rec.get("similar_example"):
                     st.markdown("**Similar example from our collection:**")
-                    st.code(rec['similar_example'], language=None)
+                    st.code(rec["similar_example"], language=None)
     else:
         st.success("🎉 Great job! Your prompt follows best practices. No major improvements needed.")
 
-    # Display improved suggestion
+    # Display improved suggestion with Visual Diff and Code
     st.divider()
-    st.markdown("### ✨ Suggested Improved Prompt")
-    st.code(analysis['improved'], language=None)
+    st.markdown("### ✨ Engineered Prompt Comparison & Visual Diff")
+
+    diff_tab, code_tab = st.tabs(["✨ Visual Delta (Color Diff)", "📋 Engineered Prompt (Code)"])
+    with diff_tab:
+        st.caption("Color-coded changes: <span class='pl-diff-add'>green additions</span> and <span class='pl-diff-del'>red removals</span>.", unsafe_allow_html=True)
+        ui.render_diff_view(analysis["original"], analysis["improved"])
+    with code_tab:
+        st.code(analysis["improved"], language=None)
+
+    # AI Coach Deep Review & Production Rewrite
+    st.divider()
+    st.markdown("### 🤖 AI Prompt Coach Deep Review & Rewrite")
+    st.caption(
+        "Generate a structured academic critique (Strengths, Critical Gaps, and Engineered TRACE Rewrite) for this prompt."
+    )
+
+    c_ai1, c_ai2 = st.columns([2, 3])
+    with c_ai1:
+        request_ai = st.button(
+            "✨ Consult AI Prompt Coach", type="secondary", key="home_consult_ai_btn", use_container_width=True
+        )
+
+    cache_key = f"ai_coach_{hash(analysis['original'])}"
+    if request_ai or st.session_state.get(cache_key):
+        st.session_state[cache_key] = True
+        with st.spinner("Consulting AI coach..."):
+            if ai_feedback.enabled():
+                try:
+                    user_ref = session.current_user().id if session.current_user() else "guest"
+                    ai_text = ai_feedback.get_feedback(session._db(), user_ref, analysis["original"])
+                    st.success("✅ AI Coach Review (Live API):")
+                    st.markdown(ai_text)
+                except Exception as exc:
+                    st.warning(f"Live provider note: {exc}. Showing pedagogical analysis:")
+                    c_data = ai_feedback.get_pedagogical_coach_critique(analysis["original"])
+                    st.markdown(
+                        f"**🌟 Strengths:**\n{c_data['strengths']}\n\n**⚠️ Gaps:**\n{c_data['gaps']}\n\n**🚀 Production Rewrite:**\n```\n{c_data['rewrite']}\n```"
+                    )
+            else:
+                c_data = ai_feedback.get_pedagogical_coach_critique(analysis["original"])
+                st.info(
+                    "💡 **AI Coach Analysis & Refinement** (Connect an API key in AI Feedback for dynamic LLM responses):"
+                )
+                col_s1, col_s2 = st.columns(2)
+                with col_s1:
+                    st.markdown("#### 🌟 Strengths")
+                    st.markdown(c_data["strengths"])
+                with col_s2:
+                    st.markdown("#### ⚠️ Critical Gaps")
+                    st.markdown(c_data["gaps"])
+                st.markdown("#### 🚀 Engineered Production Rewrite")
+                st.code(c_data["rewrite"], language=None)
 
     col1, col2 = st.columns(2)
     with col1:
         if st.button("📋 Copy Improved Prompt", use_container_width=True):
-            st.code(analysis['improved'], language=None)
+            st.code(analysis["improved"], language=None)
             st.success("✅ Select and copy the prompt above (Ctrl+C)")
     with col2:
         if st.button("🔄 Analyze Again", use_container_width=True):
@@ -367,23 +512,16 @@ if st.session_state.last_analyzed:
 
     # Show original for comparison
     with st.expander("📝 View Original Prompt"):
-        st.code(analysis['original'], language=None)
+        st.code(analysis["original"], language=None)
 
     # Show similar examples if available
-    if analysis.get('similar_examples'):
+    if analysis.get("similar_examples"):
         st.divider()
         st.markdown("### 📚 Similar Prompts from Our Collection")
-        for ex in analysis['similar_examples'][:3]:
+        for ex in analysis["similar_examples"][:3]:
             with st.expander(f"📄 {ex.get('title', 'Example Prompt')} ({ex.get('category', 'Unknown')})"):
                 st.markdown(f"**Tags:** {', '.join(ex.get('tags', []))}")
-                st.code(ex.get('prompt', ''), language=None)
+                st.code(ex.get("prompt", ""), language=None)
 
 # Footer
-st.divider()
-st.markdown(f"""
-<div style='text-align: center; color: #666; padding: 2rem;'>
-    <p>💡 Prompt Improvement Tool | Built with Streamlit</p>
-    <p>Make your prompts better using our curated collection and logical Python analysis</p>
-    <p style='margin-top: 0.8rem; font-size: 0.9rem;'>{brand.copyright_line()} Intellectual property of {brand.owner_name()}. <a href='{brand.site_url()}'>{brand.site_url().split('//')[-1]}</a></p>
-</div>
-""", unsafe_allow_html=True)
+ui.footer()
