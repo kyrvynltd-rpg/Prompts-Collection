@@ -8,7 +8,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import ui  # noqa: E402
-from practice import criterion_label, load_exercises, score_prompt  # noqa: E402
+from practice import load_exercises, score_prompt  # noqa: E402
 
 ui.setup("Practice", "🎯")
 ui.header("🎯 Prompt Practice", "Write a prompt for a real student task. Get instant feedback on what is missing. Nothing is sent to an AI.")
@@ -54,13 +54,18 @@ if st.button("Check my prompt", type="primary", use_container_width=True, key=f"
 
 res = st.session_state.get(f"result_{ex_id}")
 if res:
+    if res.score >= 70:
+        ui.render_confetti()
+    ui.render_health_gauge(res.score, res.checks)
     col_a, col_b = st.columns([1, 2])
-    col_a.metric("Score", f"{res.score}%", res.level)
+    col_a.metric("Practice Mastery Score", f"{res.score}%", res.level)
     with col_b:
-        for key, ok in res.checks.items():
-            st.write(("✅ " if ok else "❌ ") + criterion_label(key))
-        for term in res.missing_terms:
-            st.write(f"❌ Mention: {term}")
+        if res.missing_terms:
+            st.markdown("**Critical Terms Missing:**")
+            for term in res.missing_terms:
+                st.write(f"❌ Required topic term: `{term}`")
+        else:
+            st.success("✅ All required domain terms included!")
     for flag in res.flags:
         st.error(flag)
     if res.advice:

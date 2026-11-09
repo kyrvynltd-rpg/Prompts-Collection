@@ -98,7 +98,8 @@ with st.expander("⚡ Multi-Provider Automated Fallback Cascade (Groq, OpenAI, G
                 st.rerun()
 
 st.markdown("---")
-st.markdown("### 📝 Enter Your Prompt for AI Critique")
+ui.render_model_pipeline(active_provider="groq" if "Groq" in prov else ("openai" if "OpenAI" in prov else "gemini"))
+st.markdown("### 📝 Neural Workbench: Draft Prompt for AI Review")
 st.caption(
     "Submit a draft prompt. The AI coach will evaluate it against the TRACE framework, "
     "identify hallucinations or vagueness risks, and produce an optimized rewrite."
