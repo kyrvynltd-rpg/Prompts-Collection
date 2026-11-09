@@ -6,12 +6,12 @@
  "summary": "The three parts of almost every good prompt: a role, a task and the context.",
  "lessons": [
   {
-   "title": "Why vague prompts fail",
-   "body": "A model fills gaps with guesses. 'Summarise this' leaves out who it is for, how long, and what you need it for. Every gap you close is one less guess."
+   "title": "The Anatomy of an Effective Prompt: Why Vague Instructions Fail",
+   "body": "Large Language Models (LLMs) operate probabilistically: when instructions are ambiguous, the model samples from generic baseline distributions and 'guesses' missing parameters. A prompt like *'Summarise this paper'* forces the model to invent the audience, the depth, the perspective, and the intended utility\u2014inevitably producing bland, superficial output.\n\nTo engineer high-impact prompts for academic and professional work, apply the **TRACE Framework**:\n* **T \u2014 Task**: Exactly what single operation must be performed (e.g. *synthesise key methodological disagreements* rather than just *summarise*).\n* **R \u2014 Role**: The cognitive stance and domain expertise the model should adopt (e.g. *You are an academic peer reviewer in cognitive psychology*).\n* **A \u2014 Audience**: The reader's knowledge level, background, and expectations (e.g. *first-year undergraduate seminar cohort*).\n* **C \u2014 Context**: Essential background information, constraints, and source parameters the model cannot deduce.\n* **E \u2014 Execution Constraints**: Word ceilings, prohibited phrasing, and mandatory structural checkpoints."
   },
   {
-   "title": "Role, task, context",
-   "body": "Role: who the model should act as. Task: the one thing to do. Context: the facts it cannot know, such as your course, level or deadline. Start with these three before anything else."
+   "title": "Role, Task, and Context in Practice",
+   "body": "Establishing a dedicated **Role** primes the model's latent representations, shifting its vocabulary, epistemic caution, and analytical depth. However, role-setting without explicit **Context** is fragile.\n\n**Compare these two approaches:**\n* \u274c *Weak*: 'Explain statistical significance for psychology.'\n* \u2705 *Engineered*: 'You are an experienced statistics tutor for undergraduate psychology students. Explain statistical significance (p-values) to a student who understands basic averages but struggles with probability. Use one real-world clinical psychology example. Highlight common misinterpretations (e.g., p < 0.05 proving the hypothesis). Keep under 250 words in clear, accessible prose.'\n\nNotice how the engineered prompt defines **who** is speaking, **who** is listening, **what conceptual boundaries** to respect, and **what pitfalls** to actively warn against."
   }
  ],
  "exercises": [
